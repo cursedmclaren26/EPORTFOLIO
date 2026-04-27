@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Player — Ultra Minimal</title>
+    <meta name="description" content="Immersive music player with curated atmospheres and motion-driven experiences.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="stylesheet" href="css/music.css" />
+</head>
+
+<body>
+
+    <!-- GRAIN TEXTURE -->
+    <div class="grain"></div>
+
+    <!-- MINIMALIST CURSOR -->
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-label"></div>
+
+    <!-- FLOATING BRAND MARK -->
+    <div class="brand-mark">
+        <div class="brand-letter">M</div>
+    </div>
+
+    <!-- ========================================
+         INTRO / LOADING
+         ======================================== -->
+    <div class="intro">
+        <div class="intro-brand"><span>Music OS</span></div>
+        <div class="intro-sub"><span>Curated Atmospheres</span></div>
+        <div class="intro-progress">
+            <div class="intro-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         APP SHELL
+         ======================================== -->
+    <div class="app-shell">
+        <aside class="nav-panel panel">
+            <div class="brand">
+                <i class="fas fa-infinity"></i>
+                <div>
+                    <strong>Vansh's</strong>
+                    <p>Music OS</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><button class="active" id="nav-home"><i class="fas fa-wave-square"></i>Flow</button></li>
+                    <li><button id="nav-search"><i class="fas fa-search"></i>Search</button></li>
+                </ul>
+            </nav>
+            <div class="library-panel">
+                <header>
+                    <h4>Stacks</h4>
+                    <button><i class="fas fa-plus"></i></button>
+                </header>
+                <ul class="library-list" id="library-list"></ul>
+            </div>
+        </aside>
+
+        <section class="content-panel panel">
+            <div class="content-scroll">
+                <div class="home-view">
+                    <div class="hero">
+                        <article class="hero-card">
+                            <h1>Curated atmospheres calibrated for your momentum.</h1>
+                            <p>Tap into motion-crafted playlists built from neural color grading, pulse analysis and
+                                your weekly rituals.</p>
+                            <div class="chips">
+                                <span class="chip">deep focus</span>
+                                <span class="chip">sonic bloom</span>
+                                <span class="chip">night drive</span>
+                            </div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-group">
+                                <span>Weekly Tempo</span>
+                                <strong>128 bpm</strong>
+                            </div>
+                            <div class="stat-group">
+                                <span>Listening Window</span>
+                                <strong>37 hrs</strong>
+                            </div>
+                            <div class="chips">
+                                <span class="chip">Adaptive Queue</span>
+                                <span class="chip">Spatial Audio</span>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>curated energy</h2>
+                            <button>view all</button>
+                        </div>
+                        <div class="grid" id="curated-grid"></div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>personal signal</h2>
+                            <button>refresh</button>
+                        </div>
+                        <div class="grid" id="personal-grid"></div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>motion insights</h2>
+                        </div>
+                        <div class="grid" id="insight-grid">
+                            <article class="card">
+                                <small>Moment</small>
+                                <h3>Blue Hour</h3>
+                                <p>Lo-fi bloom & analog crackle tuned for post-sunset reflection.</p>
+                            </article>
+                            <article class="card">
+                                <small>Mode</small>
+                                <h3>Flight Case</h3>
+                                <p>High gloss future garage for afterhours focus loops.</p>
+                            </article>
+                            <article class="card">
+                                <small>Pulse</small>
+                                <h3>Pulse Drift</h3>
+                                <p>Breath-led downtempo with sub-bass therapy.</p>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-view" id="search-view">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search moods, artists, spaces..." />
+                    </div>
+                    <div class="section-header">
+                        <h2>sound palettes</h2>
+                    </div>
+                    <div class="search-grid">
+                        <article class="search-pill">Immersive Jazz</article>
+                        <article class="search-pill">Neon Midnights</article>
+                        <article class="search-pill">Art Studio Flow</article>
+                        <article class="search-pill">Aerial Soul</article>
+                        <article class="search-pill">Circuit Dreams</article>
+                        <article class="search-pill">Monsoon Ambience</article>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========================================
+         DETAIL PANEL
+         ======================================== -->
+    <aside class="detail-panel panel" id="detail-panel">
+        <div class="detail-header">
+            <div class="cover" id="detail-cover"></div>
+            <div>
+                <p class="detail-meta">playlist</p>
+                <h3 id="detail-title">Select a vibe</h3>
+                <p class="detail-meta" id="detail-desc">Tap a card to preview an atmospheric stack.</p>
+            </div>
+        </div>
+        <div class="detail-actions">
+            <button class="solid"><i class="fas fa-play"></i> Play</button>
+            <button class="ghost"><i class="fas fa-plus"></i> Save</button>
+        </div>
+        <ul class="tracklist" id="tracklist">
+            <li>
+                <div>
+                    <strong>Stay tuned</strong>
+                    <span>More layers appear when you open a playlist.</span>
+                </div>
+                <span>∞</span>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========================================
+         IMMERSIVE PLAYER
+         ======================================== -->
+    <footer class="immersive-player">
+        <div class="player-meta">
+            <div class="art" id="player-art"></div>
+            <div>
+                <strong id="player-title">Edge Bloom</strong>
+                <p id="player-artist">Vansh Khanna & Avinash Chandra</p>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="controls-buttons">
+                <button><i class="fas fa-shuffle"></i></button>
+                <button><i class="fas fa-backward-step"></i></button>
+                <button><i class="fas fa-circle-play"></i></button>
+                <button><i class="fas fa-forward-step"></i></button>
+                <button><i class="fas fa-repeat"></i></button>
+            </div>
+            <div class="progress">
+                <span>0:42</span>
+                <input type="range" min="0" max="100" value="35">
+                <span>3:28</span>
+            </div>
+        </div>
+        <div class="player-actions">
+            <i class="fas fa-wave-square"></i>
+            <i class="fas fa-headphones"></i>
+            <i class="fas fa-volume-high"></i>
+            <input type="range" min="0" max="100" value="70">
+        </div>
+    </footer>
+
+    <!-- ========================================
+         SCRIPTS
+         ======================================== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/music.js"></script>
+
+</body>
+
+</html>

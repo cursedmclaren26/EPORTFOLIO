@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VASHAYA | Visual Artist</title>
+    <meta name="description" content="Visual narratives through photography and motion by Vansh Khanna.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+
+    <!-- GRAIN TEXTURE -->
+    <div class="grain"></div>
+
+    <!-- MINIMALIST CURSOR -->
+    <div class="cursor"></div>
+    <div class="cursor-label"></div>
+
+    <!-- ========================================
+         INTRO / LOADING
+         ======================================== -->
+    <div class="intro">
+        <div class="intro-brand"><span>VASHAYA</span></div>
+        <div class="intro-sub"><span>Visual Artist</span></div>
+        <div class="intro-progress">
+            <div class="intro-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         MAIN APP
+         ======================================== -->
+    <div class="app">
+
+        <!-- HERO BACKGROUND (Mouse Reactive) -->
+        <div class="hero-bg">
+            <!-- JS injects slides -->
+        </div>
+
+        <!-- FLOATING BRAND MARK -->
+        <div class="brand-mark">
+            <div class="brand-letter">V</div>
+        </div>
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo">VASHAYA</div>
+            <div class="header-time">00:00 IST</div>
+        </header>
+
+        <!-- HERO NAV -->
+        <nav class="hero-nav">
+            <button class="hero-arrow" data-dir="prev">←</button>
+            <span class="hero-count">01 — 05</span>
+            <button class="hero-arrow" data-dir="next">→</button>
+        </nav>
+
+        <!-- DOCK (Right Side Menu) -->
+        <nav class="dock">
+            <button class="dock-item" data-action="menu" data-target="photos">Photos</button>
+            <button class="dock-item" data-action="menu" data-target="videos">Videos</button>
+            <button class="dock-item" data-action="gallery" data-target="suits">Suits</button>
+            <button class="dock-item" data-action="modal" data-target="about">About</button>
+            <button class="dock-item" data-action="modal" data-target="inquire">Inquire</button>
+        </nav>
+
+        <!-- CATEGORY FLYOUT -->
+        <div class="flyout">
+            <!-- JS populates -->
+        </div>
+
+    </div>
+
+    <!-- ========================================
+         MODALS (Liquid Glass)
+         ======================================== -->
+
+    <!-- ABOUT -->
+    <div class="modal-layer" id="modal-about">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <button class="modal-close">×</button>
+            <h2 class="modal-title">
+                <span>T</span><span>h</span><span>e</span><span>&nbsp;</span>
+                <span>A</span><span>r</span><span>t</span><span>i</span><span>s</span><span>t</span>
+            </h2>
+            <div class="modal-body">
+                <p>I craft focused, high-signal visual experiences. My work explores the space between chaos and order
+                    through light, texture, and motion.</p>
+                <p>Blending systems thinking with clean composition, I create immersive narratives across stills and
+                    motion picture.</p>
+                <p style="opacity:0.4; font-style: italic;">Based in New Delhi, India.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- INQUIRE -->
+    <div class="modal-layer" id="modal-inquire">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <button class="modal-close">×</button>
+            <h2 class="modal-title">
+                <span>L</span><span>e</span><span>t</span><span>'</span><span>s</span><span>&nbsp;</span>
+                <span>T</span><span>a</span><span>l</span><span>k</span>
+            </h2>
+            <div class="modal-body">
+                <p>Available for commissions, brand collaborations, and creative partnerships.</p>
+            </div>
+            <div class="contact-list">
+                <div class="contact-card">
+                    <small>Email</small>
+                    <a href="mailto:khanna.vansh.xo@gmail.com">khanna.vansh.xo@gmail.com</a>
+                </div>
+                <div class="contact-card">
+                    <small>Phone</small>
+                    <a href="tel:+918826326333">+91 88263 26333</a>
+                </div>
+                <div class="contact-card">
+                    <small>Instagram</small>
+                    <a href="#">@vashaya</a>
+                </div>
+                <div class="contact-card">
+                    <small>LinkedIn</small>
+                    <a href="#">Vansh Khanna</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         GALLERY TAKEOVER
+         ======================================== -->
+    <section class="gallery">
+        <button class="gallery-close">Close</button>
+        <div class="gallery-head">
+            <h2 class="gallery-title">Gallery</h2>
+            <p class="gallery-sub">Photography Series</p>
+        </div>
+        <div class="masonry">
+            <!-- JS injects -->
+        </div>
+    </section>
+
+    <!-- ========================================
+         LIGHTBOX (Fullscreen Viewer)
+         ======================================== -->
+    <div class="lightbox">
+        <button class="lightbox-close">Close</button>
+        <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox('prev')">←</button>
+        <button class="lightbox-nav lightbox-next" onclick="navigateLightbox('next')">→</button>
+        <div class="lightbox-content">
+            <!-- JS injects image/video -->
+        </div>
+        <div class="lightbox-caption">1 / 10</div>
+    </div>
+
+    <!-- ========================================
+         SCRIPTS
+         ======================================== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Lightbox close & nav handlers
+        document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+        document.querySelector('.lightbox').addEventListener('click', (e) => {
+            if (e.target.classList.contains('lightbox')) closeLightbox();
+        });
+    </script>
+
+</body>
+
+</html>
