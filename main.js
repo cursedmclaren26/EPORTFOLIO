@@ -38,7 +38,7 @@ const CATEGORIES = {
 };
 
 const CONTENT = {
-    nature: { title: "Nature", sub: "Earth Studies", items: ["6.jpeg", "7.jpeg", "8.jpeg", "9.jpg", "10.jpeg", "11.jpg", "22.jpeg", "23.jpg", "24.jpg", "25.jpg", "29.jpg"] },
+    nature: { title: "Nature", sub: "Earth Studies", items: ["https://res.cloudinary.com/dietapokx/image/upload/v1777294607/9_bspqdi.jpg", "7.jpeg", "8.jpeg", "9.jpg", "10.jpeg", "11.jpg", "22.jpeg", "23.jpg", "24.jpg", "25.jpg", "29.jpg"] },
     night: { title: "Night", sub: "After Dark", items: ["17.jpeg", "14.jpg", "19.jpeg"] },
     landscape: { title: "Landscape", sub: "Vast Horizons", items: ["14.jpg", "19.jpeg"] },
     eclectic: { title: "Eclectic", sub: "Mixed Works", items: ["12.jpg", "15.dng", "18.jpeg", "20.jpeg", "16.jpeg", "21.jpeg", "26.jpg", "27.jpg", "28.jpg", "30.jpg", "31.jpg"] },
