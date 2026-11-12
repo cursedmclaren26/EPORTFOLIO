@@ -17,7 +17,7 @@ const EASE = {
 // ============================================
 // DATA
 // ============================================
-const HERO_IMAGES = ['19.jpeg', '2.jpg', '18.jpeg', '4.png', '5.png'];
+const HERO_IMAGES = ["https://res.cloudinary.com/kymqk229/image/upload/v1794469943/vashaya_portfolio/19.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469948/vashaya_portfolio/2.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469941/vashaya_portfolio/18.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469976/vashaya_portfolio/4.png", "https://res.cloudinary.com/kymqk229/image/upload/v1794469977/vashaya_portfolio/5.png"];
 
 const CATEGORIES = {
     photos: [
@@ -38,10 +38,10 @@ const CATEGORIES = {
 };
 
 const CONTENT = {
-    nature: { title: "Nature", sub: "Earth Studies", items: ["https://res.cloudinary.com/dietapokx/image/upload/v1777294607/9_bspqdi.jpg", "7.jpeg", "8.jpeg", "9.jpg", "10.jpeg", "11.jpg", "22.jpeg", "23.jpg", "24.jpg", "25.jpg", "29.jpg"] },
-    night: { title: "Night", sub: "After Dark", items: ["17.jpeg", "14.jpg", "19.jpeg"] },
-    landscape: { title: "Landscape", sub: "Vast Horizons", items: ["14.jpg", "19.jpeg"] },
-    eclectic: { title: "Eclectic", sub: "Mixed Works", items: ["12.jpg", "15.dng", "18.jpeg", "20.jpeg", "16.jpeg", "21.jpeg", "26.jpg", "27.jpg", "28.jpg", "30.jpg", "31.jpg"] },
+    nature: { title: "Nature", sub: "Earth Studies", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469985/vashaya_portfolio/9.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469982/vashaya_portfolio/7.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469984/vashaya_portfolio/8.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469985/vashaya_portfolio/9.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469921/vashaya_portfolio/10.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469928/vashaya_portfolio/11.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469952/vashaya_portfolio/22.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469954/vashaya_portfolio/23.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469955/vashaya_portfolio/24.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469956/vashaya_portfolio/25.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469964/vashaya_portfolio/29.jpg"] },
+    night: { title: "Night", sub: "After Dark", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469940/vashaya_portfolio/17.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469933/vashaya_portfolio/14.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469943/vashaya_portfolio/19.jpg"] },
+    landscape: { title: "Landscape", sub: "Vast Horizons", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469933/vashaya_portfolio/14.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469943/vashaya_portfolio/19.jpg"] },
+    eclectic: { title: "Eclectic", sub: "Mixed Works", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469930/vashaya_portfolio/12.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469935/vashaya_portfolio/15.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469941/vashaya_portfolio/18.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469949/vashaya_portfolio/20.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469938/vashaya_portfolio/16.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469950/vashaya_portfolio/21.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469958/vashaya_portfolio/26.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469960/vashaya_portfolio/27.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469961/vashaya_portfolio/28.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469969/vashaya_portfolio/30.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469970/vashaya_portfolio/31.jpg"] },
     cinematic: { title: "Cinematic", sub: "Motion Picture", items: ["Short Film Intro", "Commercial Project A", "Documentary Clip"], isVideo: true },
     closeup: { title: "Close Up", sub: "Macro Studies", items: ["Macro Texture Study", "Water Droplets Reel", "Eye Macro"], isVideo: true },
     // SUITS - Direct gallery (no subcategories)

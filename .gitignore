@@ -1,0 +1,19 @@
+# Local media files (hosted on Cloudinary CDN)
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
+*.png
+*.PNG
+*.dng
+*.DNG
+
+# Keep web assets and icons
+!rr.png
+
+# Submodule & Temp
+workspace-*
+EPORTFOLIO/
+*.py
+*.json
+__pycache__/
