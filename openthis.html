@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="portfolio.css?v=20261114_perf_v13" />
+    <link rel="stylesheet" href="portfolio.css?v=20261114_fusion_v14" />
 </head>
 
 <body>
@@ -54,8 +54,20 @@
 
         <!-- HEADER -->
         <header class="header">
-            <div class="logo">VANSH KHANNA</div>
-            <div class="header-tagline">Engineer · Builder · Explorer</div>
+            <div class="header-left">
+                <span class="brand-badge-mini">VK</span>
+                <div>
+                    <div class="logo">VANSH KHANNA</div>
+                    <div class="header-tagline">Engineer · Builder · Explorer</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-status">
+                    <span class="status-beacon"></span>
+                    <span class="status-text">Available for Roles</span>
+                </div>
+                <div class="header-time" id="header-clock">--:-- IST</div>
+            </div>
         </header>
 
         <!-- DOCK (Right Side Menu) -->
@@ -68,58 +80,104 @@
         </nav>
 
         <!-- ========================================
-             SECTION: HOME
+             SECTION: HOME (FUSION HERO)
              ======================================== -->
         <section class="section active" id="section-home">
             <div class="hero-content">
-                <h1 class="hero-title">
-                    <span class="line"><span>Designing</span></span>
-                    <span class="line"><span>Meaningful</span></span>
-                    <span class="line"><span>Tech</span></span>
-                </h1>
-                <p class="hero-sub">Crafting immersive experiences at the intersection of design & technology</p>
-                <div class="stat-row">
-                    <div class="stat">
-                        <span class="stat-value">5</span>
-                        <span class="stat-label">Live Projects</span>
+                <div class="hero-text-col">
+                    <div class="hero-eyebrow">
+                        <span>✦ Creative Engineer & Systems Explorer</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">2</span>
-                        <span class="stat-label">Leadership Roles</span>
+
+                    <h1 class="hero-title">
+                        <span class="line"><span>Designing</span></span>
+                        <span class="line"><span>Meaningful</span></span>
+                        <span class="line"><span>Tech</span></span>
+                    </h1>
+
+                    <p class="hero-sub">
+                        Undergraduate in Computer Science at <strong>Manav Rachna University</strong>. Crafting tactile software, training predictive ML models, and exploring fine-art visuals.
+                    </p>
+
+                    <div class="stat-row">
+                        <div class="stat-pill"><span class="stat-icon">🎓</span> <strong>MRU CSE</strong> · 2025–2029</div>
+                        <div class="stat-pill"><span class="stat-icon">📷</span> <strong>VASHAYA</strong> Visuals</div>
+                        <div class="stat-pill"><span class="stat-icon">⚡</span> <strong>4</strong> Live Engines</div>
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">∞</span>
-                        <span class="stat-label">Curiosity</span>
+
+                    <div class="hero-cta-group">
+                        <button class="hero-cta-btn primary" data-nav-target="2">Explore Selected Works ↓</button>
+                        <button class="hero-cta-btn secondary" data-nav-target="1">About Vansh →</button>
+                    </div>
+                </div>
+
+                <div class="hero-avatar-col">
+                    <div class="avatar-card-unit">
+                        <div class="hardware-sensors" aria-hidden="true">
+                            <span class="sensor-dot"></span>
+                            <span class="sensor-ring"></span>
+                        </div>
+                        <div class="avatar-halo">
+                            <div class="avatar-frame">
+                                <img src="avatar.jpg" alt="Vansh Khanna Portrait" class="avatar-img" />
+                            </div>
+                        </div>
+                        <div class="avatar-tag">
+                            <span class="star">✦</span> VASHAYA
+                        </div>
+                        <div class="avatar-role-pill">Creative Engineering · Delhi NCR</div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ========================================
-             SECTION: ABOUT
+             SECTION: ABOUT (SPICY BENTO)
              ======================================== -->
         <section class="section" id="section-about">
             <div class="glass-panel">
-                <p class="section-eyebrow">About</p>
+                <div class="section-meta-row">
+                    <p class="section-eyebrow">01 // Identity & Philosophy</p>
+                    <span class="section-badge-pill">MRU CSE · 2029</span>
+                </div>
                 <h2 class="section-title">
                     <span>T</span><span>h</span><span>e</span><span>&nbsp;</span>
                     <span>B</span><span>u</span><span>i</span><span>l</span><span>d</span><span>e</span><span>r</span>
                 </h2>
                 <div class="about-grid">
                     <div class="section-body">
-                        <p>I'm Vansh Khanna, a Computer Science Engineering student at Manav Rachna University. I thrive
-                            at the intersection of product, design and technology.</p>
-                        <p>I believe in crafting focused, high-signal experiences—minimal surfaces with maximum depth.
+                        <p class="about-lead">
+                            I treat software engineering like precision industrial design: every interface should be tactile, responsive, and stripped of unnecessary friction.
                         </p>
+                        <p>
+                            I'm Vansh Khanna, a Computer Science Engineering undergraduate at Manav Rachna University. I operate at the intersection of creative frontends, machine learning systems, and visual design—building focused, high-signal experiences with maximum depth.
+                        </p>
+                        <div class="about-journey-mini">
+                            <div class="journey-item">
+                                <span class="journey-dot"></span>
+                                <div class="journey-info">
+                                    <strong>2025 – 2029</strong>
+                                    <span>Manav Rachna University · B.Tech CSE</span>
+                                </div>
+                            </div>
+                            <div class="journey-item">
+                                <span class="journey-dot"></span>
+                                <div class="journey-info">
+                                    <strong>2013 – 2025</strong>
+                                    <span>Modern Delhi International School · Alum</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p class="section-eyebrow">Competencies</p>
+                    <div class="about-skills-col">
+                        <p class="section-eyebrow">Competencies & Systems</p>
                         <ul class="skill-list">
-                            <li>Creative Engineering</li>
-                            <li>Team Leadership</li>
-                            <li>Problem Solving</li>
-                            <li>Experience Strategy</li>
-                            <li>Systems Thinking</li>
+                            <li><span class="skill-dot blue"></span>Creative Engineering</li>
+                            <li><span class="skill-dot coral"></span>Experience Strategy</li>
+                            <li><span class="skill-dot amber"></span>Machine Learning Models</li>
+                            <li><span class="skill-dot emerald"></span>Systems Architecture</li>
+                            <li><span class="skill-dot purple"></span>Visual Arts & Curation</li>
+                            <li><span class="skill-dot cyan"></span>Team Leadership</li>
                         </ul>
                     </div>
                 </div>
@@ -131,7 +189,10 @@
              ======================================== -->
         <section class="section" id="section-projects">
             <div class="glass-panel">
-                <p class="section-eyebrow">Showcase</p>
+                <div class="section-meta-row">
+                    <p class="section-eyebrow">02 // Interactive Engines</p>
+                    <span class="section-badge-pill">4 Live Sub-Apps</span>
+                </div>
                 <h2 class="section-title">
                     <span>S</span><span>e</span><span>l</span><span>e</span><span>c</span><span>t</span><span>e</span><span>d</span><span>&nbsp;</span>
                     <span>W</span><span>o</span><span>r</span><span>k</span><span>s</span>
@@ -173,7 +234,10 @@
              ======================================== -->
         <section class="section" id="section-education">
             <div class="glass-panel">
-                <p class="section-eyebrow">Journey</p>
+                <div class="section-meta-row">
+                    <p class="section-eyebrow">03 // Academic Journey</p>
+                    <span class="section-badge-pill">Foundations & CSE</span>
+                </div>
                 <h2 class="section-title">
                     <span>E</span><span>d</span><span>u</span><span>c</span><span>a</span><span>t</span><span>i</span><span>o</span><span>n</span>
                 </h2>
@@ -192,16 +256,19 @@
              ======================================== -->
         <section class="section" id="section-contact">
             <div class="glass-panel">
-                <p class="section-eyebrow">Let's Connect</p>
+                <div class="section-meta-row">
+                    <p class="section-eyebrow">04 // Connect & Collaborate</p>
+                    <span class="section-badge-pill">Direct Channels</span>
+                </div>
                 <h2 class="section-title">
                     <span>C</span><span>o</span><span>n</span><span>t</span><span>a</span><span>c</span><span>t</span>
                 </h2>
                 <div class="contact-grid">
-                    <div class="contact-card">
+                    <div class="contact-card" data-copy="vanshkhanna26@gmail.com">
                         <small>Email</small>
                         <a href="mailto:vanshkhanna26@gmail.com">vanshkhanna26@gmail.com</a>
                     </div>
-                    <div class="contact-card">
+                    <div class="contact-card" data-copy="+919811163339">
                         <small>Phone</small>
                         <a href="tel:+919811163339">+91 98111 63339</a>
                     </div>
@@ -551,7 +618,7 @@
          SCRIPTS
          ======================================== -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="portfolio.js?v=20261114_perf_v13"></script>
+    <script src="portfolio.js?v=20261114_fusion_v14"></script>
 
 </body>
 

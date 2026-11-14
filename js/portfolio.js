@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initVisualGallery();
     initCarPredictor();
     initTelemetry();
+    startClock();
     runIntro();
 });
 
@@ -288,7 +289,59 @@ function initNavigation() {
         }, 50);
     }, { passive: true });
 
+    // Quick action CTA links with data-nav-target
+    document.querySelectorAll('[data-nav-target]').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const idx = parseInt(btn.getAttribute('data-nav-target'), 10);
+            if (!isNaN(idx)) goToSection(idx);
+        });
+    });
+
+    // Copy-to-clipboard on contact cards
+    document.querySelectorAll('[data-copy]').forEach(card => {
+        card.addEventListener('click', e => {
+            const text = card.getAttribute('data-copy');
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(`Copied: ${text}`);
+                }).catch(() => {});
+            } else {
+                showToast(`Copied: ${text}`);
+            }
+        });
+    });
+
     updateIslandState();
+}
+
+function startClock() {
+    const el = document.getElementById('header-clock');
+    if (!el) return;
+    const update = () => {
+        const now = new Date();
+        const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false };
+        el.textContent = `${now.toLocaleTimeString('en-GB', options)} IST`;
+    };
+    update();
+    setInterval(update, 30000);
+}
+
+function showToast(msg) {
+    let toast = document.getElementById('glass-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'glass-toast';
+        toast.className = 'glass-toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('visible');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => {
+        toast.classList.remove('visible');
+    }, 2200);
 }
 
 function goToSection(index) {
