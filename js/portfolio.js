@@ -200,8 +200,8 @@ function initIntro() {
         if (bar) bar.style.width = '100%';
     }, 100);
 
-    // Auto complete when finished
-    const timer = setTimeout(completeIntro, 2200);
+    // Auto complete when finished (swift, snappy 1.2s reveal)
+    const timer = setTimeout(completeIntro, 1200);
 
     // Skip on click / touch
     intro.addEventListener('click', () => {
@@ -289,18 +289,18 @@ function initFluidCanvas() {
     resize();
     window.addEventListener('resize', debounce(resize, 180));
 
-    // Create 7 multi-tonal luminous blobs
+    // Create 7 vibrant, high-luminance radiant blobs for rich acrylic refraction
     const colors = [
-        'rgba(124, 93, 250, 0.16)', // Deep Violet
-        'rgba(6, 182, 212, 0.14)',  // Electric Cyan
-        'rgba(148, 163, 184, 0.08)',// Liquid Platinum
-        'rgba(124, 93, 250, 0.12)', // Ambient Violet
-        'rgba(6, 182, 212, 0.10)',  // Subtle Cyan
-        'rgba(244, 63, 94, 0.08)',  // Prismatic Rose
-        'rgba(16, 185, 129, 0.07)'  // Emerald Specular
+        'rgba(139, 92, 246, 0.72)', // Radiant Electric Violet
+        'rgba(6, 182, 212, 0.68)',  // Glowing Cyan
+        'rgba(236, 72, 153, 0.58)', // Hot Liquid Magenta
+        'rgba(99, 102, 241, 0.65)', // Royal Indigo
+        'rgba(20, 184, 166, 0.60)', // Bright Aquamarine
+        'rgba(244, 63, 94, 0.52)',  // Vivid Rose
+        'rgba(251, 191, 36, 0.48)'  // Radiant Amber Gold
     ];
 
-    const blobs = colors.map((col, i) => new InkBlob(canvas, col, 260 + (i % 3) * 120));
+    const blobs = colors.map((col, i) => new InkBlob(canvas, col, 320 + (i % 3) * 160));
 
     let animationId = null;
 

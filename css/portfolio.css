@@ -76,7 +76,7 @@ html {
 
 body {
     font-family: var(--font-body);
-    background-color: var(--void);
+    background: radial-gradient(circle at 50% 15%, #181232 0%, #0a0818 45%, #030206 100%);
     color: var(--platinum);
     min-height: 100vh;
     overflow-x: hidden;
@@ -107,8 +107,8 @@ button {
     height: 100vh;
     z-index: 0;
     pointer-events: none;
-    filter: blur(55px);
-    opacity: 0.92;
+    filter: blur(65px);
+    opacity: 0.88;
 }
 
 .grain {
@@ -211,18 +211,21 @@ button {
 .glass-t1 {
     background: linear-gradient(
         135deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.02) 55%,
-        rgba(255, 255, 255, 0.005) 100%
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0.04) 50%,
+        rgba(255, 255, 255, 0.01) 100%
     );
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(1.08);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(1.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(1.18);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(1.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.28);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.65);
+    border-left: 1.5px solid rgba(255, 255, 255, 0.45);
     box-shadow:
-        inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.45),
-        inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.35),
-        0 30px 70px -15px rgba(0, 0, 0, 0.75),
-        0 0 35px -5px rgba(124, 93, 250, calc(0.18 * var(--glass-glow-opacity)));
+        inset 0 2px 2px 0 rgba(255, 255, 255, 0.75),
+        inset 0 -2px 3px 0 rgba(0, 0, 0, 0.4),
+        0 28px 70px -10px rgba(0, 0, 0, 0.75),
+        0 0 45px -5px rgba(139, 92, 246, 0.35),
+        0 0 25px -5px rgba(6, 182, 212, 0.25);
     border-radius: var(--r-card);
     position: relative;
     overflow: hidden;
@@ -230,12 +233,13 @@ button {
 
 /* TIER 2: Light Glass Bento Cells & Panels */
 .glass-t2 {
-    background: rgba(255, 255, 255, 0.055);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1.5px solid rgba(255, 255, 255, 0.22);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.5);
     box-shadow:
-        inset 0 1px 0.5px rgba(255, 255, 255, 0.35),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.5),
         0 14px 35px rgba(0, 0, 0, 0.45);
     border-radius: var(--r-panel);
     position: relative;
@@ -292,7 +296,9 @@ button {
 .intro-screen {
     position: fixed;
     inset: 0;
-    background: var(--void);
+    background: rgba(8, 6, 18, 0.85);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
     z-index: 10000;
     display: flex;
     align-items: center;
@@ -1085,6 +1091,229 @@ button {
 .glow-cyan { background: var(--cyan); }
 .glow-amber { background: var(--amber); }
 .glow-neutral { background: rgba(255, 255, 255, 0.3); }
+
+/* ═══════════════════════════════════════════════════════════════
+   PROJECT GRAPHIC PREVIEWS (HIGH DENSITY GRAPHICS)
+   ═══════════════════════════════════════════════════════════════ */
+.project-graphic-preview {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 20px;
+    border-radius: var(--r-panel);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Music OS Preview Graphic */
+.music-graphic {
+    background: radial-gradient(circle at center, rgba(124, 93, 250, 0.35), rgba(6, 182, 212, 0.15), transparent 70%);
+}
+
+.music-mini-deck {
+    width: 90%;
+    height: 80px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-radius: var(--r-panel);
+}
+
+.mini-disc-spinner {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--cyan) 15%, var(--void) 35%, var(--violet) 85%);
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.5);
+    animation: spin-conic 4s linear infinite;
+    flex-shrink: 0;
+}
+
+.mini-eq-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 32px;
+    flex: 1;
+    justify-content: center;
+}
+
+.mini-eq-bars .eq-bar {
+    width: 4px;
+    background: linear-gradient(to top, var(--violet), var(--cyan));
+    border-radius: 2px;
+    animation: eq-pulse 0.8s ease-in-out infinite alternate;
+}
+
+.mini-eq-bars .eq-bar:nth-child(1) { height: 10px; animation-delay: 0.1s; }
+.mini-eq-bars .eq-bar:nth-child(2) { height: 24px; animation-delay: 0.3s; }
+.mini-eq-bars .eq-bar:nth-child(3) { height: 32px; animation-delay: 0.15s; }
+.mini-eq-bars .eq-bar:nth-child(4) { height: 16px; animation-delay: 0.4s; }
+.mini-eq-bars .eq-bar:nth-child(5) { height: 28px; animation-delay: 0.25s; }
+.mini-eq-bars .eq-bar:nth-child(6) { height: 12px; animation-delay: 0.35s; }
+.mini-eq-bars .eq-bar:nth-child(7) { height: 26px; animation-delay: 0.05s; }
+.mini-eq-bars .eq-bar:nth-child(8) { height: 18px; animation-delay: 0.2s; }
+
+@keyframes eq-pulse {
+    0% { transform: scaleY(0.3); }
+    100% { transform: scaleY(1.1); }
+}
+
+.mini-live-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--cyan);
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
+/* VASHAYA Visual Arts Fan Preview */
+.visual-graphic {
+    background: radial-gradient(circle at center, rgba(6, 182, 212, 0.25), transparent 70%);
+}
+
+.photo-fan-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-card-fan {
+    position: absolute;
+    width: 120px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    transition: transform 0.4s var(--ease-glass);
+}
+
+.photo-card-fan img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fan-1 { transform: translateX(-40px) rotate(-8deg) scale(0.92); z-index: 1; opacity: 0.8; }
+.fan-2 { transform: translateX(0) rotate(0deg) scale(1); z-index: 2; box-shadow: 0 14px 30px rgba(0,0,0,0.85); }
+.fan-3 { transform: translateX(40px) rotate(8deg) scale(0.92); z-index: 1; opacity: 0.8; }
+
+.project-card:hover .fan-1 { transform: translateX(-60px) rotate(-14deg) scale(0.95); opacity: 1; }
+.project-card:hover .fan-2 { transform: translateX(0) rotate(0deg) scale(1.08); }
+.project-card:hover .fan-3 { transform: translateX(60px) rotate(14deg) scale(0.95); opacity: 1; }
+
+/* Car Price HUD Preview */
+.car-graphic {
+    background: radial-gradient(circle at center, rgba(245, 158, 11, 0.25), rgba(124, 93, 250, 0.1), transparent 70%);
+}
+
+.car-hud-card {
+    width: 90%;
+    height: 80px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: var(--r-panel);
+}
+
+.hud-gauge-dial {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.hud-currency {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--amber);
+}
+
+.hud-big-num {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.hud-unit {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ghost);
+}
+
+.hud-telemetry-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+}
+
+.hud-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--amber);
+    padding: 3px 8px;
+}
+
+/* Theme Sphere Preview */
+.theme-graphic {
+    background: radial-gradient(circle at center, rgba(124, 93, 250, 0.35), rgba(236, 72, 153, 0.2), transparent 70%);
+}
+
+.theme-glass-sphere {
+    width: 90%;
+    height: 80px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-panel);
+}
+
+.iridescent-sphere-core {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, var(--cyan) 25%, var(--violet) 65%, #050508 100%);
+    box-shadow: 0 0 20px rgba(124, 93, 250, 0.7);
+    animation: sphere-pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes sphere-pulse {
+    0% { transform: scale(0.95); filter: hue-rotate(0deg); }
+    100% { transform: scale(1.08); filter: hue-rotate(90deg); }
+}
+
+.sphere-refract-ring {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    left: 10px;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: spin-conic 8s linear infinite;
+}
+
+.sphere-live-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--white);
+    padding: 4px 12px;
+}
 
 .card-top-meta {
     display: flex;
