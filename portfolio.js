@@ -86,9 +86,23 @@ let introDone = false;
 function skipIntro() {
     if (introDone) return;
     introDone = true;
-    if (introTl) introTl.kill();
-    DOM.intro.style.display = 'none';
-    showApp();
+    if (introTl) {
+        introTl.kill();
+        introTl = null;
+    }
+    if (DOM.intro) DOM.intro.style.display = 'none';
+    if (DOM.app) DOM.app.classList.add('ready');
+
+    // Reveal header and dock immediately
+    if (DOM.logo) gsap.set(DOM.logo, { y: 0, opacity: 1 });
+    if (DOM.tagline) gsap.set(DOM.tagline, { y: 0, opacity: 1 });
+    if (DOM.dock) gsap.set(DOM.dock, { opacity: 1 });
+    gsap.set('.dock-item', { x: 0, opacity: 1 });
+
+    // Only showSection(0) if no other section has been activated
+    if (state.currentSection === 0) {
+        showSection(0);
+    }
 }
 
 function runIntro() {
@@ -96,53 +110,64 @@ function runIntro() {
     DOM.intro.addEventListener('touchstart', skipIntro, { passive: true });
 
     const isMobile = isTouchDevice();
-    const durationMultiplier = isMobile ? 0.6 : 1;
+    const durationMultiplier = isMobile ? 0.5 : 0.7;
 
-    introTl = gsap.timeline({ onComplete: () => { introDone = true; showApp(); } });
+    introTl = gsap.timeline({
+        onComplete: () => {
+            if (!introDone) {
+                showApp();
+            }
+        }
+    });
 
     // Progress bar
     introTl.to('.intro-progress-bar', {
         width: '100%',
-        duration: 1.8 * durationMultiplier,
+        duration: 1.2 * durationMultiplier,
         ease: 'power2.inOut'
     });
 
     // Brand reveal
     introTl.to('.intro-brand span', {
         y: 0,
-        duration: 1 * durationMultiplier,
+        duration: 0.7 * durationMultiplier,
         ease: EASE.out
-    }, 0.3 * durationMultiplier);
+    }, 0.2 * durationMultiplier);
 
     // Subtitle
     introTl.to('.intro-sub span', {
         y: 0,
-        duration: 0.6 * durationMultiplier,
+        duration: 0.5 * durationMultiplier,
         ease: EASE.out
-    }, 0.7 * durationMultiplier);
+    }, 0.4 * durationMultiplier);
 
     // Hold
-    introTl.to({}, { duration: 0.3 * durationMultiplier });
+    introTl.to({}, { duration: 0.2 * durationMultiplier });
 
     // Exit
     introTl.to('.intro-brand span, .intro-sub span', {
         y: -100,
         opacity: 0,
-        duration: 0.4 * durationMultiplier,
-        stagger: 0.04,
+        duration: 0.3 * durationMultiplier,
+        stagger: 0.03,
         ease: 'power3.in'
     });
 
     introTl.to(DOM.intro, {
         clipPath: 'inset(0 0 100% 0)',
-        duration: 0.6 * durationMultiplier,
+        duration: 0.4 * durationMultiplier,
         ease: EASE.inOut
-    }, '-=0.2');
+    }, '-=0.15');
 }
 
 function showApp() {
-    DOM.intro.style.display = 'none';
-    DOM.app.classList.add('ready');
+    introDone = true;
+    if (introTl) {
+        introTl.kill();
+        introTl = null;
+    }
+    if (DOM.intro) DOM.intro.style.display = 'none';
+    if (DOM.app) DOM.app.classList.add('ready');
 
     const tl = gsap.timeline();
 
@@ -150,37 +175,32 @@ function showApp() {
     tl.to([DOM.logo, DOM.tagline], {
         y: 0,
         opacity: 1,
-        duration: 1,
-        stagger: 0.1,
+        duration: 0.7,
+        stagger: 0.08,
         ease: EASE.out
     });
 
     // Dock
     tl.to(DOM.dock, {
         opacity: 1,
-        duration: 1,
+        duration: 0.7,
         ease: EASE.out
-    }, '-=0.8');
+    }, '-=0.5');
 
     // Dock items stagger
     tl.fromTo('.dock-item',
-        { x: 30, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: EASE.out },
-        '-=0.8'
+        { x: 20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, stagger: 0.06, ease: EASE.out },
+        '-=0.5'
     );
 
-    // Section nav
-    tl.to(DOM.sectionNav, {
-        opacity: 1,
-        duration: 1,
-        ease: EASE.out
-    }, '-=0.6');
-
-    // Show first section
-    showSection(0);
+    // Only show first section if user hasn't already navigated to another section
+    if (state.currentSection === 0) {
+        showSection(0);
+    }
 
     // Ensure dock is visible immediately on mobile
-    if (isTouchDevice()) {
+    if (isTouchDevice() && DOM.dock) {
         DOM.dock.style.opacity = '1';
     }
 }
@@ -274,6 +294,11 @@ function initNavigation() {
 function goToSection(index) {
     if (index === state.currentSection || index < 0 || index >= SECTIONS.length) return;
 
+    // Immediately stop any pending intro sequence so it NEVER overrides navigation
+    if (!introDone) {
+        skipIntro();
+    }
+
     state.isAnimating = true;
     const oldSection = DOM.sections[state.currentSection];
     const newSection = DOM.sections[index];
@@ -285,7 +310,7 @@ function goToSection(index) {
     // Fade out old section
     gsap.to(oldSection, {
         opacity: 0,
-        duration: 0.22,
+        duration: 0.18,
         ease: 'power2.in',
         onComplete: () => {
             oldSection.classList.remove('active');
@@ -300,7 +325,7 @@ function goToSection(index) {
                 { opacity: 0 },
                 {
                     opacity: 1,
-                    duration: 0.35,
+                    duration: 0.32,
                     ease: EASE.out,
                     onComplete: () => {
                         state.isAnimating = false;
@@ -313,8 +338,8 @@ function goToSection(index) {
             if (title) {
                 const spans = title.querySelectorAll('span');
                 gsap.fromTo(spans,
-                    { opacity: 0, y: 15 },
-                    { opacity: 1, y: 0, duration: 0.4, stagger: 0.02, ease: EASE.out }
+                    { opacity: 0, y: 12 },
+                    { opacity: 1, y: 0, duration: 0.35, stagger: 0.015, ease: EASE.out }
                 );
             }
         }
@@ -335,7 +360,7 @@ function showSection(index) {
                 { opacity: 0 },
                 {
                     opacity: 1,
-                    duration: 0.5,
+                    duration: 0.38,
                     ease: EASE.out,
                     onComplete: () => {
                         state.isAnimating = false;
@@ -349,16 +374,15 @@ function showSection(index) {
         }
     });
 
-    // Animate content inside
+    // Animate content inside - no delay so it never flashes or loads late
     const title = DOM.sections[index].querySelector('.section-title');
     if (title) {
         const spans = title.querySelectorAll('span');
         gsap.to(spans, {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.03,
-            delay: 0.2,
+            duration: 0.4,
+            stagger: 0.015,
             ease: EASE.out
         });
     }
@@ -368,9 +392,8 @@ function showSection(index) {
     if (heroLines.length) {
         gsap.to(heroLines, {
             y: 0,
-            duration: 0.8,
-            stagger: 0.08,
-            delay: 0.2,
+            duration: 0.5,
+            stagger: 0.05,
             ease: EASE.out
         });
     }

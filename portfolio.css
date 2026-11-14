@@ -620,14 +620,13 @@ button {
     padding: 100px;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(50px);
-    transition: all 0.8s var(--ease-out);
+    transform: none;
 }
 
 .section.active {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: none;
 }
 
 /* ============================================
@@ -671,8 +670,8 @@ button {
 
 .section-title span {
     display: inline-block;
-    opacity: 0;
-    transform: translateY(30px);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .section-body p {
@@ -1275,6 +1274,8 @@ button {
     position: relative;
     z-index: 1;
     width: min(94%, 980px);
+    height: min(85vh, 740px);
+    min-height: 520px;
     max-height: 88vh;
     background: rgba(12, 12, 16, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -1287,6 +1288,14 @@ button {
     overflow: hidden;
     transform: scale(0.95) translateY(16px);
     transition: transform 0.32s var(--ease-out);
+}
+
+#tray-visual .tray-modal {
+    height: min(85vh, 740px);
+    min-height: 520px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .tray-overlay.active .tray-modal {
@@ -1663,7 +1672,11 @@ button {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
     padding: 24px 26px;
-    max-height: calc(88vh - 160px);
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    height: 100%;
+    align-content: start;
     overflow-y: auto;
 }
 
@@ -2046,7 +2059,10 @@ button {
         grid-template-columns: 1fr;
     }
 
-    .tray-modal {
+    .tray-modal,
+    #tray-visual .tray-modal {
+        height: min(88vh, 640px);
+        min-height: 440px;
         max-height: 92vh;
     }
 
