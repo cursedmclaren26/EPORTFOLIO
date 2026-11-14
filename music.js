@@ -18,6 +18,8 @@ const EASE = {
 // ============================================
 // STATE
 // ============================================
+const isTouchDevice = () => window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
 const state = {
     mouse: { x: window.innerWidth / 2, y: window.innerHeight / 2 }
 };
@@ -67,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cacheDom();
     initCursor();
     initParallax();
+    initTouch();
     runIntro();
     initApp();
 });
@@ -74,45 +77,62 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 // INTRO SEQUENCE
 // ============================================
+let introTl = null;
+let introDone = false;
+
+function skipIntro() {
+    if (introDone) return;
+    introDone = true;
+    if (introTl) introTl.kill();
+    DOM.intro.style.display = 'none';
+    showApp();
+}
+
 function runIntro() {
-    const tl = gsap.timeline({ onComplete: showApp });
+    DOM.intro.addEventListener('click', skipIntro);
+    DOM.intro.addEventListener('touchstart', skipIntro, { passive: true });
+
+    const isMobile = isTouchDevice();
+    const durationMultiplier = isMobile ? 0.6 : 1;
+
+    introTl = gsap.timeline({ onComplete: () => { introDone = true; showApp(); } });
 
     // Progress bar
-    tl.to('.intro-progress-bar', {
+    introTl.to('.intro-progress-bar', {
         width: '100%',
-        duration: 1.5,
+        duration: 1.5 * durationMultiplier,
         ease: 'power2.inOut'
     });
 
     // Brand reveal
-    tl.to('.intro-brand span', {
+    introTl.to('.intro-brand span', {
         y: 0,
-        duration: 1,
+        duration: 0.9 * durationMultiplier,
         ease: EASE.out
-    }, 0.3);
+    }, 0.25 * durationMultiplier);
 
     // Subtitle
-    tl.to('.intro-sub span', {
+    introTl.to('.intro-sub span', {
         y: 0,
-        duration: 0.8,
+        duration: 0.6 * durationMultiplier,
         ease: EASE.out
-    }, 0.6);
+    }, 0.5 * durationMultiplier);
 
     // Hold
-    tl.to({}, { duration: 0.3 });
+    introTl.to({}, { duration: 0.2 * durationMultiplier });
 
     // Exit
-    tl.to('.intro-brand span, .intro-sub span', {
+    introTl.to('.intro-brand span, .intro-sub span', {
         y: -100,
         opacity: 0,
-        duration: 0.5,
+        duration: 0.4 * durationMultiplier,
         stagger: 0.03,
         ease: 'power3.in'
     });
 
-    tl.to(DOM.intro, {
+    introTl.to(DOM.intro, {
         clipPath: 'inset(0 0 100% 0)',
-        duration: 0.8,
+        duration: 0.6 * durationMultiplier,
         ease: EASE.inOut
     }, '-=0.2');
 }
@@ -168,6 +188,8 @@ function showApp() {
 // CURSOR
 // ============================================
 function initCursor() {
+    if (isTouchDevice()) return;
+
     window.addEventListener('mousemove', e => {
         state.mouse.x = e.clientX;
         state.mouse.y = e.clientY;
@@ -200,6 +222,19 @@ function initCursor() {
 // PARALLAX
 // ============================================
 function initParallax() {
+    if (isTouchDevice()) {
+        if (typeof DeviceOrientationEvent !== 'undefined') {
+            window.addEventListener('deviceorientation', e => {
+                const x = (e.gamma || 0) * 0.3;
+                const y = (e.beta || 0) * 0.15;
+                if (DOM.brandLetter) {
+                    gsap.to(DOM.brandLetter, { x: x * -1, y: y * -1, duration: 1.5, ease: 'power2.out' });
+                }
+            }, { passive: true });
+        }
+        return;
+    }
+
     window.addEventListener('mousemove', e => {
         const x = (e.clientX / window.innerWidth - 0.5);
         const y = (e.clientY / window.innerHeight - 0.5);
@@ -235,6 +270,55 @@ function initParallax() {
                 ease: 'power2.out'
             });
         }
+    });
+}
+
+// ============================================
+// TOUCH / SWIPE
+// ============================================
+function initTouch() {
+    if (!isTouchDevice()) return;
+
+    // Show player immediately on mobile
+    if (DOM.player) {
+        DOM.player.style.opacity = '1';
+        DOM.player.style.transform = 'none';
+    }
+
+    // Touch feedback on cards
+    document.addEventListener('touchstart', e => {
+        const card = e.target.closest('.card, .search-pill');
+        if (card) gsap.to(card, { scale: 0.97, duration: 0.12 });
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+        const card = e.target.closest('.card, .search-pill');
+        if (card) gsap.to(card, { scale: 1, duration: 0.3, ease: 'elastic.out(1,0.4)' });
+    }, { passive: true });
+
+    // Detail panel: swipe down to close
+    let dpTouchStartY = 0;
+    const detailPanel = document.getElementById('detail-panel');
+    if (detailPanel) {
+        detailPanel.addEventListener('touchstart', e => {
+            dpTouchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        detailPanel.addEventListener('touchend', e => {
+            const dy = e.changedTouches[0].clientY - dpTouchStartY;
+            if (dy > 80) {
+                detailPanel.classList.remove('show');
+            }
+        }, { passive: true });
+    }
+
+    // Touch feedback on nav buttons and player controls
+    ['.controls-buttons button', 'nav button', '.detail-actions button'].forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+            el.style.touchAction = 'manipulation';
+            el.addEventListener('touchstart', () => gsap.to(el, { scale: 0.9, duration: 0.1 }), { passive: true });
+            el.addEventListener('touchend', () => gsap.to(el, { scale: 1, duration: 0.3, ease: 'elastic.out(1,0.4)' }), { passive: true });
+        });
     });
 }
 
@@ -283,7 +367,16 @@ function initApp() {
     const closeDetail = () => {
         if (!detailPanel || !detailPanel.classList.contains('show')) return;
 
-        // Visual feedback for closing
+        if (window.innerWidth <= 768) {
+            detailPanel.classList.remove('show');
+            gsap.set(detailPanel, { clearProps: "all" });
+            if (libraryList) {
+                libraryList.querySelectorAll('li').forEach(item => item.classList.remove('active'));
+            }
+            return;
+        }
+
+        // Desktop visual feedback for closing
         gsap.to(detailPanel, {
             x: 50,
             opacity: 0,
@@ -291,7 +384,6 @@ function initApp() {
             ease: EASE.in,
             onComplete: () => {
                 detailPanel.classList.remove('show');
-                // Clear inline styles so CSS can reset and for next animation
                 gsap.set(detailPanel, { clearProps: "all" });
             }
         });
@@ -302,6 +394,35 @@ function initApp() {
     };
 
     const bindInteractions = () => {
+        // Detail panel close button
+        const detailClose = $('#detail-close');
+        if (detailClose) {
+            detailClose.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeDetail();
+            });
+        }
+
+        // Play/Pause button toggle
+        let isPlaying = false;
+        const mainPlayBtn = document.querySelector('.controls-buttons button:nth-child(3)');
+        const detailPlayBtn = document.querySelector('.detail-actions .solid');
+
+        const togglePlayback = (e) => {
+            if (e) e.stopPropagation();
+            isPlaying = !isPlaying;
+            if (mainPlayBtn) {
+                const icon = mainPlayBtn.querySelector('i');
+                if (icon) icon.className = isPlaying ? 'fas fa-circle-pause' : 'fas fa-circle-play';
+            }
+            if (detailPlayBtn) {
+                detailPlayBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i> Pause' : '<i class="fas fa-play"></i> Play';
+            }
+        };
+
+        if (mainPlayBtn) mainPlayBtn.addEventListener('click', togglePlayback);
+        if (detailPlayBtn) detailPlayBtn.addEventListener('click', togglePlayback);
+
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', (e) => {
                 e.stopPropagation(); // Don't trigger the document 'close' listener
@@ -343,10 +464,12 @@ function initApp() {
 
         if (detailPanel) {
             detailPanel.classList.add('show');
-            gsap.fromTo(detailPanel,
-                { x: 50, opacity: 0 },
-                { x: 0, opacity: 1, duration: 0.4, ease: EASE.out }
-            );
+            if (window.innerWidth > 768) {
+                gsap.fromTo(detailPanel,
+                    { x: 50, opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.4, ease: EASE.out }
+                );
+            }
         }
 
         if (playerArt) playerArt.style.backgroundImage = `url('${playlist.cover}')`;

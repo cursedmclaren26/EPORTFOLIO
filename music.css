@@ -937,3 +937,242 @@ nav button:hover {
         overflow: auto;
     }
 }
+
+
+/* ============================================
+   TOUCH / MOBILE — comprehensive re-engineering
+   ============================================ */
+
+.detail-close {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--white-10);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 10;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Hide custom cursor on touch */
+@media (hover: none), (pointer: coarse) {
+    body { cursor: auto; }
+    a, button { cursor: pointer; }
+    .cursor-dot, .cursor-label { display: none !important; }
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+    /* Mobile performance: disable heavy grain noise on mobile */
+    .grain {
+        animation: none !important;
+        opacity: 0.015 !important;
+    }
+
+    body {
+        padding: 12px;
+        overflow: auto;
+        cursor: auto;
+    }
+
+    .cursor-dot, .cursor-label { display: none !important; }
+    a, button {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
+    /* Brand letter: smaller */
+    .brand-letter { font-size: 55vw; }
+
+    /* App shell: single column, stacked vertically */
+    .app-shell {
+        grid-template-columns: 1fr;
+        height: auto;
+        gap: 12px;
+    }
+
+    /* Nav panel: horizontal tab bar instead of left sidebar */
+    .nav-panel {
+        flex-direction: row;
+        align-items: center;
+        padding: 14px 16px;
+        gap: 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        min-height: auto;
+    }
+
+    .nav-panel .brand {
+        flex-shrink: 0;
+        gap: 8px;
+    }
+
+    .nav-panel .brand i { font-size: 1.3rem; }
+    .nav-panel .brand div { font-size: 0.85rem; }
+
+    .nav-panel nav {
+        flex: 1;
+        overflow: hidden;
+    }
+
+    nav ul {
+        flex-direction: row;
+        gap: 4px;
+        flex-wrap: nowrap;
+    }
+
+    nav ul li { flex-shrink: 0; }
+
+    nav button {
+        font-size: 0.85rem;
+        padding: 10px 14px;
+        border-radius: 50px;
+        white-space: nowrap;
+    }
+
+    /* Library panel: hide in sidebar — becomes a scroll section in content */
+    .library-panel { display: none; }
+
+    /* Content panel: full scrollable */
+    .content-panel { overflow: visible; }
+
+    .content-scroll {
+        padding: 20px 16px 180px 16px; /* extra bottom padding for player */
+        height: auto;
+        overflow: visible;
+    }
+
+    /* Hero cards: single column */
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .hero-card { padding: 24px 20px; border-radius: 20px; }
+    .hero-card h1 { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+
+    .stat-card { padding: 20px; border-radius: 20px; }
+
+    /* Content grid: 2 cols on mobile */
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .card { min-height: 160px; padding: 14px; border-radius: 14px; }
+    .card h3 { font-size: 0.9rem; }
+    .card p { font-size: 0.8rem; }
+
+    /* Detail panel: becomes a bottom sheet that sits ABOVE player */
+    .detail-panel {
+        position: fixed;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        top: auto;
+        width: 100%;
+        border-radius: 24px 24px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 150;
+        max-height: 82vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 24px 20px calc(30px + env(safe-area-inset-bottom, 0px));
+        gap: 14px;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+        background: rgba(14, 14, 18, 0.96);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+    }
+
+    .detail-panel.show {
+        transform: translateY(0);
+    }
+
+    /* Handle bar above detail panel */
+    .detail-panel::before {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 5px;
+        background: rgba(255,255,255,0.3);
+        border-radius: 3px;
+        margin: -8px auto 14px;
+    }
+
+    /* Immersive player: compact mobile layout above safe area */
+    .immersive-player {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 12px 14px;
+        border-radius: 20px;
+        gap: 10px;
+        z-index: 100;
+        opacity: 1 !important;
+        transform: none !important;
+        background: rgba(14, 14, 18, 0.92);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+    }
+
+    .immersive-player.ready {
+        opacity: 1;
+        transform: none;
+    }
+
+    .player-meta { gap: 10px; }
+    .player-meta .art { width: 44px; height: 44px; border-radius: 10px; }
+    .player-meta strong { font-size: 0.85rem; }
+    .player-meta p { font-size: 0.72rem; }
+
+    .controls-buttons { gap: 20px; }
+    .controls-buttons button { font-size: 1.1rem; min-width: 44px; min-height: 44px; }
+
+    .progress { gap: 8px; font-size: 0.65rem; }
+    .progress input { height: 6px; padding: 6px 0; touch-action: manipulation; }
+    .progress input::-webkit-slider-thumb { width: 22px; height: 22px; }
+
+    .player-actions { justify-content: center; gap: 20px; }
+    .player-actions .volume-wrap { display: none; } /* hide volume on mobile */
+    .player-actions input { display: none; }
+
+    /* Search view */
+    .search-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .search-pill { min-height: 90px; padding: 14px; border-radius: 12px; font-size: 0.85rem; }
+    .search-bar { padding: 12px 16px; }
+
+    /* Section headers */
+    .section-header { margin: 20px 0 14px; }
+}
+
+@media (max-width: 420px) {
+    .grid { grid-template-columns: 1fr; }
+    .search-grid { grid-template-columns: 1fr; }
+    body { padding: 8px; }
+    .content-scroll { padding: 16px 12px 180px; }
+}
+
+/* Touch targets */
+@media (hover: none) {
+    nav button,
+    .library-list li,
+    .card,
+    .search-pill,
+    .detail-actions button,
+    .controls-buttons button {
+        min-height: 44px;
+    }
+}

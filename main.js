@@ -14,6 +14,8 @@ const EASE = {
     elastic: "elastic.out(1, 0.4)"
 };
 
+const isTouchDevice = () => window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
 // ============================================
 // DATA
 // ============================================
@@ -38,7 +40,7 @@ const CATEGORIES = {
 };
 
 const CONTENT = {
-    nature: { title: "Nature", sub: "Earth Studies", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469985/vashaya_portfolio/9.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469982/vashaya_portfolio/7.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469984/vashaya_portfolio/8.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469985/vashaya_portfolio/9.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469921/vashaya_portfolio/10.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469928/vashaya_portfolio/11.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469952/vashaya_portfolio/22.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469954/vashaya_portfolio/23.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469955/vashaya_portfolio/24.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469956/vashaya_portfolio/25.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469964/vashaya_portfolio/29.jpg"] },
+    nature: { title: "Nature", sub: "Earth Studies", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469979/vashaya_portfolio/6.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469982/vashaya_portfolio/7.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469984/vashaya_portfolio/8.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469985/vashaya_portfolio/9.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469921/vashaya_portfolio/10.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469928/vashaya_portfolio/11.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469952/vashaya_portfolio/22.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469954/vashaya_portfolio/23.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469955/vashaya_portfolio/24.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469956/vashaya_portfolio/25.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469964/vashaya_portfolio/29.jpg"] },
     night: { title: "Night", sub: "After Dark", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469940/vashaya_portfolio/17.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469933/vashaya_portfolio/14.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469943/vashaya_portfolio/19.jpg"] },
     landscape: { title: "Landscape", sub: "Vast Horizons", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469933/vashaya_portfolio/14.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469943/vashaya_portfolio/19.jpg"] },
     eclectic: { title: "Eclectic", sub: "Mixed Works", items: ["https://res.cloudinary.com/kymqk229/image/upload/v1794469930/vashaya_portfolio/12.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469935/vashaya_portfolio/15.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469941/vashaya_portfolio/18.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469949/vashaya_portfolio/20.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469938/vashaya_portfolio/16.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469950/vashaya_portfolio/21.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469958/vashaya_portfolio/26.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469960/vashaya_portfolio/27.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469961/vashaya_portfolio/28.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469969/vashaya_portfolio/30.jpg", "https://res.cloudinary.com/kymqk229/image/upload/v1794469970/vashaya_portfolio/31.jpg"] },
@@ -104,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCursor();
     initParallax();
     initInteractions();
+    initTouch();
     runIntro();
     startClock();
 });
@@ -111,47 +114,64 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 // INTRO SEQUENCE
 // ============================================
+let introTl = null;
+let introDone = false;
+
+function skipIntro() {
+    if (introDone) return;
+    introDone = true;
+    if (introTl) introTl.kill();
+    DOM.intro.style.display = 'none';
+    showApp();
+}
+
 function runIntro() {
-    const tl = gsap.timeline({ onComplete: showApp });
+    DOM.intro.addEventListener('click', skipIntro);
+    DOM.intro.addEventListener('touchstart', skipIntro, { passive: true });
+
+    const isMobile = isTouchDevice();
+    const durationMultiplier = isMobile ? 0.6 : 1;
+
+    introTl = gsap.timeline({ onComplete: () => { introDone = true; showApp(); } });
 
     // Progress bar
-    tl.to('.intro-progress-bar', {
+    introTl.to('.intro-progress-bar', {
         width: '100%',
-        duration: 2,
+        duration: 1.8 * durationMultiplier,
         ease: 'power2.inOut'
     });
 
     // Brand letters reveal
-    tl.to('.intro-brand span', {
+    introTl.to('.intro-brand span', {
         y: 0,
-        duration: 1.2,
+        duration: 1 * durationMultiplier,
         ease: EASE.out
-    }, 0.5);
+    }, 0.3 * durationMultiplier);
 
     // Subtitle
-    tl.to('.intro-sub span', {
+    introTl.to('.intro-sub span', {
         y: 0,
-        duration: 0.8,
+        duration: 0.6 * durationMultiplier,
         ease: EASE.out
-    }, 1);
+    }, 0.7 * durationMultiplier);
 
     // Hold
-    tl.to({}, { duration: 0.5 });
+    introTl.to({}, { duration: 0.3 * durationMultiplier });
 
     // Exit
-    tl.to('.intro-brand span, .intro-sub span', {
+    introTl.to('.intro-brand span, .intro-sub span', {
         y: -100,
         opacity: 0,
-        duration: 0.6,
-        stagger: 0.05,
+        duration: 0.4 * durationMultiplier,
+        stagger: 0.04,
         ease: 'power3.in'
     });
 
-    tl.to(DOM.intro, {
+    introTl.to(DOM.intro, {
         clipPath: 'inset(0 0 100% 0)',
-        duration: 1,
+        duration: 0.6 * durationMultiplier,
         ease: EASE.inOut
-    }, '-=0.3');
+    }, '-=0.2');
 }
 
 function showApp() {
@@ -244,6 +264,8 @@ function updateHeroCount() {
 // MINIMALIST CURSOR
 // ============================================
 function initCursor() {
+    if (isTouchDevice()) return; // No cursor on touch
+
     window.addEventListener('mousemove', e => {
         state.mouse.x = e.clientX;
         state.mouse.y = e.clientY;
@@ -290,6 +312,19 @@ function initCursor() {
 // PARALLAX - MOUSE REACTIVE BACKGROUND
 // ============================================
 function initParallax() {
+    if (isTouchDevice()) {
+        // Device orientation parallax for mobile
+        if (typeof DeviceOrientationEvent !== 'undefined') {
+            window.addEventListener('deviceorientation', e => {
+                const x = (e.gamma || 0) * 0.4;
+                const y = (e.beta || 0) * 0.2;
+                gsap.to(DOM.heroBg, { x, y, duration: 1.5, ease: 'power2.out' });
+                gsap.to('.brand-letter', { x: x * -0.3, y: y * -0.3, duration: 1.5, ease: 'power2.out' });
+            }, { passive: true });
+        }
+        return;
+    }
+
     window.addEventListener('mousemove', e => {
         const x = (e.clientX / window.innerWidth - 0.5) * 30;
         const y = (e.clientY / window.innerHeight - 0.5) * 30;
@@ -364,6 +399,14 @@ function initInteractions() {
     // Gallery close
     $$('.gallery-close').forEach(btn => {
         btn.addEventListener('click', closeGallery);
+    });
+
+    // Lightbox controls
+    DOM.lightbox.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
+    DOM.lightbox.querySelector('.lightbox-prev')?.addEventListener('click', () => navigateLightbox('prev'));
+    DOM.lightbox.querySelector('.lightbox-next')?.addEventListener('click', () => navigateLightbox('next'));
+    DOM.lightbox.addEventListener('click', e => {
+        if (e.target === DOM.lightbox) closeLightbox();
     });
 
     // Click outside flyout
@@ -585,6 +628,66 @@ function updateLightboxContent() {
         { scale: 0.9, opacity: 0, y: 30 },
         { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: EASE.out, delay: 0.1 }
     );
+}
+
+// ============================================
+// TOUCH SUPPORT
+// ============================================
+function initTouch() {
+    if (!isTouchDevice()) return;
+
+    // Show dock immediately
+    DOM.dock.style.opacity = '1';
+
+    // Swipe to change hero slides
+    let tx = 0, ty = 0;
+    document.addEventListener('touchstart', e => {
+        tx = e.touches[0].clientX;
+        ty = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - tx;
+        const dy = e.changedTouches[0].clientY - ty;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            changeSlide(dx < 0 ? 'next' : 'prev');
+        }
+    }, { passive: true });
+
+    // Lightbox swipe navigation
+    let lbTx = 0;
+    if (DOM.lightbox) {
+        DOM.lightbox.addEventListener('touchstart', e => {
+            lbTx = e.touches[0].clientX;
+        }, { passive: true });
+        DOM.lightbox.addEventListener('touchend', e => {
+            if (!state.lightbox.open) return;
+            const dx = e.changedTouches[0].clientX - lbTx;
+            if (Math.abs(dx) > 50) {
+                navigateLightbox(dx < 0 ? 'next' : 'prev');
+            }
+        }, { passive: true });
+    }
+
+    // Touch feedback on interactive elements
+    ['.dock-item', '.hero-arrow', '.flyout-link', '.modal-close', '.gallery-close'].forEach(sel => {
+        $$(sel).forEach(el => {
+            el.style.touchAction = 'manipulation';
+            el.addEventListener('touchstart', () => gsap.to(el, { scale: 0.92, duration: 0.1 }), { passive: true });
+            el.addEventListener('touchend', () => gsap.to(el, { scale: 1, duration: 0.3, ease: 'elastic.out(1,0.4)' }), { passive: true });
+            el.addEventListener('touchcancel', () => gsap.to(el, { scale: 1, duration: 0.2 }), { passive: true });
+        });
+    });
+
+    // Gallery: masonry items touch feedback
+    document.addEventListener('touchstart', e => {
+        const item = e.target.closest('.masonry-item');
+        if (item) gsap.to(item, { scale: 0.97, duration: 0.15 });
+    }, { passive: true });
+    document.addEventListener('touchend', e => {
+        const item = e.target.closest('.masonry-item');
+        if (item) gsap.to(item, { scale: 1, duration: 0.3, ease: 'elastic.out(1,0.4)' });
+    }, { passive: true });
 }
 
 // ============================================

@@ -51,58 +51,80 @@ function cacheDom() {
 // ============================================
 // INIT
 // ============================================
+function isTouchDevice() {
+    return window.matchMedia('(hover: none), (pointer: coarse)').matches;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     cacheDom();
     initCursor();
     initParallax();
     initNavigation();
+    initTouch();
     runIntro();
 });
 
 // ============================================
 // INTRO SEQUENCE
 // ============================================
+let introTl = null;
+let introDone = false;
+
+function skipIntro() {
+    if (introDone) return;
+    introDone = true;
+    if (introTl) introTl.kill();
+    DOM.intro.style.display = 'none';
+    showApp();
+}
+
 function runIntro() {
-    const tl = gsap.timeline({ onComplete: showApp });
+    DOM.intro.addEventListener('click', skipIntro);
+    DOM.intro.addEventListener('touchstart', skipIntro, { passive: true });
+
+    const isMobile = isTouchDevice();
+    const durationMultiplier = isMobile ? 0.6 : 1;
+
+    introTl = gsap.timeline({ onComplete: () => { introDone = true; showApp(); } });
 
     // Progress bar
-    tl.to('.intro-progress-bar', {
+    introTl.to('.intro-progress-bar', {
         width: '100%',
-        duration: 2,
+        duration: 1.8 * durationMultiplier,
         ease: 'power2.inOut'
     });
 
     // Brand reveal
-    tl.to('.intro-brand span', {
+    introTl.to('.intro-brand span', {
         y: 0,
-        duration: 1.2,
+        duration: 1 * durationMultiplier,
         ease: EASE.out
-    }, 0.5);
+    }, 0.3 * durationMultiplier);
 
     // Subtitle
-    tl.to('.intro-sub span', {
+    introTl.to('.intro-sub span', {
         y: 0,
-        duration: 0.8,
+        duration: 0.6 * durationMultiplier,
         ease: EASE.out
-    }, 1);
+    }, 0.7 * durationMultiplier);
 
     // Hold
-    tl.to({}, { duration: 0.5 });
+    introTl.to({}, { duration: 0.3 * durationMultiplier });
 
     // Exit
-    tl.to('.intro-brand span, .intro-sub span', {
+    introTl.to('.intro-brand span, .intro-sub span', {
         y: -100,
         opacity: 0,
-        duration: 0.6,
-        stagger: 0.05,
+        duration: 0.4 * durationMultiplier,
+        stagger: 0.04,
         ease: 'power3.in'
     });
 
-    tl.to(DOM.intro, {
+    introTl.to(DOM.intro, {
         clipPath: 'inset(0 0 100% 0)',
-        duration: 1,
+        duration: 0.6 * durationMultiplier,
         ease: EASE.inOut
-    }, '-=0.3');
+    }, '-=0.2');
 }
 
 function showApp() {
@@ -143,6 +165,11 @@ function showApp() {
 
     // Show first section
     showSection(0);
+
+    // Ensure dock is visible immediately on mobile
+    if (isTouchDevice()) {
+        DOM.dock.style.opacity = '1';
+    }
 }
 
 // ============================================
@@ -211,27 +238,53 @@ function initNavigation() {
 }
 
 function goToSection(index) {
-    if (index === state.currentSection) return;
+    if (index === state.currentSection || index < 0 || index >= SECTIONS.length) return;
 
     state.isAnimating = true;
     const oldSection = DOM.sections[state.currentSection];
     const newSection = DOM.sections[index];
 
-    // Hide old section
+    // Kill any existing animations on both sections
+    gsap.killTweensOf(oldSection);
+    gsap.killTweensOf(newSection);
+
+    // Fade out old section
     gsap.to(oldSection, {
         opacity: 0,
-        y: index > state.currentSection ? -50 : 50,
-        duration: 0.5,
-        ease: 'power3.in',
+        duration: 0.22,
+        ease: 'power2.in',
         onComplete: () => {
             oldSection.classList.remove('active');
+            oldSection.style.pointerEvents = 'none';
+
+            // Show new section
+            newSection.scrollTop = 0;
+            newSection.classList.add('active');
+            newSection.style.pointerEvents = 'auto';
+
+            gsap.fromTo(newSection,
+                { opacity: 0 },
+                {
+                    opacity: 1,
+                    duration: 0.35,
+                    ease: EASE.out,
+                    onComplete: () => {
+                        state.isAnimating = false;
+                    }
+                }
+            );
+
+            // Animate title if present
+            const title = newSection.querySelector('.section-title');
+            if (title) {
+                const spans = title.querySelectorAll('span');
+                gsap.fromTo(spans,
+                    { opacity: 0, y: 15 },
+                    { opacity: 1, y: 0, duration: 0.4, stagger: 0.02, ease: EASE.out }
+                );
+            }
         }
     });
-
-    // Show new section
-    setTimeout(() => {
-        showSection(index);
-    }, 400);
 
     state.currentSection = index;
     updateDockActive();
@@ -239,24 +292,31 @@ function goToSection(index) {
 }
 
 function showSection(index) {
-    const section = DOM.sections[index];
-    section.classList.add('active');
-
-    gsap.fromTo(section,
-        { opacity: 0, y: 50 },
-        {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: EASE.out,
-            onComplete: () => {
-                state.isAnimating = false;
-            }
+    DOM.sections.forEach((s, i) => {
+        if (i === index) {
+            s.scrollTop = 0;
+            s.classList.add('active');
+            s.style.pointerEvents = 'auto';
+            gsap.fromTo(s,
+                { opacity: 0 },
+                {
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: EASE.out,
+                    onComplete: () => {
+                        state.isAnimating = false;
+                    }
+                }
+            );
+        } else {
+            s.classList.remove('active');
+            s.style.pointerEvents = 'none';
+            s.style.opacity = '0';
         }
-    );
+    });
 
     // Animate content inside
-    const title = section.querySelector('.section-title');
+    const title = DOM.sections[index].querySelector('.section-title');
     if (title) {
         const spans = title.querySelectorAll('span');
         gsap.to(spans, {
@@ -270,13 +330,13 @@ function showSection(index) {
     }
 
     // Animate hero title lines
-    const heroLines = section.querySelectorAll('.hero-title .line span');
+    const heroLines = DOM.sections[index].querySelectorAll('.hero-title .line span');
     if (heroLines.length) {
         gsap.to(heroLines, {
             y: 0,
-            duration: 1,
-            stagger: 0.1,
-            delay: 0.3,
+            duration: 0.8,
+            stagger: 0.08,
+            delay: 0.2,
             ease: EASE.out
         });
     }
@@ -307,6 +367,7 @@ function updateSectionCount() {
 // CURSOR
 // ============================================
 function initCursor() {
+    if (!isTouchDevice()) {
     window.addEventListener('mousemove', e => {
         state.mouse.x = e.clientX;
         state.mouse.y = e.clientY;
@@ -333,12 +394,14 @@ function initCursor() {
         el.addEventListener('mouseenter', () => DOM.cursor.classList.add('link'));
         el.addEventListener('mouseleave', () => DOM.cursor.classList.remove('link'));
     });
+    }
 }
 
 // ============================================
 // PARALLAX
 // ============================================
 function initParallax() {
+    if (!window.matchMedia('(hover: none)').matches && !window.matchMedia('(pointer: coarse)').matches) {
     window.addEventListener('mousemove', e => {
         const x = (e.clientX / window.innerWidth - 0.5) * 30;
         const y = (e.clientY / window.innerHeight - 0.5) * 30;
@@ -357,4 +420,76 @@ function initParallax() {
             ease: 'power2.out'
         });
     });
+    }
+}
+
+// ============================================
+// TOUCH / SWIPE
+// ============================================
+function initTouch() {
+    if (!isTouchDevice()) return;
+
+    // Subtle device orientation tilt on mobile (if supported)
+    if (typeof DeviceOrientationEvent !== 'undefined') {
+        window.addEventListener('deviceorientation', e => {
+            const x = (e.gamma || 0) * 0.3; // -90 to 90
+            const y = (e.beta || 0) * 0.15; // -180 to 180
+            gsap.to(DOM.heroBg, { x: x, y: y, duration: 1.5, ease: 'power2.out' });
+            gsap.to('.brand-letter', { x: x * -0.25, y: y * -0.25, duration: 1.5, ease: 'power2.out' });
+        }, { passive: true });
+    }
+
+    // Touch feedback on dock items & interactive elements
+    DOM.dockItems.forEach(item => {
+        item.style.touchAction = 'manipulation';
+        item.addEventListener('touchstart', () => {
+            gsap.to(item, { scale: 0.92, duration: 0.1 });
+        }, { passive: true });
+        item.addEventListener('touchend', () => {
+            gsap.to(item, { scale: 1, duration: 0.25, ease: 'power2.out' });
+        }, { passive: true });
+        item.addEventListener('touchcancel', () => {
+            gsap.to(item, { scale: 1, duration: 0.2 });
+        }, { passive: true });
+    });
+
+    $$('.section-arrow, .project-card, .contact-card').forEach(el => {
+        el.style.touchAction = 'manipulation';
+        el.addEventListener('touchstart', () => {
+            gsap.to(el, { scale: 0.96, duration: 0.1 });
+        }, { passive: true });
+        el.addEventListener('touchend', () => {
+            gsap.to(el, { scale: 1, duration: 0.25, ease: 'power2.out' });
+        }, { passive: true });
+        el.addEventListener('touchcancel', () => {
+            gsap.to(el, { scale: 1, duration: 0.2 });
+        }, { passive: true });
+    });
+
+    // Swipe to change sections (prevent accidental swipes when scrolling vertically)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchStartTime = Date.now();
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        const dt = Date.now() - touchStartTime;
+
+        // Clean horizontal flick gesture:
+        // Must be horizontal (dy < 65px), clear horizontal motion (dx > 50px), and faster than 500ms
+        if (Math.abs(dy) < 65 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) {
+            if (dx < 0 && state.currentSection < SECTIONS.length - 1) {
+                goToSection(state.currentSection + 1);
+            } else if (dx > 0 && state.currentSection > 0) {
+                goToSection(state.currentSection - 1);
+            }
+        }
+    }, { passive: true });
 }
