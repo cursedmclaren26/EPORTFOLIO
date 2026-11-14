@@ -197,32 +197,49 @@ function initNavigation() {
         });
     });
 
-    // Arrow buttons
-    $$('.section-arrow').forEach(btn => {
-        btn.addEventListener('click', () => {
+    // Dynamic Island navigation listeners (directly bound)
+    if (DOM.islandTrigger) {
+        DOM.islandTrigger.addEventListener('click', e => {
+            e.stopPropagation();
+            toggleIsland();
+        });
+    }
+    if (DOM.islandCloseBtn) {
+        DOM.islandCloseBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            toggleIsland(false);
+        });
+    }
+    if (DOM.islandScrim) {
+        DOM.islandScrim.addEventListener('click', () => toggleIsland(false));
+    }
+    if (DOM.islandPrev) {
+        DOM.islandPrev.addEventListener('click', e => {
+            e.stopPropagation();
             if (state.isAnimating) return;
-            const dir = btn.dataset.dir;
-            if (dir === 'prev' && state.currentSection > 0) {
-                goToSection(state.currentSection - 1);
-            } else if (dir === 'next' && state.currentSection < SECTIONS.length - 1) {
-                goToSection(state.currentSection + 1);
-            }
+            if (state.currentSection > 0) goToSection(state.currentSection - 1);
         });
+    }
+    if (DOM.islandNext) {
+        DOM.islandNext.addEventListener('click', e => {
+            e.stopPropagation();
+            if (state.isAnimating) return;
+            if (state.currentSection < SECTIONS.length - 1) goToSection(state.currentSection + 1);
+        });
+    }
+    if (DOM.islandItems && DOM.islandItems.length) {
+        DOM.islandItems.forEach((item, i) => {
+            item.addEventListener('click', e => {
+                e.stopPropagation();
+                goToSection(i);
+                toggleIsland(false);
+            });
+        });
+    }
 
-        // Magnetic effect
-        btn.addEventListener('mousemove', e => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3 });
-        });
-        btn.addEventListener('mouseleave', () => {
-            gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: EASE.elastic });
-        });
-    });
-
-    // Keyboard
+    // Keyboard navigation
     document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') toggleIsland(false);
         if (state.isAnimating) return;
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
             if (state.currentSection < SECTIONS.length - 1) {
@@ -235,46 +252,11 @@ function initNavigation() {
         }
     });
 
-    // Mouse wheel
+    // Mouse wheel navigation
     let wheelTimeout;
     document.addEventListener('wheel', e => {
         if (state.isAnimating) return;
-
-    
-    // Dynamic Island navigation listeners
-    if (DOM.islandTrigger) {
-        DOM.islandTrigger.addEventListener('click', () => toggleIsland());
-    }
-    if (DOM.islandCloseBtn) {
-        DOM.islandCloseBtn.addEventListener('click', () => toggleIsland(false));
-    }
-    if (DOM.islandScrim) {
-        DOM.islandScrim.addEventListener('click', () => toggleIsland(false));
-    }
-    if (DOM.islandPrev) {
-        DOM.islandPrev.addEventListener('click', () => {
-            if (state.isAnimating) return;
-            if (state.currentSection > 0) goToSection(state.currentSection - 1);
-        });
-    }
-    if (DOM.islandNext) {
-        DOM.islandNext.addEventListener('click', () => {
-            if (state.isAnimating) return;
-            if (state.currentSection < SECTIONS.length - 1) goToSection(state.currentSection + 1);
-        });
-    }
-    if (DOM.islandItems && DOM.islandItems.length) {
-        DOM.islandItems.forEach((item, i) => {
-            item.addEventListener('click', () => {
-                goToSection(i);
-                toggleIsland(false);
-            });
-        });
-    }
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') toggleIsland(false);
-    });
-
+        if (document.querySelector('.tray-overlay.active')) return;
 
         clearTimeout(wheelTimeout);
         wheelTimeout = setTimeout(() => {
@@ -284,7 +266,9 @@ function initNavigation() {
                 goToSection(state.currentSection - 1);
             }
         }, 50);
-    });
+    }, { passive: true });
+
+    updateIslandState();
 }
 
 function goToSection(index) {
@@ -394,40 +378,52 @@ function showSection(index) {
 
 
 // ============================================
-// MOBILE DRAWER
+// DYNAMIC ISLAND CONTROLS
 // ============================================
-function toggleDrawer(forceState) {
-    if (!DOM.mobileDrawer) return;
-    const isCurrentlyOpen = DOM.mobileDrawer.classList.contains('open');
-    const willOpen = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+function toggleIsland(forceState) {
+    if (!DOM.navIsland) return;
+    const isExpanded = DOM.navIsland.classList.contains('expanded');
+    const willExpand = typeof forceState === 'boolean' ? forceState : !isExpanded;
 
-    if (willOpen) {
-        DOM.mobileDrawer.classList.add('open');
-        DOM.mobileDrawer.setAttribute('aria-hidden', 'false');
-        if (DOM.mobileMenuBtn) DOM.mobileMenuBtn.classList.add('open');
-        const btnLabel = DOM.mobileMenuBtn ? DOM.mobileMenuBtn.querySelector('.btn-label') : null;
-        if (btnLabel) btnLabel.textContent = 'Close';
-
-        // Animate drawer items in
-        const items = DOM.mobileDrawer.querySelectorAll('.drawer-item');
-        gsap.fromTo(items,
-            { opacity: 0, x: -15 },
-            { opacity: 1, x: 0, duration: 0.35, stagger: 0.04, ease: EASE.out }
-        );
+    if (willExpand) {
+        DOM.navIsland.classList.add('expanded');
+        if (DOM.islandScrim) DOM.islandScrim.classList.add('visible');
+        if (DOM.islandTrigger) DOM.islandTrigger.setAttribute('aria-expanded', 'true');
+        if (DOM.islandItems && DOM.islandItems.length) {
+            gsap.fromTo(DOM.islandItems,
+                { opacity: 0, x: -8 },
+                { opacity: 1, x: 0, duration: 0.25, stagger: 0.03, ease: 'expo.out' }
+            );
+        }
     } else {
-        DOM.mobileDrawer.classList.remove('open');
-        DOM.mobileDrawer.setAttribute('aria-hidden', 'true');
-        if (DOM.mobileMenuBtn) DOM.mobileMenuBtn.classList.remove('open');
-        const btnLabel = DOM.mobileMenuBtn ? DOM.mobileMenuBtn.querySelector('.btn-label') : null;
-        if (btnLabel) btnLabel.textContent = 'Menu';
+        DOM.navIsland.classList.remove('expanded');
+        if (DOM.islandScrim) DOM.islandScrim.classList.remove('visible');
+        if (DOM.islandTrigger) DOM.islandTrigger.setAttribute('aria-expanded', 'false');
     }
 }
 
-function updateDrawerActive() {
-    if (DOM.drawerItems && DOM.drawerItems.length) {
-        DOM.drawerItems.forEach((item, i) => {
-            item.classList.toggle('active', i === state.currentSection);
+function updateIslandState() {
+    const curIdx = state.currentSection;
+    const n = String(curIdx + 1).padStart(2, '0');
+    const total = String(SECTIONS.length).padStart(2, '0');
+    const name = SECTION_NAMES[curIdx] || 'Home';
+
+    if (DOM.islandCount) DOM.islandCount.textContent = `${n} — ${total}`;
+    if (DOM.islandTag) DOM.islandTag.textContent = name;
+
+    if (DOM.islandItems && DOM.islandItems.length) {
+        DOM.islandItems.forEach((item, i) => {
+            item.classList.toggle('active', i === curIdx);
         });
+    }
+
+    if (DOM.islandPrev) {
+        DOM.islandPrev.style.opacity = curIdx === 0 ? '0.35' : '1';
+        DOM.islandPrev.style.pointerEvents = curIdx === 0 ? 'none' : 'auto';
+    }
+    if (DOM.islandNext) {
+        DOM.islandNext.style.opacity = curIdx === SECTIONS.length - 1 ? '0.35' : '1';
+        DOM.islandNext.style.pointerEvents = curIdx === SECTIONS.length - 1 ? 'none' : 'auto';
     }
 }
 
@@ -438,92 +434,83 @@ function updateDockActive() {
     updateIslandState();
 }
 
-function updateSectionCount() {
-    const n = String(state.currentSection + 1).padStart(2, '0');
-    const t = String(SECTIONS.length).padStart(2, '0');
-    const name = SECTION_NAMES[state.currentSection] || '';
-
-    const countText = DOM.sectionCount ? DOM.sectionCount.querySelector('.count-text') : null;
-    const countTag = DOM.sectionCount ? DOM.sectionCount.querySelector('.count-tag') : null;
-
-    if (DOM.sectionCount) {
-        gsap.to(DOM.sectionCount, {
-            opacity: 0,
-            y: -5,
-            duration: 0.16,
-            onComplete: () => {
-                if (countText) {
-                    countText.textContent = `${n} — ${t}`;
-                } else {
-                    DOM.sectionCount.textContent = `${n} — ${t}`;
-                }
-                if (countTag) {
-                    countTag.textContent = name;
-                }
-                gsap.to(DOM.sectionCount, { opacity: 1, y: 0, duration: 0.22 });
-            }
-        });
-    }
-}
-
 // ============================================
-// CURSOR
+// HARDWARE-ACCELERATED CURSOR (60–120 FPS LOCKED)
 // ============================================
 function initCursor() {
-    if (!isTouchDevice()) {
-    window.addEventListener('mousemove', e => {
-        state.mouse.x = e.clientX;
-        state.mouse.y = e.clientY;
-    });
+    if (isTouchDevice()) return;
 
-    gsap.ticker.add(() => {
-        gsap.to(DOM.cursor, {
-            x: state.mouse.x,
-            y: state.mouse.y,
-            duration: 0.15,
-            ease: 'power2.out'
-        });
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let curX = targetX;
+    let curY = targetY;
+    let rafActive = false;
+
+    window.addEventListener('mousemove', e => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (!rafActive) {
+            rafActive = true;
+            requestAnimationFrame(renderCursor);
+        }
+    }, { passive: true });
+
+    function renderCursor() {
+        curX += (targetX - curX) * 0.35;
+        curY += (targetY - curY) * 0.35;
+
+        if (DOM.cursor) {
+            DOM.cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+        }
         if (DOM.cursorLabel) {
-            gsap.to(DOM.cursorLabel, {
-                x: state.mouse.x,
-                y: state.mouse.y,
-                duration: 0.2
-            });
+            DOM.cursorLabel.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+        }
+
+        if (Math.abs(targetX - curX) > 0.1 || Math.abs(targetY - curY) > 0.1) {
+            requestAnimationFrame(renderCursor);
+        } else {
+            rafActive = false;
+        }
+    }
+
+    // High-performance event delegation for hover states
+    document.addEventListener('mouseover', e => {
+        const link = e.target.closest('a, button, .project-card, .contact-card, .dock-item, .island-arrow, .island-trigger, .island-item, .skill-list li, [data-open-tray]');
+        if (link && DOM.cursor) {
+            DOM.cursor.classList.add('link');
+        } else if (DOM.cursor) {
+            DOM.cursor.classList.remove('link');
         }
     });
-
-    // Cursor states
-    $$('.dock-item, .island-arrow, .island-trigger, .island-item, .project-card, .contact-card, .skill-list li').forEach(el => {
-        el.addEventListener('mouseenter', () => DOM.cursor.classList.add('link'));
-        el.addEventListener('mouseleave', () => DOM.cursor.classList.remove('link'));
-    });
-    }
 }
 
 // ============================================
-// PARALLAX
+// PARALLAX (THROTTLED FOR ZERO CPU WASTE)
 // ============================================
 function initParallax() {
-    if (!window.matchMedia('(hover: none)').matches && !window.matchMedia('(pointer: coarse)').matches) {
+    if (isTouchDevice()) return;
+
+    let pActive = false;
+    let px = 0, py = 0;
+
     window.addEventListener('mousemove', e => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 30;
-        const y = (e.clientY / window.innerHeight - 0.5) * 30;
+        px = (e.clientX / window.innerWidth - 0.5) * 20;
+        py = (e.clientY / window.innerHeight - 0.5) * 20;
 
-        gsap.to(DOM.heroBg, {
-            x: x,
-            y: y,
-            duration: 1.5,
-            ease: 'power2.out'
-        });
-
-        gsap.to('.brand-letter', {
-            x: x * -0.5,
-            y: y * -0.5,
-            duration: 1.5,
-            ease: 'power2.out'
-        });
-    });
-    }
+        if (!pActive) {
+            pActive = true;
+            requestAnimationFrame(() => {
+                if (DOM.heroBg) {
+                    DOM.heroBg.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+                }
+                const brandLetter = document.querySelector('.brand-letter');
+                if (brandLetter) {
+                    brandLetter.style.transform = `translate3d(${px * -0.4}px, ${py * -0.4}px, 0)`;
+                }
+                pActive = false;
+            });
+        }
+    }, { passive: true });
 }
 
 // ============================================
