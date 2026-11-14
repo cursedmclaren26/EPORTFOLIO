@@ -43,15 +43,17 @@ function cacheDom() {
     DOM.dock = $('.dock');
     DOM.dockItems = $$('.dock-item');
     DOM.sections = $$('.section');
-    DOM.sectionNav = $('.section-nav');
-    DOM.sectionCount = $('.section-count');
     DOM.logo = $('.logo');
     DOM.tagline = $('.header-tagline');
-    DOM.mobileMenuBtn = $('#mobile-menu-btn');
-    DOM.mobileDrawer = $('#mobile-drawer');
-    DOM.drawerClose = $('#drawer-close');
-    DOM.drawerItems = $$('.drawer-item');
-    DOM.sectionCountBtn = $('#section-count-btn');
+    DOM.navIsland = $('#nav-island');
+    DOM.islandScrim = $('#island-scrim');
+    DOM.islandTrigger = $('#island-trigger');
+    DOM.islandCloseBtn = $('#island-close-btn');
+    DOM.islandItems = $$('.island-item');
+    DOM.islandPrev = $('#island-prev');
+    DOM.islandNext = $('#island-next');
+    DOM.islandCount = $('.island-count');
+    DOM.islandTag = $('.island-tag');
 }
 
 // ============================================
@@ -233,37 +235,41 @@ function initNavigation() {
     document.addEventListener('wheel', e => {
         if (state.isAnimating) return;
 
-    // Mobile Drawer navigation
-    if (DOM.mobileMenuBtn) {
-        DOM.mobileMenuBtn.addEventListener('click', () => {
-            toggleDrawer();
+    
+    // Dynamic Island navigation listeners
+    if (DOM.islandTrigger) {
+        DOM.islandTrigger.addEventListener('click', () => toggleIsland());
+    }
+    if (DOM.islandCloseBtn) {
+        DOM.islandCloseBtn.addEventListener('click', () => toggleIsland(false));
+    }
+    if (DOM.islandScrim) {
+        DOM.islandScrim.addEventListener('click', () => toggleIsland(false));
+    }
+    if (DOM.islandPrev) {
+        DOM.islandPrev.addEventListener('click', () => {
+            if (state.isAnimating) return;
+            if (state.currentSection > 0) goToSection(state.currentSection - 1);
         });
     }
-    if (DOM.drawerClose) {
-        DOM.drawerClose.addEventListener('click', () => {
-            toggleDrawer(false);
+    if (DOM.islandNext) {
+        DOM.islandNext.addEventListener('click', () => {
+            if (state.isAnimating) return;
+            if (state.currentSection < SECTIONS.length - 1) goToSection(state.currentSection + 1);
         });
     }
-    if (DOM.sectionCountBtn) {
-        DOM.sectionCountBtn.addEventListener('click', () => {
-            if (isTouchDevice() || window.innerWidth <= 768) {
-                toggleDrawer(true);
-            }
-        });
-    }
-    if (DOM.drawerItems && DOM.drawerItems.length) {
-        DOM.drawerItems.forEach((item, i) => {
+    if (DOM.islandItems && DOM.islandItems.length) {
+        DOM.islandItems.forEach((item, i) => {
             item.addEventListener('click', () => {
                 goToSection(i);
-                toggleDrawer(false);
+                toggleIsland(false);
             });
         });
     }
-
-    // Close on Escape
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') toggleDrawer(false);
+        if (e.key === 'Escape') toggleIsland(false);
     });
+
 
         clearTimeout(wheelTimeout);
         wheelTimeout = setTimeout(() => {
@@ -327,7 +333,7 @@ function goToSection(index) {
 
     state.currentSection = index;
     updateDockActive();
-    updateSectionCount();
+    updateIslandState();
 }
 
 function showSection(index) {
@@ -424,7 +430,7 @@ function updateDockActive() {
     DOM.dockItems.forEach((item, i) => {
         item.classList.toggle('active', i === state.currentSection);
     });
-    updateDrawerActive();
+    updateIslandState();
 }
 
 function updateSectionCount() {
@@ -482,7 +488,7 @@ function initCursor() {
     });
 
     // Cursor states
-    $$('.dock-item, .section-arrow, .project-card, .contact-card, .skill-list li').forEach(el => {
+    $$('.dock-item, .island-arrow, .island-trigger, .island-item, .project-card, .contact-card, .skill-list li').forEach(el => {
         el.addEventListener('mouseenter', () => DOM.cursor.classList.add('link'));
         el.addEventListener('mouseleave', () => DOM.cursor.classList.remove('link'));
     });
@@ -545,7 +551,7 @@ function initTouch() {
         }, { passive: true });
     });
 
-    $$('.section-arrow, .project-card, .contact-card').forEach(el => {
+    $$('.island-arrow, .island-trigger, .island-item, .project-card, .contact-card').forEach(el => {
         el.style.touchAction = 'manipulation';
         el.addEventListener('touchstart', () => {
             gsap.to(el, { scale: 0.96, duration: 0.1 });
