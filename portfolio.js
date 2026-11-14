@@ -15,6 +15,7 @@ const EASE = {
 };
 
 const SECTIONS = ['home', 'about', 'projects', 'education', 'contact'];
+const SECTION_NAMES = ['Home', 'About', 'Projects', 'Education', 'Contact'];
 
 // ============================================
 // STATE
@@ -46,6 +47,11 @@ function cacheDom() {
     DOM.sectionCount = $('.section-count');
     DOM.logo = $('.logo');
     DOM.tagline = $('.header-tagline');
+    DOM.mobileMenuBtn = $('#mobile-menu-btn');
+    DOM.mobileDrawer = $('#mobile-drawer');
+    DOM.drawerClose = $('#drawer-close');
+    DOM.drawerItems = $$('.drawer-item');
+    DOM.sectionCountBtn = $('#section-count-btn');
 }
 
 // ============================================
@@ -226,6 +232,39 @@ function initNavigation() {
     let wheelTimeout;
     document.addEventListener('wheel', e => {
         if (state.isAnimating) return;
+
+    // Mobile Drawer navigation
+    if (DOM.mobileMenuBtn) {
+        DOM.mobileMenuBtn.addEventListener('click', () => {
+            toggleDrawer();
+        });
+    }
+    if (DOM.drawerClose) {
+        DOM.drawerClose.addEventListener('click', () => {
+            toggleDrawer(false);
+        });
+    }
+    if (DOM.sectionCountBtn) {
+        DOM.sectionCountBtn.addEventListener('click', () => {
+            if (isTouchDevice() || window.innerWidth <= 768) {
+                toggleDrawer(true);
+            }
+        });
+    }
+    if (DOM.drawerItems && DOM.drawerItems.length) {
+        DOM.drawerItems.forEach((item, i) => {
+            item.addEventListener('click', () => {
+                goToSection(i);
+                toggleDrawer(false);
+            });
+        });
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') toggleDrawer(false);
+    });
+
         clearTimeout(wheelTimeout);
         wheelTimeout = setTimeout(() => {
             if (e.deltaY > 50 && state.currentSection < SECTIONS.length - 1) {
@@ -342,25 +381,78 @@ function showSection(index) {
     }
 }
 
+
+// ============================================
+// MOBILE DRAWER
+// ============================================
+function toggleDrawer(forceState) {
+    if (!DOM.mobileDrawer) return;
+    const isCurrentlyOpen = DOM.mobileDrawer.classList.contains('open');
+    const willOpen = typeof forceState === 'boolean' ? forceState : !isCurrentlyOpen;
+
+    if (willOpen) {
+        DOM.mobileDrawer.classList.add('open');
+        DOM.mobileDrawer.setAttribute('aria-hidden', 'false');
+        if (DOM.mobileMenuBtn) DOM.mobileMenuBtn.classList.add('open');
+        const btnLabel = DOM.mobileMenuBtn ? DOM.mobileMenuBtn.querySelector('.btn-label') : null;
+        if (btnLabel) btnLabel.textContent = 'Close';
+
+        // Animate drawer items in
+        const items = DOM.mobileDrawer.querySelectorAll('.drawer-item');
+        gsap.fromTo(items,
+            { opacity: 0, x: -15 },
+            { opacity: 1, x: 0, duration: 0.35, stagger: 0.04, ease: EASE.out }
+        );
+    } else {
+        DOM.mobileDrawer.classList.remove('open');
+        DOM.mobileDrawer.setAttribute('aria-hidden', 'true');
+        if (DOM.mobileMenuBtn) DOM.mobileMenuBtn.classList.remove('open');
+        const btnLabel = DOM.mobileMenuBtn ? DOM.mobileMenuBtn.querySelector('.btn-label') : null;
+        if (btnLabel) btnLabel.textContent = 'Menu';
+    }
+}
+
+function updateDrawerActive() {
+    if (DOM.drawerItems && DOM.drawerItems.length) {
+        DOM.drawerItems.forEach((item, i) => {
+            item.classList.toggle('active', i === state.currentSection);
+        });
+    }
+}
+
 function updateDockActive() {
     DOM.dockItems.forEach((item, i) => {
         item.classList.toggle('active', i === state.currentSection);
     });
+    updateDrawerActive();
 }
 
 function updateSectionCount() {
     const n = String(state.currentSection + 1).padStart(2, '0');
     const t = String(SECTIONS.length).padStart(2, '0');
+    const name = SECTION_NAMES[state.currentSection] || '';
 
-    gsap.to(DOM.sectionCount, {
-        opacity: 0,
-        y: -10,
-        duration: 0.2,
-        onComplete: () => {
-            DOM.sectionCount.textContent = `${n} — ${t}`;
-            gsap.to(DOM.sectionCount, { opacity: 1, y: 0, duration: 0.3 });
-        }
-    });
+    const countText = DOM.sectionCount ? DOM.sectionCount.querySelector('.count-text') : null;
+    const countTag = DOM.sectionCount ? DOM.sectionCount.querySelector('.count-tag') : null;
+
+    if (DOM.sectionCount) {
+        gsap.to(DOM.sectionCount, {
+            opacity: 0,
+            y: -5,
+            duration: 0.16,
+            onComplete: () => {
+                if (countText) {
+                    countText.textContent = `${n} — ${t}`;
+                } else {
+                    DOM.sectionCount.textContent = `${n} — ${t}`;
+                }
+                if (countTag) {
+                    countTag.textContent = name;
+                }
+                gsap.to(DOM.sectionCount, { opacity: 1, y: 0, duration: 0.22 });
+            }
+        });
+    }
 }
 
 // ============================================

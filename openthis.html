@@ -56,6 +56,13 @@
         <header class="header">
             <div class="logo">VANSH KHANNA</div>
             <div class="header-tagline">Engineer · Builder · Explorer</div>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+                <span class="btn-label">Menu</span>
+                <span class="btn-burger" aria-hidden="true">
+                    <span class="b-line b-1"></span>
+                    <span class="b-line b-2"></span>
+                </span>
+            </button>
         </header>
 
         <!-- DOCK (Right Side Menu) -->
@@ -210,11 +217,58 @@
             </div>
         </section>
 
+        <!-- MOBILE FULLSCREEN CURTAIN DRAWER -->
+        <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+            <div class="drawer-header">
+                <span class="drawer-eyebrow">Index</span>
+                <button class="drawer-close" id="drawer-close" aria-label="Close Menu">✕</button>
+            </div>
+            <nav class="drawer-nav">
+                <button class="drawer-item active" data-index="0">
+                    <span class="d-num">01</span>
+                    <span class="d-label">Home</span>
+                    <span class="d-arrow">→</span>
+                </button>
+                <button class="drawer-item" data-index="1">
+                    <span class="d-num">02</span>
+                    <span class="d-label">About</span>
+                    <span class="d-arrow">→</span>
+                </button>
+                <button class="drawer-item" data-index="2">
+                    <span class="d-num">03</span>
+                    <span class="d-label">Projects</span>
+                    <span class="d-arrow">→</span>
+                </button>
+                <button class="drawer-item" data-index="3">
+                    <span class="d-num">04</span>
+                    <span class="d-label">Education</span>
+                    <span class="d-arrow">→</span>
+                </button>
+                <button class="drawer-item" data-index="4">
+                    <span class="d-num">05</span>
+                    <span class="d-label">Contact</span>
+                    <span class="d-arrow">→</span>
+                </button>
+            </nav>
+            <div class="drawer-footer">
+                <div class="drawer-socials">
+                    <a href="mailto:khanna.vansh.xo@gmail.com">Email</a>
+                    <span>·</span>
+                    <a href="tel:+918826326333">Phone</a>
+                    <span>·</span>
+                    <a href="https://instagram.com/vashaya" target="_blank" rel="noopener">Instagram</a>
+                </div>
+            </div>
+        </div>
+
         <!-- SECTION NAV (Bottom) -->
-        <nav class="section-nav">
-            <button class="section-arrow" data-dir="prev">←</button>
-            <span class="section-count">01 — 05</span>
-            <button class="section-arrow" data-dir="next">→</button>
+        <nav class="section-nav" id="section-nav" aria-label="Section Navigation">
+            <button class="section-arrow" data-dir="prev" aria-label="Previous Section">←</button>
+            <button class="section-count" id="section-count-btn" aria-label="Open Sections Menu">
+                <span class="count-text">01 — 05</span>
+                <span class="count-tag">Home</span>
+            </button>
+            <button class="section-arrow" data-dir="next" aria-label="Next Section">→</button>
         </nav>
 
     </div>
