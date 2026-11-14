@@ -4,363 +4,277 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f8f6f0" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="format-detection" content="telephone=no" />
-    <title>Vansh Khanna · Creative Engineer & Builder</title>
-    <meta name="description"
-        content="Portfolio of Vansh Khanna — Computer Science Engineering @ MRU, Creative Engineer, Builder & Visual Artist." />
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>Vansh Khanna | Portfolio</title>
+    <meta name="description" content="Portfolio of Vansh Khanna - Engineering Student, Builder, Explorer.">
 
-    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-    <link rel="stylesheet" href="portfolio.css?v=20261114_bright_v10" />
+    <link rel="stylesheet" href="portfolio.css" />
 </head>
 
 <body>
 
-    <!-- 01. EDITORIAL FLOATING HEADER -->
-    <header class="editorial-header" id="editorial-header">
-        <div class="header-container">
-            <div class="brand-group">
-                <a href="#hero" class="brand-badge" aria-label="Scroll to top">VK</a>
-                <span class="brand-title">Vansh Khanna</span>
-            </div>
+    <!-- GRAIN TEXTURE -->
+    <div class="grain"></div>
 
-            <nav class="nav-links">
-                <a href="#about" class="nav-link">About</a>
-                <a href="#works" class="nav-link">Works</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </nav>
+    <!-- MINIMALIST CURSOR -->
+    <div class="cursor"></div>
+    <div class="cursor-label"></div>
 
-            <div class="header-actions">
-                <div class="status-badge">
-                    <span class="status-dot"></span>
-                    <span>Available for Roles</span>
-                </div>
-                <div class="time-badge" id="live-clock">--:-- IST</div>
-            </div>
+    <!-- ========================================
+         INTRO / LOADING
+         ======================================== -->
+    <div class="intro">
+        <div class="intro-brand"><span>VANSH</span></div>
+        <div class="intro-sub"><span>Portfolio</span></div>
+        <div class="intro-progress">
+            <div class="intro-progress-bar"></div>
         </div>
-    </header>
+    </div>
 
-    <!-- 02. MAIN EDITORIAL WRAPPER -->
-    <main class="site-wrapper">
+    <!-- ========================================
+         MAIN APP
+         ======================================== -->
+    <div class="app">
 
-        <!-- SECTION: HERO -->
-        <section id="hero" class="section-block">
-            <div class="hero-card">
-                <!-- Hardware Sensory Accents -->
-                <div class="hardware-sensors" aria-hidden="true">
-                    <span class="sensor-dot"></span>
-                    <span class="sensor-ring"></span>
-                </div>
+        <!-- HERO BACKGROUND -->
+        <div class="hero-bg"></div>
 
-                <!-- Hero Text Content -->
-                <div class="hero-content">
-                    <div class="hero-tag">
-                        <span>✦ Creative Engineer & Systems Explorer</span>
+        <!-- FLOATING BRAND MARK -->
+        <div class="brand-mark">
+            <div class="brand-letter">V</div>
+        </div>
+
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo">VANSH KHANNA</div>
+            <div class="header-tagline">Engineer · Builder · Explorer</div>
+        </header>
+
+        <!-- DOCK (Right Side Menu) -->
+        <nav class="dock">
+            <button class="dock-item active">Home</button>
+            <button class="dock-item">About</button>
+            <button class="dock-item">Projects</button>
+            <button class="dock-item">Education</button>
+            <button class="dock-item">Contact</button>
+        </nav>
+
+        <!-- ========================================
+             SECTION: HOME
+             ======================================== -->
+        <section class="section active" id="section-home">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="line"><span>Designing</span></span>
+                    <span class="line"><span>Meaningful</span></span>
+                    <span class="line"><span>Tech</span></span>
+                </h1>
+                <p class="hero-sub">Crafting immersive experiences at the intersection of design & technology</p>
+                <div class="stat-row">
+                    <div class="stat">
+                        <span class="stat-value">5</span>
+                        <span class="stat-label">Live Projects</span>
                     </div>
-
-                    <h1 class="hero-title">Vansh Khanna</h1>
-
-                    <p class="hero-subtitle">
-                        Computer Science Engineering Undergraduate at <strong>Manav Rachna University</strong>.
-                        Designing tactile, high-refinement interfaces, training machine learning models, and exploring fine-art visuals.
-                    </p>
-
-                    <div class="hero-pills-row">
-                        <div class="metric-pill">🎓 <strong>MRU CSE</strong> · 2025–2029</div>
-                        <div class="metric-pill">🏫 <strong>MDIS Alum</strong> · 2013–2025</div>
-                        <div class="metric-pill">📷 <strong>VASHAYA</strong> Visuals</div>
-                        <div class="metric-pill">⚡ <strong>5+</strong> Live Engines</div>
+                    <div class="stat">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Leadership Roles</span>
                     </div>
-
-                    <div class="hero-cta-row">
-                        <a href="#works" class="btn-primary">Explore Selected Works ↓</a>
-                        <a href="#contact" class="btn-secondary">Get in Touch ↗</a>
-                    </div>
-                </div>
-
-                <!-- Hardware Device Avatar Unit -->
-                <div class="hero-avatar-wrap">
-                    <div class="avatar-halo">
-                        <div class="avatar-frame">
-                            <img src="avatar.jpg" alt="Vansh Khanna Portrait" class="avatar-img" />
-                        </div>
-                    </div>
-                    <div class="avatar-tag">
-                        <span class="star">✦</span> VASHAYA
+                    <div class="stat">
+                        <span class="stat-value">∞</span>
+                        <span class="stat-label">Curiosity</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: ABOUT & BENTO -->
-        <section id="about" class="section-block">
-            <div class="section-meta-row">
-                <span class="section-num">01 // IDENTITY & EDUCATION</span>
-                <h2 class="section-heading">Engineering & Visual Craft</h2>
-            </div>
-
-            <div class="about-bento">
-                <!-- Card 1: Story & Craft -->
-                <div class="bento-card">
-                    <div class="bento-card-header">
-                        <span class="bento-tag">PHILOSOPHY & FOUNDATION</span>
+        <!-- ========================================
+             SECTION: ABOUT
+             ======================================== -->
+        <section class="section" id="section-about">
+            <div class="glass-panel">
+                <p class="section-eyebrow">About</p>
+                <h2 class="section-title">
+                    <span>T</span><span>h</span><span>e</span><span>&nbsp;</span>
+                    <span>B</span><span>u</span><span>i</span><span>l</span><span>d</span><span>e</span><span>r</span>
+                </h2>
+                <div class="about-grid">
+                    <div class="section-body">
+                        <p>I'm Vansh Khanna, a Computer Science Engineering student at Manav Rachna University. I thrive
+                            at the intersection of product, design and technology.</p>
+                        <p>I believe in crafting focused, high-signal experiences—minimal surfaces with maximum depth.
+                        </p>
                     </div>
                     <div>
-                        <h3 class="bento-title">Bridging Technical Rigor with Aesthetic Refinement</h3>
-                        <p class="bento-p">
-                            I treat software engineering like precision industrial design: every interface should be tactile, responsive, and stripped of unnecessary friction. I engineer performant web systems, train predictive ML models, and optimize interactive user journeys.
-                        </p>
-                        <p class="bento-p">
-                            Outside the compiler, I direct visual studies under <strong>VASHAYA</strong>—capturing candid light, natural forms, and atmospheric nocturnes.
-                        </p>
-                    </div>
-
-                    <div class="competencies-wrap">
-                        <span class="comp-pill">Python & C++</span>
-                        <span class="comp-pill">Modern JavaScript (ES6+)</span>
-                        <span class="comp-pill">GBDT & Scikit-Learn</span>
-                        <span class="comp-pill">Node.js & REST APIs</span>
-                        <span class="comp-pill">Cloud Deployment</span>
-                        <span class="comp-pill">Visual Direction</span>
-                    </div>
-                </div>
-
-                <!-- Card 2: Academic Journey -->
-                <div class="bento-card">
-                    <div class="bento-card-header">
-                        <span class="bento-tag">ACADEMIC TRAJECTORY</span>
-                    </div>
-                    <div>
-                        <h3 class="bento-title">Institutions & Milestones</h3>
-                        <div class="timeline-list">
-                            <div class="timeline-item">
-                                <span class="timeline-dot"></span>
-                                <div class="timeline-details">
-                                    <span class="timeline-dates">2025 — 2029</span>
-                                    <h4 class="timeline-inst">Manav Rachna University (MRU)</h4>
-                                    <p class="timeline-sub">B.Tech in Computer Science & Engineering · Core algorithms, intelligent systems, data structures, and computer architecture.</p>
-                                </div>
-                            </div>
-
-                            <div class="timeline-item">
-                                <span class="timeline-dot"></span>
-                                <div class="timeline-details">
-                                    <span class="timeline-dates">2013 — 2025</span>
-                                    <h4 class="timeline-inst">Manav Rachna International School</h4>
-                                    <p class="timeline-sub">Senior Secondary (MDIS Charmwood) · Twelve-year foundational journey in sciences, applied mathematics, and fine arts.</p>
-                                </div>
-                            </div>
-                        </div>
+                        <p class="section-eyebrow">Competencies</p>
+                        <ul class="skill-list">
+                            <li>Creative Engineering</li>
+                            <li>Team Leadership</li>
+                            <li>Problem Solving</li>
+                            <li>Experience Strategy</li>
+                            <li>Systems Thinking</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: SELECTED WORKS -->
-        <section id="works" class="section-block">
-            <div class="section-meta-row">
-                <span class="section-num">02 // SELECTED WORKS</span>
-                <h2 class="section-heading">Interactive Engines & Archives</h2>
-            </div>
+        <!-- ========================================
+             SECTION: PROJECTS (INTERACTIVE ENGINES)
+             ======================================== -->
+        <section class="section" id="section-projects">
+            <div class="glass-panel">
+                <p class="section-eyebrow">Showcase</p>
+                <h2 class="section-title">
+                    <span>S</span><span>e</span><span>l</span><span>e</span><span>c</span><span>t</span><span>e</span><span>d</span><span>&nbsp;</span>
+                    <span>W</span><span>o</span><span>r</span><span>k</span><span>s</span>
+                </h2>
+                <div class="projects-grid">
+                    <div class="project-card" data-open-tray="tray-music" role="button" tabindex="0">
+                        <span class="project-year">2026 · Sound Engine</span>
+                        <h3>Music Player</h3>
+                        <p>Immersive music interface with curated playlists, live vinyl motion, and context-aware audio scrub controls.</p>
+                        <span class="project-badge">Launch Sound Deck ↗</span>
+                    </div>
 
-            <div class="works-grid">
-                <!-- Work 1: VASHAYA Visual Arts -->
-                <div class="work-card" data-open-tray="tray-visual">
-                    <div class="work-top-meta">
-                        <span class="work-badge badge-coral">VISUAL ARTS ARCHIVE</span>
-                        <span class="work-year">2024–2026</span>
+                    <div class="project-card" data-open-tray="tray-visual" role="button" tabindex="0">
+                        <span class="project-year">2024–2026 · Visual Archive</span>
+                        <h3>Visual Space</h3>
+                        <p>Curated fine-art photography portfolio under VASHAYA with dynamic category filtering and cinematic lightbox experience.</p>
+                        <span class="project-badge">Explore Gallery ↗</span>
                     </div>
-                    <div class="work-widget-box">
-                        <div class="photo-strip-preview">
-                            <img src="https://res.cloudinary.com/kymqk229/image/upload/v1794469979/vashaya_portfolio/6.jpg" alt="Nature sample" class="strip-thumb" />
-                            <img src="https://res.cloudinary.com/kymqk229/image/upload/v1794469940/vashaya_portfolio/17.jpg" alt="Night sample" class="strip-thumb" />
-                            <img src="https://res.cloudinary.com/kymqk229/image/upload/v1794469930/vashaya_portfolio/12.jpg" alt="Eclectic sample" class="strip-thumb" />
-                        </div>
-                    </div>
-                    <div class="work-body">
-                        <h3 class="work-title">VASHAYA Visual Arts</h3>
-                        <p class="work-desc">Curated photographic collection categorized into Nature, Nocturnes, Landscapes, and Eclectic studies. Fully interactive in-window gallery with high-res lightbox.</p>
-                    </div>
-                    <div class="work-footer">
-                        <div class="work-tags-list">
-                            <span class="tag-badge">Cloudinary</span>
-                            <span class="tag-badge">Lightbox</span>
-                            <span class="tag-badge">Curated</span>
-                        </div>
-                        <span class="work-action-hint">Open Gallery ↗</span>
-                    </div>
-                </div>
 
-                <!-- Work 2: Car Price Predictor -->
-                <div class="work-card" data-open-tray="tray-car">
-                    <div class="work-top-meta">
-                        <span class="work-badge badge-tangerine">MACHINE LEARNING</span>
-                        <span class="work-year">2026</span>
+                    <div class="project-card" data-open-tray="tray-car" role="button" tabindex="0">
+                        <span class="project-year">2026 · Machine Learning</span>
+                        <h3>Car Price Predictor</h3>
+                        <p>Used-car valuation engine for the Indian market. Predicts resale prices using gradient boosting with interactive sliders and live cloud API.</p>
+                        <span class="project-badge">Launch Simulator ↗</span>
                     </div>
-                    <div class="work-widget-box">
-                        <div class="car-hud-preview">
-                            <span class="car-hud-val">₹ 14.85</span>
-                            <span class="car-hud-lbl">LAKH (EST.)</span>
-                        </div>
-                    </div>
-                    <div class="work-body">
-                        <h3 class="work-title">Car Resale Valuation Engine</h3>
-                        <p class="work-desc">Predictive ML model utilizing Gradient Boosting Decision Trees (GBDT) to calculate accurate automobile market resale valuations. Live deployed on Render cloud.</p>
-                    </div>
-                    <div class="work-footer">
-                        <div class="work-tags-list">
-                            <span class="tag-badge">Python GBDT</span>
-                            <span class="tag-badge">Render Live</span>
-                            <span class="tag-badge">Scikit-Learn</span>
-                        </div>
-                        <span class="work-action-hint">Launch Simulator ↗</span>
-                    </div>
-                </div>
 
-                <!-- Work 3: Music OS -->
-                <div class="work-card" data-open-tray="tray-music">
-                    <div class="work-top-meta">
-                        <span class="work-badge badge-cobalt">AUDIO ENGINE</span>
-                        <span class="work-year">2026</span>
-                    </div>
-                    <div class="work-widget-box">
-                        <div class="music-mini-preview">
-                            <div class="mini-disc"></div>
-                            <div class="mini-bars">
-                                <span></span><span></span><span></span><span></span><span></span>
-                            </div>
-                            <span class="mini-bpm-tag">128 BPM</span>
-                        </div>
-                    </div>
-                    <div class="work-body">
-                        <h3 class="work-title">Music OS · Audiophile Deck</h3>
-                        <p class="work-desc">Interactive sound deck calibrated for flow state. Switch between curated playlists, toggle playback, and experience analog vinyl animations with real-time scrub controls.</p>
-                    </div>
-                    <div class="work-footer">
-                        <div class="work-tags-list">
-                            <span class="tag-badge">Web Audio</span>
-                            <span class="tag-badge">Playlists</span>
-                            <span class="tag-badge">Tactile Deck</span>
-                        </div>
-                        <span class="work-action-hint">Open Deck ↗</span>
-                    </div>
-                </div>
-
-                <!-- Work 4: Portfolio Telemetry -->
-                <div class="work-card" data-open-tray="tray-theme">
-                    <div class="work-top-meta">
-                        <span class="work-badge badge-slate">CORE TELEMETRY</span>
-                        <span class="work-year">2026</span>
-                    </div>
-                    <div class="work-widget-box">
-                        <div class="system-stat-preview">
-                            <div class="stat-metric">
-                                <span class="stat-metric-num">60+</span>
-                                <span class="stat-metric-lbl">FPS LOCKED</span>
-                            </div>
-                            <div class="stat-metric">
-                                <span class="stat-metric-num">0</span>
-                                <span class="stat-metric-lbl">DEPENDENCY</span>
-                            </div>
-                            <div class="stat-metric">
-                                <span class="stat-metric-num">&lt;10ms</span>
-                                <span class="stat-metric-lbl">INPUT LATENCY</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="work-body">
-                        <h3 class="work-title">Portfolio OS Architecture</h3>
-                        <p class="work-desc">Crafted with pure semantic HTML5, modern hardware-accelerated CSS, and native JavaScript. Zero canvas thrashing, zero heavy blurs, and instant tactile responsiveness.</p>
-                    </div>
-                    <div class="work-footer">
-                        <div class="work-tags-list">
-                            <span class="tag-badge">Vanilla JS</span>
-                            <span class="tag-badge">Zero Overhead</span>
-                            <span class="tag-badge">Editorial OS</span>
-                        </div>
-                        <span class="work-action-hint">Inspect Telemetry ↗</span>
+                    <div class="project-card" data-open-tray="tray-system" role="button" tabindex="0">
+                        <span class="project-year">2026 · Telemetry</span>
+                        <h3>Portfolio System</h3>
+                        <p>Runtime telemetry, compositor performance metrics, and evolving cinematic design language.</p>
+                        <span class="project-badge">Inspect System ↗</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: CONTACT -->
-        <section id="contact" class="section-block">
-            <div class="section-meta-row">
-                <span class="section-num">03 // DIRECT CHANNELS</span>
-                <h2 class="section-heading">Initiate Communication</h2>
-            </div>
-
-            <div class="contact-grid">
-                <!-- Contact 1: Email -->
-                <div class="contact-card" data-copy="vanshkhanna26@gmail.com" title="Click to copy email">
-                    <div class="contact-left">
-                        <div class="contact-icon-box">✉</div>
-                        <div class="contact-text-box">
-                            <span class="contact-label">Direct Email</span>
-                            <span class="contact-val">vanshkhanna26@gmail.com</span>
-                        </div>
-                    </div>
-                    <span class="contact-badge">Click to Copy</span>
+        <!-- ========================================
+             SECTION: EDUCATION
+             ======================================== -->
+        <section class="section" id="section-education">
+            <div class="glass-panel">
+                <p class="section-eyebrow">Journey</p>
+                <h2 class="section-title">
+                    <span>E</span><span>d</span><span>u</span><span>c</span><span>a</span><span>t</span><span>i</span><span>o</span><span>n</span>
+                </h2>
+                <div class="section-body">
+                    <p><strong>2025 – 2029</strong> · Manav Rachna University</p>
+                    <p>Computer Science Engineering · Building research-backed, human-first products.</p>
+                    <br>
+                    <p><strong>2013 – 2025</strong> · Modern Delhi International School</p>
+                    <p>Science + Design foundations, interdisciplinary clubs and leadership initiatives.</p>
                 </div>
-
-                <!-- Contact 2: Phone -->
-                <div class="contact-card" data-copy="+919811163339" title="Click to copy phone number">
-                    <div class="contact-left">
-                        <div class="contact-icon-box">📞</div>
-                        <div class="contact-text-box">
-                            <span class="contact-label">Mobile / WhatsApp</span>
-                            <span class="contact-val">+91 98111 63339</span>
-                        </div>
-                    </div>
-                    <span class="contact-badge">Click to Copy</span>
-                </div>
-
-                <!-- Contact 3: Instagram -->
-                <a href="https://instagram.com/vashaya" target="_blank" rel="noopener noreferrer" class="contact-card">
-                    <div class="contact-left">
-                        <div class="contact-icon-box">📷</div>
-                        <div class="contact-text-box">
-                            <span class="contact-label">Visual Arts & Photography</span>
-                            <span class="contact-val">@vashaya</span>
-                        </div>
-                    </div>
-                    <span class="contact-badge">Follow ↗</span>
-                </a>
-
-                <!-- Contact 4: LinkedIn -->
-                <a href="https://linkedin.com/in/vansh-khanna-2026" target="_blank" rel="noopener noreferrer" class="contact-card">
-                    <div class="contact-left">
-                        <div class="contact-icon-box">💼</div>
-                        <div class="contact-text-box">
-                            <span class="contact-label">Professional Network</span>
-                            <span class="contact-val">Vansh Khanna</span>
-                        </div>
-                    </div>
-                    <span class="contact-badge">Connect ↗</span>
-                </a>
             </div>
         </section>
 
-        <!-- FOOTER -->
-        <footer style="margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.82rem; color: var(--ink-muted);">
-            <div>© 2026 Vansh Khanna · Built with intention.</div>
-            <div>Faridabad / Delhi NCR, India · Available for high-impact roles</div>
-        </footer>
+        <!-- ========================================
+             SECTION: CONTACT
+             ======================================== -->
+        <section class="section" id="section-contact">
+            <div class="glass-panel">
+                <p class="section-eyebrow">Let's Connect</p>
+                <h2 class="section-title">
+                    <span>C</span><span>o</span><span>n</span><span>t</span><span>a</span><span>c</span><span>t</span>
+                </h2>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <small>Email</small>
+                        <a href="mailto:vanshkhanna26@gmail.com">vanshkhanna26@gmail.com</a>
+                    </div>
+                    <div class="contact-card">
+                        <small>Phone</small>
+                        <a href="tel:+919811163339">+91 98111 63339</a>
+                    </div>
+                    <div class="contact-card">
+                        <small>Instagram</small>
+                        <a href="https://instagram.com/vashaya" target="_blank" rel="noopener noreferrer">@vashaya</a>
+                    </div>
+                    <div class="contact-card">
+                        <small>LinkedIn</small>
+                        <a href="https://linkedin.com/in/vansh-khanna-2026" target="_blank" rel="noopener noreferrer">Vansh Khanna</a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    </main>
+        <!-- ========================================
+             DYNAMIC ISLAND MORPHING BOTTOM NAV
+             ======================================== -->
+        <div class="island-scrim" id="island-scrim" aria-hidden="true"></div>
+        <nav class="nav-island" id="nav-island" aria-label="Section Navigation">
+            <!-- EXPANDED ISLAND MENU (MORPHED STATE) -->
+            <div class="island-expanded" id="island-expanded" aria-hidden="true">
+                <div class="island-header">
+                    <span class="island-eyebrow">Index</span>
+                    <button class="island-close-btn" id="island-close-btn" aria-label="Collapse Navigation">✕</button>
+                </div>
+                <div class="island-menu">
+                    <button class="island-item active" data-index="0">
+                        <span class="island-num">01</span>
+                        <span class="island-name">Home</span>
+                        <span class="island-indicator">●</span>
+                    </button>
+                    <button class="island-item" data-index="1">
+                        <span class="island-num">02</span>
+                        <span class="island-name">About</span>
+                        <span class="island-indicator">●</span>
+                    </button>
+                    <button class="island-item" data-index="2">
+                        <span class="island-num">03</span>
+                        <span class="island-name">Projects</span>
+                        <span class="island-indicator">●</span>
+                    </button>
+                    <button class="island-item" data-index="3">
+                        <span class="island-num">04</span>
+                        <span class="island-name">Education</span>
+                        <span class="island-indicator">●</span>
+                    </button>
+                    <button class="island-item" data-index="4">
+                        <span class="island-num">05</span>
+                        <span class="island-name">Contact</span>
+                        <span class="island-indicator">●</span>
+                    </button>
+                </div>
+            </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         03. IN-WINDOW TRAY: MUSIC OS
-         ═══════════════════════════════════════════════════════════════ -->
+            <!-- COLLAPSED ISLAND CAPSULE BAR (DEFAULT STATE) -->
+            <div class="island-bar">
+                <button class="island-arrow" id="island-prev" data-dir="prev" aria-label="Previous Section">←</button>
+                <button class="island-trigger" id="island-trigger" aria-label="Toggle Section Menu" aria-expanded="false">
+                    <span class="island-count">01 — 05</span>
+                    <span class="island-divider">·</span>
+                    <span class="island-tag">Home</span>
+                    <span class="island-chevron" aria-hidden="true">▾</span>
+                </button>
+                <button class="island-arrow" id="island-next" data-dir="next" aria-label="Next Section">→</button>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- ========================================
+         IN-WINDOW TRAY 1: MUSIC OS
+         ======================================== -->
     <div class="tray-overlay" id="tray-music" aria-hidden="true">
         <div class="tray-scrim" data-close-tray></div>
         <div class="tray-modal" role="dialog" aria-modal="true">
@@ -379,17 +293,17 @@
                     <aside class="music-sidebar">
                         <span class="sidebar-heading">Playlists</span>
                         <ul class="playlist-nav" id="music-playlist-list">
-                            <!-- Populated by JS -->
+                            <!-- Populated dynamically by JS -->
                         </ul>
                     </aside>
 
                     <div class="music-view">
                         <div class="music-banner">
-                            <img src="https://picsum.photos/300/300?random=1" alt="Album Cover" class="music-banner-img" id="music-active-cover" />
+                            <img src="https://picsum.photos/300/300?random=11" alt="Album Cover" class="music-banner-img" id="music-active-cover" />
                             <div class="banner-meta">
                                 <span class="banner-tag" id="music-active-tag">FEATURED MIX</span>
                                 <h3 class="banner-title" id="music-active-title">Top 50 · Global</h3>
-                                <p class="banner-desc" id="music-active-desc">Realtime pulse of global high-velocity beats.</p>
+                                <p class="banner-desc" id="music-active-desc">Realtime pulse of global electronic rhythms and synthesized melodies.</p>
                             </div>
                         </div>
 
@@ -404,7 +318,7 @@
                                 </tr>
                             </thead>
                             <tbody id="music-song-queue">
-                                <!-- Populated by JS -->
+                                <!-- Populated dynamically by JS -->
                             </tbody>
                         </table>
                     </div>
@@ -415,8 +329,8 @@
                 <div class="player-left">
                     <div class="player-vinyl" id="player-disc"></div>
                     <div>
-                        <div class="player-title" id="player-now-title">Fake Anthem</div>
-                        <div class="player-artist" id="player-now-artist">Unknown Artist</div>
+                        <div class="player-title" id="player-now-title">Liquid Frequency</div>
+                        <div class="player-artist" id="player-now-artist">Vansh Khanna</div>
                     </div>
                 </div>
 
@@ -425,15 +339,15 @@
                     <div class="player-scrubber-track" id="player-scrubber">
                         <div class="player-scrubber-fill" id="player-progress"></div>
                     </div>
-                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--ink-muted);" id="player-current-time">0:00</span>
+                    <span style="font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.6);" id="player-current-time">0:00</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         04. IN-WINDOW TRAY: VASHAYA VISUAL ARTS GALLERY
-         ═══════════════════════════════════════════════════════════════ -->
+    <!-- ========================================
+         IN-WINDOW TRAY 2: VISUAL SPACE (VASHAYA)
+         ======================================== -->
     <div class="tray-overlay" id="tray-visual" aria-hidden="true">
         <div class="tray-scrim" data-close-tray></div>
         <div class="tray-modal" role="dialog" aria-modal="true">
@@ -462,9 +376,9 @@
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         05. IN-WINDOW TRAY: CAR PRICE PREDICTOR
-         ═══════════════════════════════════════════════════════════════ -->
+    <!-- ========================================
+         IN-WINDOW TRAY 3: CAR PRICE PREDICTOR
+         ======================================== -->
     <div class="tray-overlay" id="tray-car" aria-hidden="true">
         <div class="tray-scrim" data-close-tray></div>
         <div class="tray-modal" role="dialog" aria-modal="true">
@@ -526,14 +440,14 @@
                         </div>
                     </div>
 
-                    <!-- Valuation Display -->
+                    <!-- Valuation Result -->
                     <div class="car-result-card">
                         <div>
                             <span class="result-badge">ESTIMATED MARKET VALUE</span>
                             <div class="price-box">
                                 <span class="price-currency">₹</span>
                                 <span class="price-num" id="car-estimated-price">14.85</span>
-                                <span style="font-size: 1.2rem; font-weight: 800; color: var(--ink-secondary);">Lakh</span>
+                                <span style="font-size: 1.2rem; font-weight: 800; color: rgba(255,255,255,0.7);">Lakh</span>
                                 <p class="price-caption">Calculated via Gradient Boosting Decision Tree Regressor</p>
                             </div>
 
@@ -563,10 +477,10 @@
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         06. IN-WINDOW TRAY: SYSTEM OS & TELEMETRY
-         ═══════════════════════════════════════════════════════════════ -->
-    <div class="tray-overlay" id="tray-theme" aria-hidden="true">
+    <!-- ========================================
+         IN-WINDOW TRAY 4: PORTFOLIO SYSTEM
+         ======================================== -->
+    <div class="tray-overlay" id="tray-system" aria-hidden="true">
         <div class="tray-scrim" data-close-tray></div>
         <div class="tray-modal" role="dialog" aria-modal="true">
             <div class="tray-header">
@@ -586,7 +500,7 @@
                             <span class="inspector-title">Compositor Frame Target</span>
                             <span class="inspector-val">60–120 FPS</span>
                         </div>
-                        <p class="inspector-desc">Zero background RAF loops, zero GPU fill bottlenecks, CSS-accelerated transforms only.</p>
+                        <p class="inspector-desc">Zero background RAF thrash, hardware-accelerated transforms, and pure GPU composite layers.</p>
                     </div>
 
                     <div class="inspector-card">
@@ -594,15 +508,15 @@
                             <span class="inspector-title">Active Viewport Width</span>
                             <span class="inspector-val" id="telemetry-viewport">-- px</span>
                         </div>
-                        <p class="inspector-desc">Adaptive editorial layout supporting standard mobile, tablet, desktop and widescreen.</p>
+                        <p class="inspector-desc">Adaptive cinematic layout supporting mobile Dynamic Island and desktop dock navigation.</p>
                     </div>
 
                     <div class="inspector-card">
                         <div class="inspector-header">
-                            <span class="inspector-title">External JS Dependencies</span>
-                            <span class="inspector-val">0 Libraries</span>
+                            <span class="inspector-title">Navigation Architecture</span>
+                            <span class="inspector-val">Dynamic Island</span>
                         </div>
-                        <p class="inspector-desc">100% pure vanilla modern ES6+. Eliminating bloated bundle sizes and unnecessary CPU cycles.</p>
+                        <p class="inspector-desc">Morphing fluid capsule navigation with organic spring physics and thumb-friendly controls.</p>
                     </div>
 
                     <div class="inspector-card">
@@ -610,16 +524,16 @@
                             <span class="inspector-title">Keyboard Navigation</span>
                             <span class="inspector-val">Active</span>
                         </div>
-                        <p class="inspector-desc">Press <kbd style="background:#fff; border:1px solid #ccc; padding:2px 6px; border-radius:4px;">Esc</kbd> at any time to instantly dismiss active modals or lightbox.</p>
+                        <p class="inspector-desc">Press <kbd style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:2px 6px; border-radius:4px;">Esc</kbd> at any time to instantly dismiss active trays or lightbox.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         07. FULLSCREEN LIGHTBOX
-         ═══════════════════════════════════════════════════════════════ -->
+    <!-- ========================================
+         FULLSCREEN LIGHTBOX
+         ======================================== -->
     <div class="lightbox-modal" id="lightbox" aria-hidden="true">
         <div class="lightbox-scrim" id="lightbox-backdrop"></div>
         <div class="lightbox-box">
@@ -633,13 +547,12 @@
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         08. TOAST NOTIFICATION
-         ═══════════════════════════════════════════════════════════════ -->
-    <div class="action-toast" id="toast">Copied to clipboard!</div>
+    <!-- ========================================
+         SCRIPTS
+         ======================================== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="portfolio.js"></script>
 
-    <!-- Scripts -->
-    <script src="portfolio.js?v=20261114_bright_v10"></script>
 </body>
 
 </html>
