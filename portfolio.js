@@ -287,31 +287,28 @@ function initFluidCanvas() {
         canvas.height = window.innerHeight;
     }
     resize();
-    window.addEventListener('resize', debounce(resize, 180));
+    window.addEventListener('resize', debounce(resize, 200));
 
-    // Create 7 vibrant, high-luminance radiant blobs for rich acrylic refraction
+    // 4 High-performance subtle brutalist ink pools for locked 60 FPS
     const colors = [
-        'rgba(139, 92, 246, 0.72)', // Radiant Electric Violet
-        'rgba(6, 182, 212, 0.68)',  // Glowing Cyan
-        'rgba(236, 72, 153, 0.58)', // Hot Liquid Magenta
-        'rgba(99, 102, 241, 0.65)', // Royal Indigo
-        'rgba(20, 184, 166, 0.60)', // Bright Aquamarine
-        'rgba(244, 63, 94, 0.52)',  // Vivid Rose
-        'rgba(251, 191, 36, 0.48)'  // Radiant Amber Gold
+        'rgba(200, 149, 10, 0.15)', // Warm Amber Gold
+        'rgba(230, 51, 32, 0.12)',  // Fiery Crimson
+        'rgba(13, 12, 10, 0.08)',   // Carbon Smoke
+        'rgba(18, 161, 106, 0.11)'  // Jade Emerald
     ];
 
-    const blobs = colors.map((col, i) => new InkBlob(canvas, col, 320 + (i % 3) * 160));
+    const blobs = colors.map((col, i) => new InkBlob(canvas, col, 220 + (i % 2) * 120));
 
     let animationId = null;
 
     function render() {
         if (!document.hidden) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.globalCompositeOperation = 'screen';
+            ctx.globalCompositeOperation = 'source-over';
 
-            // Calculate mouse velocity
-            state.mouse.vx = state.mouse.x - state.prevMouse.x;
-            state.mouse.vy = state.mouse.y - state.prevMouse.y;
+            // Calculate mouse velocity smoothly
+            state.mouse.vx = (state.mouse.x - state.prevMouse.x) * 0.5;
+            state.mouse.vy = (state.mouse.y - state.prevMouse.y) * 0.5;
             state.prevMouse.x = state.mouse.x;
             state.prevMouse.y = state.mouse.y;
 
@@ -324,11 +321,21 @@ function initFluidCanvas() {
     }
     render();
 
+    // Pause RAF when page is hidden
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        } else if (!document.hidden && !animationId) {
+            animationId = requestAnimationFrame(render);
+        }
+    });
+
     // Mobile gyro swirl
     if (window.DeviceOrientationEvent && isTouchDevice()) {
         window.addEventListener('deviceorientation', e => {
-            const gamma = (e.gamma || 0) * 0.15;
-            const beta = (e.beta || 0) * 0.15;
+            const gamma = (e.gamma || 0) * 0.12;
+            const beta = (e.beta || 0) * 0.12;
             blobs.forEach((b, idx) => {
                 b.x += (idx % 2 === 0 ? gamma : -gamma);
                 b.y += beta;
@@ -338,7 +345,7 @@ function initFluidCanvas() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 07. CUSTOM DUAL-LAYER CURSOR & MAGNETIC PHYSICS
+// 07. CUSTOM DUAL-LAYER CURSOR (NO STAT PILL JITTER)
 // ═══════════════════════════════════════════════════════════════
 function initCursor() {
     if (isTouchDevice()) return;
@@ -356,19 +363,19 @@ function initCursor() {
 
     // Spring Lerp Loop for Ring
     function tickRing() {
-        state.ring.x = lerp(state.ring.x, state.mouse.x, 0.14);
-        state.ring.y = lerp(state.ring.y, state.mouse.y, 0.14);
+        state.ring.x = lerp(state.ring.x, state.mouse.x, 0.16);
+        state.ring.y = lerp(state.ring.y, state.mouse.y, 0.16);
         ring.style.transform = `translate(${state.ring.x}px, ${state.ring.y}px) translate(-50%, -50%)`;
         requestAnimationFrame(tickRing);
     }
     tickRing();
 
-    // Interactive Element Magnetic Snap & Cursor States
-    const interactiveElements = $$(
-        'button, a, .glass-card, .stat-pill, .squish-pill, .choice-pill, .photo-cell, .contact-card'
+    // Standard Interactive Elements: Cursor ring expand ONLY (NO magnetic drift)
+    const hoverElements = $$(
+        'a, button, .stat-pill, .choice-pill, .squish-pill, .photo-cell, .contact-card, .project-card'
     );
 
-    interactiveElements.forEach(el => {
+    hoverElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             ring.classList.add('hover');
             orb.classList.add('hover');
@@ -381,17 +388,20 @@ function initCursor() {
             orb.classList.remove('hover');
             if (label) label.textContent = '';
         });
+    });
 
-        // Magnetic Attraction
+    // Selective subtle magnetic snap ONLY for primary CTA buttons (Stat pills are excluded completely)
+    const magneticTargets = $$('.primary-btn, .launch-render-btn');
+    magneticTargets.forEach(el => {
         el.addEventListener('mousemove', e => {
             const rect = el.getBoundingClientRect();
             const relX = e.clientX - (rect.left + rect.width / 2);
             const relY = e.clientY - (rect.top + rect.height / 2);
-            gsap.to(el, { x: relX * 0.15, y: relY * 0.15, duration: 0.3 });
+            gsap.to(el, { x: relX * 0.12, y: relY * 0.12, duration: 0.25 });
         });
 
         el.addEventListener('mouseleave', () => {
-            gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: EASE.spring });
+            gsap.to(el, { x: 0, y: 0, duration: 0.4, ease: EASE.spring });
         });
     });
 
@@ -1051,6 +1061,11 @@ function initVisualGallery() {
                     openLightbox(photos, idx);
                 });
             });
+
+            gsap.fromTo($$('.photo-cell', grid),
+                { opacity: 0, y: 12 },
+                { opacity: 1, y: 0, duration: 0.32, stagger: 0.025, ease: "power2.out" }
+            );
         }
     }
     renderCategory('nature');
@@ -1174,6 +1189,8 @@ function initCarPredictor() {
         });
     }
 
+    let currentDisplayedPrice = 685000;
+
     function calculatePrice() {
         const year = sliderYear ? parseInt(sliderYear.value, 10) : 2021;
         const km = sliderKm ? parseInt(sliderKm.value, 10) : 42000;
@@ -1185,8 +1202,20 @@ function initCarPredictor() {
         const kmPenalty = Math.max(0.65, 1 - (km / 350000));
 
         const estimated = Math.round(baseValue * activeBrandMult * activeFuelMult * depreciationFactor * kmPenalty);
+
         if (priceOutput) {
-            priceOutput.textContent = estimated.toLocaleString('en-IN');
+            const priceObj = { val: currentDisplayedPrice };
+            gsap.to(priceObj, {
+                val: estimated,
+                duration: 0.35,
+                ease: "power2.out",
+                onUpdate: () => {
+                    priceOutput.textContent = Math.round(priceObj.val).toLocaleString('en-IN');
+                },
+                onComplete: () => {
+                    currentDisplayedPrice = estimated;
+                }
+            });
         }
     }
     calculatePrice();
