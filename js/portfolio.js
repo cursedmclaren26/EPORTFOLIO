@@ -3,7 +3,9 @@
  * GSAP animations, section navigation, cursor tracking
  */
 
-gsap.registerPlugin();
+if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
+    gsap.registerPlugin();
+}
 
 // ============================================
 // CONFIG
@@ -86,7 +88,6 @@ let introTl = null;
 let introDone = false;
 
 function skipIntro() {
-    if (introDone) return;
     introDone = true;
     if (introTl) {
         introTl.kill();
@@ -95,11 +96,21 @@ function skipIntro() {
     if (DOM.intro) DOM.intro.style.display = 'none';
     if (DOM.app) DOM.app.classList.add('ready');
 
-    // Reveal header and dock immediately
-    if (DOM.logo) gsap.set(DOM.logo, { y: 0, opacity: 1 });
-    if (DOM.tagline) gsap.set(DOM.tagline, { y: 0, opacity: 1 });
-    if (DOM.dock) gsap.set(DOM.dock, { opacity: 1 });
-    gsap.set('.dock-item', { x: 0, opacity: 1 });
+    // Reveal header and dock immediately with pure JS
+    if (DOM.logo) DOM.logo.style.opacity = '1';
+    if (DOM.tagline) DOM.tagline.style.opacity = '1';
+    if (DOM.dock) DOM.dock.style.opacity = '1';
+    document.querySelectorAll('.dock-item').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+    });
+
+    if (typeof gsap !== 'undefined') {
+        if (DOM.logo) gsap.set(DOM.logo, { y: 0, opacity: 1 });
+        if (DOM.tagline) gsap.set(DOM.tagline, { y: 0, opacity: 1 });
+        if (DOM.dock) gsap.set(DOM.dock, { opacity: 1 });
+        gsap.set('.dock-item', { x: 0, opacity: 1 });
+    }
 
     // Only showSection(0) if no other section has been activated
     if (state.currentSection === 0) {
