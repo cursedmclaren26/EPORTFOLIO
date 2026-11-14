@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCursor();
     initParallax();
     initNavigation();
+    initScrollSpy();
     initTouch();
     initTrays();
     initMusicOS();
@@ -210,86 +211,33 @@ function showApp() {
 // SECTION NAVIGATION
 // ============================================
 function initNavigation() {
-    // Dock items
+    // Dock items click
     DOM.dockItems.forEach((item, i) => {
-        item.addEventListener('click', () => {
-            if (state.isAnimating) return;
+        item.addEventListener('click', e => {
+            e.preventDefault();
             goToSection(i);
         });
     });
 
-    // Dynamic Island navigation listeners (directly bound)
-    if (DOM.islandTrigger) {
-        DOM.islandTrigger.addEventListener('click', e => {
-            e.stopPropagation();
-            toggleIsland();
-        });
-    }
-    if (DOM.islandCloseBtn) {
-        DOM.islandCloseBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            toggleIsland(false);
-        });
-    }
-    if (DOM.islandScrim) {
-        DOM.islandScrim.addEventListener('click', () => toggleIsland(false));
-    }
-    if (DOM.islandPrev) {
-        DOM.islandPrev.addEventListener('click', e => {
-            e.stopPropagation();
-            if (state.isAnimating) return;
-            if (state.currentSection > 0) goToSection(state.currentSection - 1);
-        });
-    }
-    if (DOM.islandNext) {
-        DOM.islandNext.addEventListener('click', e => {
-            e.stopPropagation();
-            if (state.isAnimating) return;
-            if (state.currentSection < SECTIONS.length - 1) goToSection(state.currentSection + 1);
-        });
-    }
-    if (DOM.islandItems && DOM.islandItems.length) {
-        DOM.islandItems.forEach((item, i) => {
-            item.addEventListener('click', e => {
-                e.stopPropagation();
-                goToSection(i);
-                toggleIsland(false);
-            });
-        });
-    }
-
-    // Keyboard navigation
+    // Keyboard navigation (Arrow keys for smooth section jumps, Esc for trays)
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') toggleIsland(false);
-        if (state.isAnimating) return;
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        if (e.key === 'Escape') {
+            const activeTray = document.querySelector('.tray-overlay.active');
+            if (activeTray) closeTray(activeTray.id);
+            closeLightbox();
+        }
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') {
             if (state.currentSection < SECTIONS.length - 1) {
                 goToSection(state.currentSection + 1);
             }
-        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
             if (state.currentSection > 0) {
                 goToSection(state.currentSection - 1);
             }
         }
     });
 
-    // Mouse wheel navigation
-    let wheelTimeout;
-    document.addEventListener('wheel', e => {
-        if (state.isAnimating) return;
-        if (document.querySelector('.tray-overlay.active')) return;
-
-        clearTimeout(wheelTimeout);
-        wheelTimeout = setTimeout(() => {
-            if (e.deltaY > 50 && state.currentSection < SECTIONS.length - 1) {
-                goToSection(state.currentSection + 1);
-            } else if (e.deltaY < -50 && state.currentSection > 0) {
-                goToSection(state.currentSection - 1);
-            }
-        }, 50);
-    }, { passive: true });
-
-    // Quick action CTA links with data-nav-target
+    // Quick action CTA links with data-nav-target (Hero buttons, Bouncing Scroll Cue)
     document.querySelectorAll('[data-nav-target]').forEach(btn => {
         btn.addEventListener('click', e => {
             e.preventDefault();
@@ -313,7 +261,7 @@ function initNavigation() {
         });
     });
 
-    updateIslandState();
+    updateDockActive();
 }
 
 function startClock() {
@@ -344,112 +292,74 @@ function showToast(msg) {
     }, 2200);
 }
 
+// Single continuous vertical scroll navigation
 function goToSection(index) {
-    if (index === state.currentSection || index < 0 || index >= SECTIONS.length) return;
+    if (index < 0 || index >= SECTIONS.length) return;
 
-    // Immediately stop any pending intro sequence so it NEVER overrides navigation
     if (!introDone) {
         skipIntro();
     }
 
-    state.isAnimating = true;
-    const oldSection = DOM.sections[state.currentSection];
-    const newSection = DOM.sections[index];
-
-    // Kill any existing animations on both sections
-    gsap.killTweensOf(oldSection);
-    gsap.killTweensOf(newSection);
-
-    // Fade out old section
-    gsap.to(oldSection, {
-        opacity: 0,
-        duration: 0.18,
-        ease: 'power2.in',
-        onComplete: () => {
-            oldSection.classList.remove('active');
-            oldSection.style.pointerEvents = 'none';
-
-            // Show new section
-            newSection.scrollTop = 0;
-            newSection.classList.add('active');
-            newSection.style.pointerEvents = 'auto';
-
-            gsap.fromTo(newSection,
-                { opacity: 0 },
-                {
-                    opacity: 1,
-                    duration: 0.32,
-                    ease: EASE.out,
-                    onComplete: () => {
-                        state.isAnimating = false;
-                    }
-                }
-            );
-
-            // Animate title if present
-            const title = newSection.querySelector('.section-title');
-            if (title) {
-                const spans = title.querySelectorAll('span');
-                gsap.fromTo(spans,
-                    { opacity: 0, y: 12 },
-                    { opacity: 1, y: 0, duration: 0.35, stagger: 0.015, ease: EASE.out }
-                );
-            }
-        }
-    });
+    const targetSec = DOM.sections[index];
+    if (targetSec) {
+        targetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     state.currentSection = index;
     updateDockActive();
-    updateIslandState();
 }
 
 function showSection(index) {
-    DOM.sections.forEach((s, i) => {
-        if (i === index) {
-            s.scrollTop = 0;
-            s.classList.add('active');
-            s.style.pointerEvents = 'auto';
-            gsap.fromTo(s,
-                { opacity: 0 },
-                {
-                    opacity: 1,
-                    duration: 0.38,
-                    ease: EASE.out,
-                    onComplete: () => {
-                        state.isAnimating = false;
+    state.currentSection = index;
+    updateDockActive();
+}
+
+// ScrollSpy: Real-time dock tab tracking as user scrolls down the page
+function initScrollSpy() {
+    if ('IntersectionObserver' in window) {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -40% 0px',
+            threshold: [0.1, 0.3, 0.6]
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id.replace('section-', '');
+                    const idx = SECTIONS.indexOf(id);
+                    if (idx !== -1) {
+                        state.currentSection = idx;
+                        updateDockActive();
                     }
                 }
-            );
-        } else {
-            s.classList.remove('active');
-            s.style.pointerEvents = 'none';
-            s.style.opacity = '0';
-        }
-    });
+            });
+        }, observerOptions);
 
-    // Animate content inside - no delay so it never flashes or loads late
-    const title = DOM.sections[index].querySelector('.section-title');
-    if (title) {
-        const spans = title.querySelectorAll('span');
-        gsap.to(spans, {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            stagger: 0.015,
-            ease: EASE.out
-        });
+        DOM.sections.forEach(sec => observer.observe(sec));
     }
 
-    // Animate hero title lines
-    const heroLines = DOM.sections[index].querySelectorAll('.hero-title .line span');
-    if (heroLines.length) {
-        gsap.to(heroLines, {
-            y: 0,
-            duration: 0.5,
-            stagger: 0.05,
-            ease: EASE.out
-        });
-    }
+    // Supplementary scroll listener for rapid scroll gestures
+    let scrollTimer = null;
+    window.addEventListener('scroll', () => {
+        if (scrollTimer) return;
+        scrollTimer = setTimeout(() => {
+            scrollTimer = null;
+            const scrollY = window.scrollY || window.pageYOffset;
+            const windowH = window.innerHeight;
+            let currentIdx = 0;
+            DOM.sections.forEach((sec, idx) => {
+                const offsetTop = sec.offsetTop;
+                if (scrollY + windowH * 0.35 >= offsetTop) {
+                    currentIdx = idx;
+                }
+            });
+            if (currentIdx !== state.currentSection) {
+                state.currentSection = currentIdx;
+                updateDockActive();
+            }
+        }, 50);
+    }, { passive: true });
 }
 
 
