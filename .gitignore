@@ -10,6 +10,7 @@
 
 # Keep web assets and icons
 !rr.png
+!avatar.jpg
 
 # Submodule & Temp
 workspace-*

@@ -232,14 +232,15 @@ function revealHero() {
 // 06. FLUID INK CANVAS ENGINE (CANVAS 2D BIO-LUMINESCENT INK)
 // ═══════════════════════════════════════════════════════════════
 class InkBlob {
-    constructor(canvas, color, radius) {
+    constructor(canvas, c1, c2, radius) {
         this.canvas = canvas;
-        this.color = color;
+        this.color = c1;
+        this.colorMid = c2;
         this.radius = radius;
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 1.5;
-        this.vy = (Math.random() - 0.5) * 1.5;
+        this.vx = (Math.random() - 0.5) * 1.2;
+        this.vy = (Math.random() - 0.5) * 1.2;
     }
 
     update(speedMult, mouseForce) {
@@ -251,24 +252,26 @@ class InkBlob {
             const dx = state.mouse.x - this.x;
             const dy = state.mouse.y - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 320 && dist > 1) {
-                const force = (1 - dist / 320) * 0.45;
+            if (dist < 300 && dist > 1) {
+                const force = (1 - dist / 300) * 0.35;
                 this.x += state.mouse.vx * force;
                 this.y += state.mouse.vy * force;
             }
         }
 
         // Bounce on boundary
-        if (this.x < -100) this.x = this.canvas.width + 100;
-        if (this.x > this.canvas.width + 100) this.x = -100;
-        if (this.y < -100) this.y = this.canvas.height + 100;
-        if (this.y > this.canvas.height + 100) this.y = -100;
+        if (this.x < -80) this.x = this.canvas.width + 80;
+        if (this.x > this.canvas.width + 80) this.x = -80;
+        if (this.y < -80) this.y = this.canvas.height + 80;
+        if (this.y > this.canvas.height + 80) this.y = -80;
     }
 
     draw(ctx) {
+        // Naturally diffused 3-stop radial gradient (no expensive CSS filter needed)
         const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
         grad.addColorStop(0, this.color);
-        grad.addColorStop(1, 'transparent');
+        grad.addColorStop(0.5, this.colorMid);
+        grad.addColorStop(1, 'rgba(241, 237, 229, 0)');
 
         ctx.fillStyle = grad;
         ctx.beginPath();
@@ -290,25 +293,24 @@ function initFluidCanvas() {
     window.addEventListener('resize', debounce(resize, 200));
 
     // 4 High-performance subtle brutalist ink pools for locked 60 FPS
-    const colors = [
-        'rgba(200, 149, 10, 0.15)', // Warm Amber Gold
-        'rgba(230, 51, 32, 0.12)',  // Fiery Crimson
-        'rgba(13, 12, 10, 0.08)',   // Carbon Smoke
-        'rgba(18, 161, 106, 0.11)'  // Jade Emerald
+    const blobConfigs = [
+        { c1: 'rgba(200, 149, 10, 0.22)', c2: 'rgba(200, 149, 10, 0.08)', r: 300 }, // Warm Amber Gold
+        { c1: 'rgba(230, 51, 32, 0.18)',  c2: 'rgba(230, 51, 32, 0.06)',  r: 260 }, // Fiery Crimson
+        { c1: 'rgba(13, 12, 10, 0.12)',   c2: 'rgba(13, 12, 10, 0.04)',   r: 320 }, // Carbon Smoke
+        { c1: 'rgba(18, 161, 106, 0.16)', c2: 'rgba(18, 161, 106, 0.05)', r: 280 }  // Jade Emerald
     ];
 
-    const blobs = colors.map((col, i) => new InkBlob(canvas, col, 220 + (i % 2) * 120));
+    const blobs = blobConfigs.map(cfg => new InkBlob(canvas, cfg.c1, cfg.c2, cfg.r));
 
     let animationId = null;
 
     function render() {
         if (!document.hidden) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.globalCompositeOperation = 'source-over';
 
             // Calculate mouse velocity smoothly
-            state.mouse.vx = (state.mouse.x - state.prevMouse.x) * 0.5;
-            state.mouse.vy = (state.mouse.y - state.prevMouse.y) * 0.5;
+            state.mouse.vx = (state.mouse.x - state.prevMouse.x) * 0.4;
+            state.mouse.vy = (state.mouse.y - state.prevMouse.y) * 0.4;
             state.prevMouse.x = state.mouse.x;
             state.prevMouse.y = state.mouse.y;
 
@@ -415,51 +417,58 @@ function initCursor() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 08. SPECULAR GLASS ENGINE & 3D PERSPECTIVE TILT
+// 08. SPECULAR GLASS ENGINE & HARDWARE-ACCELERATED TILT
 // ═══════════════════════════════════════════════════════════════
 function initSpecularAndTilt() {
-    const cards = $$('.glass-card, .hero-glass-pod');
+    if (isTouchDevice()) return;
+
+    // Apply 3D perspective tilt to featured project and story cards
+    const cards = $$('.project-card, .story-card');
 
     cards.forEach(card => {
+        let rafId = null;
+        let rect = null;
+
+        card.addEventListener('mouseenter', () => {
+            rect = card.getBoundingClientRect();
+        });
+
         card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const xPercent = ((e.clientX - rect.left) / rect.width) * 100;
-            const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
+            if (!rect) rect = card.getBoundingClientRect();
+            if (rafId) return;
 
-            card.style.setProperty('--mouse-x', `${xPercent}%`);
-            card.style.setProperty('--mouse-y', `${yPercent}%`);
+            rafId = requestAnimationFrame(() => {
+                const xPercent = ((e.clientX - rect.left) / rect.width) * 100;
+                const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
 
-            // 3D Perspective Tilt
-            const rotX = ((e.clientY - (rect.top + rect.height / 2)) / rect.height) * -8;
-            const rotY = ((e.clientX - (rect.left + rect.width / 2)) / rect.width) * 8;
+                card.style.setProperty('--mouse-x', `${xPercent}%`);
+                card.style.setProperty('--mouse-y', `${yPercent}%`);
 
-            gsap.to(card, {
-                rotateX: rotX,
-                rotateY: rotY,
-                scale: 1.015,
-                duration: 0.35,
-                ease: "power2.out"
+                const rotX = ((e.clientY - (rect.top + rect.height / 2)) / rect.height) * -6;
+                const rotY = ((e.clientX - (rect.left + rect.width / 2)) / rect.width) * 6;
+
+                card.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.01, 1.01, 1.01)`;
+                rafId = null;
             });
         });
 
         card.addEventListener('mouseleave', () => {
-            gsap.to(card, {
-                rotateX: 0,
-                rotateY: 0,
-                scale: 1,
-                duration: 0.6,
-                ease: EASE.spring
-            });
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+            rect = null;
+            card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
         });
     });
 
     // Mobile Gyroscope Perspective Tilt
     if (window.DeviceOrientationEvent && isTouchDevice()) {
         window.addEventListener('deviceorientation', e => {
-            const beta = clamp(e.beta || 0, -30, 30);  // -30 to 30 deg
-            const gamma = clamp(e.gamma || 0, -30, 30); // -30 to 30 deg
+            const beta = clamp(e.beta || 0, -25, 25);
+            const gamma = clamp(e.gamma || 0, -25, 25);
             cards.forEach(card => {
-                card.style.transform = `perspective(1000px) rotateX(${beta * 0.15}deg) rotateY(${gamma * 0.15}deg)`;
+                card.style.transform = `perspective(800px) rotateX(${beta * 0.12}deg) rotateY(${gamma * 0.12}deg)`;
             });
         }, { passive: true });
     }
@@ -735,29 +744,36 @@ function initDynamicIsland() {
         });
     }
 
-    // Scroll Progress & Active Section Detector
+    // Scroll Progress & Active Section Detector (RAF Throttled for 60 FPS)
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (scrollTop / docHeight) * 100;
+        if (!scrollTicking) {
+            requestAnimationFrame(() => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (docHeight > 0 && progressFill) {
+                    progressFill.style.width = `${(scrollTop / docHeight) * 100}%`;
+                }
 
-        if (progressFill) progressFill.style.width = `${progress}%`;
-
-        // Detect current section in view
-        const scrollMiddle = scrollTop + window.innerHeight * 0.45;
-        SECTIONS.forEach((secId, i) => {
-            const el = $(`#${secId}`);
-            if (el) {
-                const top = el.offsetTop;
-                const bottom = top + el.offsetHeight;
-                if (scrollMiddle >= top && scrollMiddle < bottom) {
-                    if (state.currentSection !== i) {
-                        state.currentSection = i;
-                        updateIslandUI();
+                const scrollMiddle = scrollTop + window.innerHeight * 0.45;
+                for (let i = 0; i < SECTIONS.length; i++) {
+                    const el = $(`#${SECTIONS[i]}`);
+                    if (el) {
+                        const top = el.offsetTop;
+                        const bottom = top + el.offsetHeight;
+                        if (scrollMiddle >= top && scrollMiddle < bottom) {
+                            if (state.currentSection !== i) {
+                                state.currentSection = i;
+                                updateIslandUI();
+                            }
+                            break;
+                        }
                     }
                 }
-            }
-        });
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
     }, { passive: true });
 }
 
@@ -769,13 +785,13 @@ function initScrollAnimations() {
 
     // Parallax on Background Watermark
     gsap.to('.hero-watermark', {
-        y: 180,
+        y: 120,
         ease: 'none',
         scrollTrigger: {
             trigger: '#hero',
             start: 'top top',
             end: 'bottom top',
-            scrub: true
+            scrub: 0.4
         }
     });
 
