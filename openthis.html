@@ -4,272 +4,891 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="format-detection" content="telephone=no">
-    <title>Vansh Khanna | Portfolio</title>
-    <meta name="description" content="Portfolio of Vansh Khanna - Engineering Student, Builder, Explorer.">
+    <meta name="theme-color" content="#050508" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Vansh Khanna | Hyper-Liquid Acrylic Glass OS</title>
+    <meta name="description"
+        content="Portfolio of Vansh Khanna — Computer Science Engineering Student @ MRU, Creative Engineer, Builder & Explorer." />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
 
-    <link rel="stylesheet" href="css/portfolio.css" />
+    <link rel="stylesheet" href="portfolio.css" />
 </head>
 
 <body>
 
-    <!-- GRAIN TEXTURE -->
+    <!-- LAYER 0: GLOBAL FLUID INK CANVAS -->
+    <canvas id="fluid-canvas"></canvas>
+
+    <!-- LAYER 1: NOISE GRAIN -->
     <div class="grain"></div>
 
-    <!-- MINIMALIST CURSOR -->
-    <div class="cursor"></div>
-    <div class="cursor-label"></div>
+    <!-- LAYER 2: CUSTOM DUAL-LAYER CURSOR -->
+    <div class="cursor-orb" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true">
+        <span class="cursor-label"></span>
+    </div>
 
-    <!-- ========================================
-         INTRO / LOADING
-         ======================================== -->
-    <div class="intro">
-        <div class="intro-brand"><span>VANSH</span></div>
-        <div class="intro-sub"><span>Portfolio</span></div>
-        <div class="intro-progress">
-            <div class="intro-progress-bar"></div>
+    <!-- LAYER 3: INTRO / LOADER SEQUENCE -->
+    <div class="intro-screen" id="intro-screen">
+        <div class="intro-content">
+            <!-- Animated SVG Monogram -->
+            <div class="intro-svg-wrap">
+                <svg class="intro-vk-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Left V wing -->
+                    <path class="vk-path-v" d="M30 40 L100 160 L135 100" stroke="url(#vk-grad-1)" stroke-width="8"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <!-- Right K stem & branches -->
+                    <path class="vk-path-k1" d="M110 40 L110 160" stroke="url(#vk-grad-2)" stroke-width="8"
+                        stroke-linecap="round" />
+                    <path class="vk-path-k2" d="M170 50 L115 105 L170 160" stroke="url(#vk-grad-3)" stroke-width="8"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <defs>
+                        <linearGradient id="vk-grad-1" x1="30" y1="40" x2="135" y2="160" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#ffffff" />
+                            <stop offset="1" stop-color="#7c3aed" />
+                        </linearGradient>
+                        <linearGradient id="vk-grad-2" x1="110" y1="40" x2="110" y2="160" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#ffffff" />
+                            <stop offset="1" stop-color="#06b6d4" />
+                        </linearGradient>
+                        <linearGradient id="vk-grad-3" x1="170" y1="50" x2="115" y2="160" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#06b6d4" />
+                            <stop offset="1" stop-color="#ffffff" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="intro-brand-name">
+                <span class="intro-char">V</span><span class="intro-char">A</span><span
+                    class="intro-char">N</span><span class="intro-char">S</span><span class="intro-char">H</span>
+                <span class="intro-space">&nbsp;</span>
+                <span class="intro-char">K</span><span class="intro-char">H</span><span
+                    class="intro-char">A</span><span class="intro-char">N</span><span
+                    class="intro-char">N</span><span class="intro-char">A</span>
+            </div>
+
+            <p class="intro-tagline">Architecting Liquid Interfaces & Intelligent Systems</p>
+
+            <div class="intro-progress-wrap">
+                <div class="intro-progress-bar" id="intro-progress-bar"></div>
+            </div>
+
+            <div class="intro-skip-hint">Click anywhere to skip</div>
         </div>
     </div>
 
-    <!-- ========================================
-         MAIN APP
-         ======================================== -->
-    <div class="app">
+    <!-- LAYER 4: GLASS HEADER -->
+    <header class="glass-header" id="glass-header">
+        <div class="header-inner">
+            <!-- Brand Monogram Pill -->
+            <a href="#hero" class="brand-pill glass-t3" aria-label="Scroll to top">
+                <span class="brand-monogram">VK</span>
+                <span class="brand-name">Vansh Khanna</span>
+            </a>
 
-        <!-- HERO BACKGROUND -->
-        <div class="hero-bg"></div>
+            <!-- Status Beacon (desktop) -->
+            <div class="status-badge glass-t3">
+                <span class="status-dot"></span>
+                <span class="status-text">Open for High-Impact Roles</span>
+            </div>
 
-        <!-- FLOATING BRAND MARK -->
-        <div class="brand-mark">
-            <div class="brand-letter">V</div>
+            <!-- Right Cluster -->
+            <div class="header-right">
+                <!-- Live IST Clock -->
+                <div class="time-pill glass-t3" id="live-clock">
+                    <span class="time-val">00:00:00</span>
+                    <span class="time-zone">IST</span>
+                </div>
+
+                <!-- Sound FX Toggle Pill -->
+                <button class="sound-pill glass-t3" id="sound-toggle" aria-label="Toggle Glassphonic Sound Effects"
+                    data-sound="off">
+                    <span class="sound-wave" aria-hidden="true">
+                        <span class="bar bar-1"></span>
+                        <span class="bar bar-2"></span>
+                        <span class="bar bar-3"></span>
+                    </span>
+                    <span class="sound-label">Sound Off</span>
+                </button>
+            </div>
         </div>
+    </header>
 
-                <!-- HEADER -->
-        <header class="header">
-            <div class="logo">VANSH KHANNA</div>
-            <div class="header-tagline">Engineer · Builder · Explorer</div>
-        </header>
+    <!-- LAYER 5: MAIN SCROLL CONTAINER -->
+    <main class="scroll-container" id="main-content">
 
-        <!-- DOCK (Right Side Menu) -->
-        <nav class="dock">
-            <button class="dock-item active">Home</button>
-            <button class="dock-item">About</button>
-            <button class="dock-item">Projects</button>
-            <button class="dock-item">Education</button>
-            <button class="dock-item">Contact</button>
-        </nav>
+        <!-- ============================================
+             SECTION 1: HERO
+             ============================================ -->
+        <section class="section hero-section" id="hero">
+            <!-- Ambient Parallax Watermark -->
+            <div class="hero-watermark" aria-hidden="true">VK</div>
 
-        <!-- ========================================
-             SECTION: HOME
-             ======================================== -->
-        <section class="section active" id="section-home">
-            <div class="hero-content">
+            <!-- Floating Acrylic Hero Pod -->
+            <div class="hero-glass-pod glass-t1">
+                <!-- Eyebrow Tag -->
+                <div class="hero-eyebrow glass-t3">
+                    <span class="eyebrow-spark">✦</span>
+                    <span>Creative Engineer · Builder · Explorer</span>
+                </div>
+
+                <!-- Kinetic Typography Title -->
                 <h1 class="hero-title">
-                    <span class="line"><span>Designing</span></span>
-                    <span class="line"><span>Meaningful</span></span>
-                    <span class="line"><span>Tech</span></span>
+                    <span class="title-line"><span class="title-reveal">Vansh</span></span>
+                    <span class="title-line"><span class="title-reveal text-gradient">Khanna</span></span>
                 </h1>
-                <p class="hero-sub">Crafting immersive experiences at the intersection of design & technology</p>
-                <div class="stat-row">
-                    <div class="stat">
-                        <span class="stat-value">5</span>
-                        <span class="stat-label">Live Projects</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value">2</span>
-                        <span class="stat-label">Leadership Roles</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value">∞</span>
-                        <span class="stat-label">Curiosity</span>
+
+                <!-- Dynamic Cycling Subtitle -->
+                <div class="hero-subtitle-cycler" id="subtitle-cycler" aria-live="polite">
+                    <span class="sub-phrase active">Architecting Liquid Interfaces</span>
+                    <span class="sub-phrase">Building Intelligent Systems</span>
+                    <span class="sub-phrase">Visual Storytelling @ VASHAYA</span>
+                </div>
+
+                <!-- Live Stat Pills Row -->
+                <div class="hero-stats-row">
+                    <button class="stat-pill glass-t2" data-scroll="#works">
+                        <span class="stat-val">5+</span>
+                        <span class="stat-lbl">Live Engines</span>
+                    </button>
+                    <button class="stat-pill glass-t2" data-scroll="#about">
+                        <span class="stat-val">MRU</span>
+                        <span class="stat-lbl">CSE 2029</span>
+                    </button>
+                    <button class="stat-pill glass-t2" data-open-tray="tray-visual">
+                        <span class="stat-val">Visuals</span>
+                        <span class="stat-lbl">@ VASHAYA</span>
+                    </button>
+                    <button class="stat-pill glass-t2 highlight" data-scroll="#contact">
+                        <span class="pulse-beacon"></span>
+                        <span class="stat-lbl">Open to Work</span>
+                    </button>
+                </div>
+
+                <!-- Hero Action Buttons -->
+                <div class="hero-actions">
+                    <a href="#works" class="cta-btn primary-btn glass-t2">
+                        <span>Explore Works</span>
+                        <span class="btn-arrow">↓</span>
+                    </a>
+                    <a href="#contact" class="cta-btn secondary-btn glass-t3">
+                        <span>Get in Touch</span>
+                        <span class="btn-spark">✦</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Cue -->
+            <a href="#about" class="scroll-cue glass-t3" aria-label="Scroll to About section">
+                <span class="cue-mouse"></span>
+                <span class="cue-text">Scroll to explore</span>
+                <span class="cue-arrow">↓</span>
+            </a>
+        </section>
+
+
+        <!-- ============================================
+             SECTION 2: ABOUT
+             ============================================ -->
+        <section class="section about-section" id="about">
+            <div class="section-header">
+                <div class="section-eyebrow glass-t3">02 — About</div>
+                <h2 class="section-title">The Builder</h2>
+            </div>
+
+            <!-- Bento Grid Layout -->
+            <div class="about-bento">
+
+                <!-- 1. Story Card (Large) -->
+                <div class="glass-card story-card glass-t1">
+                    <div class="card-inner">
+                        <div class="card-badge glass-t3">Vision & Approach</div>
+                        <h3 class="story-headline">Crafting focused, high-signal experiences with zero friction.</h3>
+                        <p class="story-p">
+                            I'm <strong>Vansh Khanna</strong>, a Computer Science Engineering student at <strong>Manav
+                                Rachna University (2025–2029)</strong>. I thrive where deep engineering rigour meets
+                            emotive, tactile product design.
+                        </p>
+                        <p class="story-p">
+                            I believe in crafting focused, high-signal surfaces with maximum depth — systems that
+                            behave like organic extensions of human thought. Whether training machine learning
+                            models, engineering responsive fluid shaders, or framing cinematic light, I approach every
+                            medium with systematic curiosity.
+                        </p>
+                        <div class="story-chips">
+                            <span class="chip-item glass-t3">Systems Architecture</span>
+                            <span class="chip-item glass-t3">Sensory UI Physics</span>
+                            <span class="chip-item glass-t3">ML Valuation</span>
+                            <span class="chip-item glass-t3">Cinematography</span>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 2. Portrait Card with Animated Conic Rim -->
+                <div class="glass-card portrait-card glass-t1">
+                    <div class="portrait-glow-ring">
+                        <div class="portrait-frame">
+                            <img src="https://res.cloudinary.com/kymqk229/image/upload/v1794469986/vashaya_portfolio/rr.png"
+                                alt="Vansh Khanna" class="portrait-img" loading="lazy" />
+                        </div>
+                    </div>
+                    <div class="portrait-tag glass-t3">
+                        <span class="tag-spark">✦</span>
+                        <span>VASHAYA</span>
+                    </div>
+                </div>
+
+                <!-- 3. Education Journey Timeline -->
+                <div class="glass-card timeline-card glass-t1">
+                    <div class="card-inner">
+                        <div class="card-badge glass-t3">Education Journey</div>
+                        <div class="timeline-tree">
+                            <div class="timeline-node">
+                                <div class="node-bullet active"></div>
+                                <div class="node-content glass-t2">
+                                    <span class="node-year">2025 – 2029 · Current</span>
+                                    <h4 class="node-title">Manav Rachna University</h4>
+                                    <p class="node-desc">B.Tech Computer Science Engineering · Systems Architecture,
+                                        Distributed Engines, & Machine Learning.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-line"></div>
+                            <div class="timeline-node">
+                                <div class="node-bullet"></div>
+                                <div class="node-content glass-t2">
+                                    <span class="node-year">2013 – 2025</span>
+                                    <h4 class="node-title">Modern Delhi International School</h4>
+                                    <p class="node-desc">Science + Computational Foundations, interdisciplinary
+                                        leadership initiatives & design labs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Competencies Card with Squishable Pills -->
+                <div class="glass-card skills-card glass-t1">
+                    <div class="card-inner">
+                        <div class="card-badge glass-t3">Core Competencies</div>
+                        <h4 class="skills-sub">Interactive skill nodes — touch or hover to deform</h4>
+                        <div class="skills-pills-wrap">
+                            <button class="squish-pill glass-t2" data-skill="creative">Creative Engineering</button>
+                            <button class="squish-pill glass-t2" data-skill="systems">Systems Thinking</button>
+                            <button class="squish-pill glass-t2" data-skill="product">Product & Design Strategy</button>
+                            <button class="squish-pill glass-t2" data-skill="ml">Machine Learning (GBDT)</button>
+                            <button class="squish-pill glass-t2" data-skill="fullstack">Full-Stack Architecture</button>
+                            <button class="squish-pill glass-t2" data-skill="audio">Web Audio & Motion</button>
+                            <button class="squish-pill glass-t2" data-skill="photo">Visual Arts & Editorial</button>
+                            <button class="squish-pill glass-t2" data-skill="leadership">Team Leadership</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- ========================================
-             SECTION: ABOUT
-             ======================================== -->
-        <section class="section" id="section-about">
-            <div class="glass-panel">
-                <p class="section-eyebrow">About</p>
-                <h2 class="section-title">
-                    <span>T</span><span>h</span><span>e</span><span>&nbsp;</span>
-                    <span>B</span><span>u</span><span>i</span><span>l</span><span>d</span><span>e</span><span>r</span>
-                </h2>
-                <div class="about-grid">
-                    <div class="section-body">
-                        <p>I'm Vansh Khanna, a Computer Science Engineering student at Manav Rachna University. I thrive
-                            at the intersection of product, design and technology.</p>
-                        <p>I believe in crafting focused, high-signal experiences—minimal surfaces with maximum depth.
+
+        <!-- ============================================
+             SECTION 3: SELECTED WORKS (MORPHING TRAYS)
+             ============================================ -->
+        <section class="section works-section" id="works">
+            <div class="section-header">
+                <div class="section-eyebrow glass-t3">03 — Selected Works</div>
+                <h2 class="section-title">Featured Systems</h2>
+                <p class="section-sub">Explore full-bleed interactive experiences embedded directly in this canvas.</p>
+            </div>
+
+            <!-- 2x2 Project Grid -->
+            <div class="works-grid">
+
+                <!-- CARD 1: Music OS -->
+                <div class="glass-card project-card project-music glass-t1" data-project="music"
+                    data-open-tray="tray-music" tabindex="0" role="button" aria-label="Open Music OS Experience">
+                    <div class="project-card-glow glow-violet"></div>
+                    <div class="card-top-meta">
+                        <span class="meta-pill glass-t3">2025</span>
+                        <span class="meta-pill glass-t3">Interactive OS</span>
+                    </div>
+                    <div class="project-body">
+                        <h3 class="project-title">Music OS — Flow State</h3>
+                        <p class="project-desc">
+                            Atmospheric streaming deck calibrated for creative flow. Features neural color grading,
+                            live tempo BPM tracking, spatial stack queues, and tactile sound design.
                         </p>
                     </div>
-                    <div>
-                        <p class="section-eyebrow">Competencies</p>
-                        <ul class="skill-list">
-                            <li>Creative Engineering</li>
-                            <li>Team Leadership</li>
-                            <li>Problem Solving</li>
-                            <li>Experience Strategy</li>
-                            <li>Systems Thinking</li>
-                        </ul>
+                    <div class="project-tags">
+                        <span class="tag-chip">Web Audio API</span>
+                        <span class="tag-chip">Realtime Motion</span>
+                        <span class="tag-chip">Adaptive Queue</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="action-cue">
+                            <span class="action-text">Launch Experience</span>
+                            <span class="action-icon">✦</span>
+                        </span>
                     </div>
                 </div>
+
+                <!-- CARD 2: VASHAYA Visual Arts -->
+                <div class="glass-card project-card project-visual glass-t1" data-project="visual"
+                    data-open-tray="tray-visual" tabindex="0" role="button"
+                    aria-label="Open VASHAYA Visual Arts Gallery">
+                    <div class="project-card-glow glow-cyan"></div>
+                    <div class="card-top-meta">
+                        <span class="meta-pill glass-t3">2024–2025</span>
+                        <span class="meta-pill glass-t3">Photography & Motion</span>
+                    </div>
+                    <div class="project-body">
+                        <h3 class="project-title">VASHAYA — Visual Space</h3>
+                        <p class="project-desc">
+                            Curated visual narratives exploring tension between organic chaos and architectural order.
+                            Over 30 high-resolution frames across Nature, Night, Landscape, and Editorial Fashion.
+                        </p>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag-chip">Cloudinary CDN</span>
+                        <span class="tag-chip">Editorial Fashion</span>
+                        <span class="tag-chip">Cinematography</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="action-cue">
+                            <span class="action-text">Enter Gallery</span>
+                            <span class="action-icon">✦</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- CARD 3: Car Price Predictor -->
+                <div class="glass-card project-card project-car glass-t1" data-project="car" data-open-tray="tray-car"
+                    tabindex="0" role="button" aria-label="Open Car Price Predictor Dashboard">
+                    <div class="project-card-glow glow-amber"></div>
+                    <div class="card-top-meta">
+                        <span class="meta-pill glass-t3">2026</span>
+                        <span class="meta-pill glass-t3">Machine Learning</span>
+                    </div>
+                    <div class="project-body">
+                        <h3 class="project-title">Car Price Predictor</h3>
+                        <p class="project-desc">
+                            Automobile resale valuation engine for the Indian automotive market. Trained across 345+ car
+                            models using Gradient Boosting decision trees and empirical depreciation curves.
+                        </p>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag-chip">Python</span>
+                        <span class="tag-chip">scikit-learn</span>
+                        <span class="tag-chip">Flask</span>
+                        <span class="tag-chip">Render Live</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="action-cue">
+                            <span class="action-text">Test Model Engine</span>
+                            <span class="action-icon">✦</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- CARD 4: Portfolio System / Theme Inspector -->
+                <div class="glass-card project-card project-theme glass-t1" data-project="theme"
+                    data-open-tray="tray-theme" tabindex="0" role="button"
+                    aria-label="Open Portfolio OS Theme Inspector">
+                    <div class="project-card-glow glow-neutral"></div>
+                    <div class="card-top-meta">
+                        <span class="meta-pill glass-t3">2026</span>
+                        <span class="meta-pill glass-t3">Design System</span>
+                    </div>
+                    <div class="project-body">
+                        <h3 class="project-title">This Portfolio OS</h3>
+                        <p class="project-desc">
+                            A living design sandbox experimenting with continuous optical glass refractions, procedural
+                            sound synthesis, viscous fluid mechanics, and superellipse squircle geometries.
+                        </p>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag-chip">WebGL / Canvas 2D</span>
+                        <span class="tag-chip">GSAP 3 FLIP</span>
+                        <span class="tag-chip">Translucent Acrylic</span>
+                    </div>
+                    <div class="card-footer">
+                        <span class="action-cue">
+                            <span class="action-text">Tweak Live Engine</span>
+                            <span class="action-icon">✦</span>
+                        </span>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- ========================================
-             SECTION: PROJECTS
-             ======================================== -->
-        <section class="section" id="section-projects">
-            <div class="glass-panel">
-                <p class="section-eyebrow">Showcase</p>
-                <h2 class="section-title">
-                    <span>S</span><span>e</span><span>l</span><span>e</span><span>c</span><span>t</span><span>e</span><span>d</span><span>&nbsp;</span>
-                    <span>W</span><span>o</span><span>r</span><span>k</span><span>s</span>
-                </h2>
-                <div class="projects-grid">
-                    <a href="index1.html" class="project-card">
-                        <span class="project-year">2025</span>
-                        <h3>Music Player</h3>
-                        <p>Immersive music interface with real-time motion and context-aware themes.</p>
-                    </a>
-                    <a href="index2.html" class="project-card">
-                        <span class="project-year">2025</span>
-                        <h3>Visual Space</h3>
-                        <p>Photography portfolio with cinematic galleries and lightbox experience.</p>
-                    </a>
-                    <a href="#" class="project-card">
-                        <span class="project-year">2025</span>
-                        <h3>Portfolio System</h3>
-                        <p>Living document of my work and evolving design language.</p>
-                    </a>
-                    <a href="https://car-price-predictor-3lyf.onrender.com" class="project-card" target="_blank" rel="noopener noreferrer">
-                        <span class="project-year">2026</span>
-                        <h3>Car Price Predictor</h3>
-                        <p>Used-car valuation engine for the Indian market. Predicts resale prices for any car — including unseen models — using gradient boosting, a depreciation curve, and a 345-model catalogue. Built with Python, scikit-learn, and Flask.</p>
-                    </a>
+
+        <!-- ============================================
+             SECTION 4: CONTACT
+             ============================================ -->
+        <section class="section contact-section" id="contact">
+            <div class="section-header">
+                <div class="section-eyebrow glass-t3">04 — Get in Touch</div>
+                <h2 class="section-title">Let's Build Something.</h2>
+                <p class="section-sub">Have a high-impact engineering challenge or creative vision? Reach out directly.</p>
+            </div>
+
+            <!-- Contact Grid -->
+            <div class="contact-grid">
+
+                <!-- EMAIL CARD -->
+                <div class="glass-card contact-card glass-t1" id="copy-email-card" role="button" tabindex="0"
+                    aria-label="Copy Email address to clipboard">
+                    <div class="contact-icon glass-t3">✉</div>
+                    <div class="contact-info">
+                        <span class="contact-label">Email (Click to copy)</span>
+                        <span class="contact-val" id="email-text">khanna.vansh.xo@gmail.com</span>
+                    </div>
+                    <span class="contact-copy-badge glass-t3">Copy ✦</span>
                 </div>
+
+                <!-- PHONE CARD -->
+                <div class="glass-card contact-card glass-t1" id="copy-phone-card" role="button" tabindex="0"
+                    aria-label="Copy Phone number to clipboard">
+                    <div class="contact-icon glass-t3">☎</div>
+                    <div class="contact-info">
+                        <span class="contact-label">Phone / WhatsApp</span>
+                        <span class="contact-val" id="phone-text">+91 88263 26333</span>
+                    </div>
+                    <span class="contact-copy-badge glass-t3">Copy ✦</span>
+                </div>
+
+                <!-- INSTAGRAM CARD -->
+                <a href="https://instagram.com/vashaya" target="_blank" rel="noopener noreferrer"
+                    class="glass-card contact-card glass-t1" aria-label="Visit Instagram profile @vashaya">
+                    <div class="contact-icon glass-t3">📸</div>
+                    <div class="contact-info">
+                        <span class="contact-label">Instagram Visuals</span>
+                        <span class="contact-val">@vashaya</span>
+                    </div>
+                    <span class="contact-external-badge glass-t3">↗</span>
+                </a>
+
+                <!-- LINKEDIN CARD -->
+                <a href="https://www.linkedin.com/in/vansh-khanna-2a9126284/" target="_blank" rel="noopener noreferrer"
+                    class="glass-card contact-card glass-t1" aria-label="Visit LinkedIn profile">
+                    <div class="contact-icon glass-t3">💼</div>
+                    <div class="contact-info">
+                        <span class="contact-label">LinkedIn</span>
+                        <span class="contact-val">Vansh Khanna</span>
+                    </div>
+                    <span class="contact-external-badge glass-t3">↗</span>
+                </a>
+
+            </div>
+
+            <div class="contact-footer-note">
+                <p>Currently enrolled @ Manav Rachna University · Building in public · 2025 — ∞</p>
             </div>
         </section>
 
-        <!-- ========================================
-             SECTION: EDUCATION
-             ======================================== -->
-        <section class="section" id="section-education">
-            <div class="glass-panel">
-                <p class="section-eyebrow">Journey</p>
-                <h2 class="section-title">
-                    <span>E</span><span>d</span><span>u</span><span>c</span><span>a</span><span>t</span><span>i</span><span>o</span><span>n</span>
-                </h2>
-                <div class="section-body">
-                    <p><strong>2025 – 2029</strong> · Manav Rachna University</p>
-                    <p>Computer Science Engineering · Building research-backed, human-first products.</p>
-                    <br>
-                    <p><strong>2013 – 2025</strong> · Modern Delhi International School</p>
-                    <p>Science + Design foundations, interdisciplinary clubs and leadership initiatives.</p>
-                </div>
-            </div>
-        </section>
+    </main>
 
-        <!-- ========================================
-             SECTION: CONTACT
-             ======================================== -->
-        <section class="section" id="section-contact">
-            <div class="glass-panel">
-                <p class="section-eyebrow">Let's Connect</p>
-                <h2 class="section-title">
-                    <span>C</span><span>o</span><span>n</span><span>t</span><span>a</span><span>c</span><span>t</span>
-                </h2>
-                <div class="contact-grid">
-                    <div class="contact-card">
-                        <small>Email</small>
-                        <a href="mailto:khanna.vansh.xo@gmail.com">khanna.vansh.xo@gmail.com</a>
-                    </div>
-                    <div class="contact-card">
-                        <small>Phone</small>
-                        <a href="tel:+918826326333">+91 88263 26333</a>
-                    </div>
-                    <div class="contact-card">
-                        <small>Instagram</small>
-                        <a href="#">@vashaya</a>
-                    </div>
-                    <div class="contact-card">
-                        <small>LinkedIn</small>
-                        <a href="#">Vansh Khanna</a>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-                <!-- ========================================
-             DYNAMIC ISLAND MORPHING BOTTOM NAV
-             ======================================== -->
-        <div class="island-scrim" id="island-scrim" aria-hidden="true"></div>
-        <nav class="nav-island" id="nav-island" aria-label="Section Navigation">
-            <!-- EXPANDED ISLAND MENU (MORPHED STATE) -->
-            <div class="island-expanded" id="island-expanded" aria-hidden="true">
-                <div class="island-header">
-                    <span class="island-eyebrow">Index</span>
-                    <button class="island-close-btn" id="island-close-btn" aria-label="Collapse Navigation">✕</button>
-                </div>
-                <div class="island-menu">
-                    <button class="island-item active" data-index="0">
-                        <span class="island-num">01</span>
-                        <span class="island-name">Home</span>
-                        <span class="island-indicator">●</span>
-                    </button>
-                    <button class="island-item" data-index="1">
-                        <span class="island-num">02</span>
-                        <span class="island-name">About</span>
-                        <span class="island-indicator">●</span>
-                    </button>
-                    <button class="island-item" data-index="2">
-                        <span class="island-num">03</span>
-                        <span class="island-name">Projects</span>
-                        <span class="island-indicator">●</span>
-                    </button>
-                    <button class="island-item" data-index="3">
-                        <span class="island-num">04</span>
-                        <span class="island-name">Education</span>
-                        <span class="island-indicator">●</span>
-                    </button>
-                    <button class="island-item" data-index="4">
-                        <span class="island-num">05</span>
-                        <span class="island-name">Contact</span>
-                        <span class="island-indicator">●</span>
-                    </button>
-                </div>
-            </div>
+    <!-- LAYER 6: DYNAMIC ISLAND BOTTOM CAPSULE -->
+    <nav class="dynamic-island" id="dynamic-island" aria-label="Quick Section Navigation">
+        <!-- Collapsed Bar (Default State) -->
+        <div class="island-collapsed-bar" id="island-bar">
+            <button class="island-btn island-arrow" id="island-prev" aria-label="Previous Section">←</button>
 
-            <!-- COLLAPSED ISLAND CAPSULE BAR (DEFAULT STATE) -->
-            <div class="island-bar">
-                <button class="island-arrow" id="island-prev" data-dir="prev" aria-label="Previous Section">←</button>
-                <button class="island-trigger" id="island-trigger" aria-label="Toggle Section Menu" aria-expanded="false">
-                    <span class="island-count">01 — 05</span>
-                    <span class="island-divider">·</span>
-                    <span class="island-tag">Home</span>
-                    <span class="island-chevron" aria-hidden="true">▾</span>
+            <button class="island-trigger" id="island-trigger" aria-label="Open Index Navigation Menu"
+                aria-expanded="false">
+                <span class="island-counter" id="island-counter">01 / 04</span>
+                <span class="island-dot">·</span>
+                <span class="island-label" id="island-label">Home</span>
+                <span class="island-chevron" aria-hidden="true">▾</span>
+            </button>
+
+            <button class="island-btn island-arrow" id="island-next" aria-label="Next Section">→</button>
+        </div>
+
+        <!-- Scroll Progress Indicator (bottom line of capsule) -->
+        <div class="island-progress-track">
+            <div class="island-progress-fill" id="island-progress-fill"></div>
+        </div>
+
+        <!-- Expanded Morph Menu -->
+        <div class="island-expanded-menu" id="island-menu" aria-hidden="true">
+            <div class="expanded-header">
+                <span class="expanded-title">SYSTEM INDEX</span>
+                <button class="expanded-close-btn" id="island-close-btn" aria-label="Collapse Navigation">✕</button>
+            </div>
+            <div class="expanded-links">
+                <button class="menu-link-btn active" data-target="hero">
+                    <span class="link-num">01</span>
+                    <span class="link-text">Home</span>
+                    <span class="link-indicator">●</span>
                 </button>
-                <button class="island-arrow" id="island-next" data-dir="next" aria-label="Next Section">→</button>
+                <button class="menu-link-btn" data-target="about">
+                    <span class="link-num">02</span>
+                    <span class="link-text">About</span>
+                    <span class="link-indicator">●</span>
+                </button>
+                <button class="menu-link-btn" data-target="works">
+                    <span class="link-num">03</span>
+                    <span class="link-text">Selected Works</span>
+                    <span class="link-indicator">●</span>
+                </button>
+                <button class="menu-link-btn" data-target="contact">
+                    <span class="link-num">04</span>
+                    <span class="link-text">Contact</span>
+                    <span class="link-indicator">●</span>
+                </button>
             </div>
-        </nav>
+            <div class="expanded-footer">
+                <button class="sound-quick-toggle glass-t3" id="island-sound-toggle">
+                    <span>Sound Effects</span>
+                    <span class="toggle-status" id="island-sound-status">OFF</span>
+                </button>
+            </div>
+        </div>
+    </nav>
 
+
+    <!-- ============================================
+         LAYER 7: EMBEDDED MORPHING PROJECT TRAYS
+         ============================================ -->
+
+    <!-- TRAY 1: MUSIC OS -->
+    <div class="tray-overlay" id="tray-music" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-label="Music OS Flow Player">
+        <div class="tray-scrim" data-close-tray></div>
+        <div class="tray-modal glass-t1">
+            <div class="tray-header">
+                <div class="tray-brand">
+                    <span class="tray-badge glass-t3">MUSIC OS</span>
+                    <span class="tray-subtitle">Curated Atmospheres & Momentum</span>
+                </div>
+                <div class="tray-controls">
+                    <a href="index1.html" class="tray-external-btn glass-t3" target="_blank">Full Player ↗</a>
+                    <button class="tray-close-btn glass-t3" data-close-tray aria-label="Close Tray">✕</button>
+                </div>
+            </div>
+
+            <div class="tray-content music-tray-layout">
+                <!-- Sidebar Stacks -->
+                <aside class="music-sidebar glass-t2">
+                    <h4 class="sidebar-title">Atmosphere Stacks</h4>
+                    <ul class="playlist-stack-list" id="music-playlist-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </aside>
+
+                <!-- Active Playlist View -->
+                <section class="music-view">
+                    <div class="music-hero-card glass-t2">
+                        <img id="music-active-cover" src="https://picsum.photos/300/300?random=1&grayscale"
+                            alt="Cover Art" class="music-cover-art" />
+                        <div class="music-hero-meta">
+                            <span class="music-chip glass-t3" id="music-active-type">Curated Frequency</span>
+                            <h3 class="music-active-title" id="music-active-title">Top 50 · Global</h3>
+                            <p class="music-active-desc" id="music-active-desc">Realtime pulse of what's charting planet-wide.</p>
+                            <div class="music-stats-bar">
+                                <span class="music-stat"><strong id="music-bpm-count">128</strong> BPM</span>
+                                <span class="music-stat"><strong>Spatial</strong> Audio</span>
+                                <span class="music-stat"><strong>Neural</strong> Color</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Song Queue Table -->
+                    <div class="music-queue-wrap glass-t2">
+                        <table class="music-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Artist</th>
+                                    <th>Duration</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="music-song-queue">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Bottom Floating Player Bar -->
+            <div class="music-player-bar glass-t2">
+                <div class="player-left">
+                    <span class="player-pulse-disc" id="player-disc"></span>
+                    <div class="player-track-info">
+                        <span class="player-track-title" id="player-now-title">Fake Anthem</span>
+                        <span class="player-track-artist" id="player-now-artist">Unknown Artist</span>
+                    </div>
+                </div>
+                <div class="player-center">
+                    <div class="player-buttons">
+                        <button class="player-btn" id="player-prev-btn" aria-label="Previous Track">⏮</button>
+                        <button class="player-btn primary-play" id="player-play-btn" aria-label="Play/Pause">▶</button>
+                        <button class="player-btn" id="player-next-btn" aria-label="Next Track">⏭</button>
+                    </div>
+                    <div class="player-scrubber-wrap">
+                        <span class="scrub-time" id="player-current-time">0:00</span>
+                        <div class="player-scrubber-track" id="player-scrubber">
+                            <div class="player-scrubber-fill" id="player-progress"></div>
+                        </div>
+                        <span class="scrub-time" id="player-total-time">3:45</span>
+                    </div>
+                </div>
+                <div class="player-right">
+                    <span class="bpm-indicator" id="player-bpm-badge">● 128 BPM</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- ========================================
-         SCRIPTS
-         ======================================== -->
+
+    <!-- TRAY 2: VASHAYA VISUAL ARTS -->
+    <div class="tray-overlay" id="tray-visual" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-label="VASHAYA Visual Arts Gallery">
+        <div class="tray-scrim" data-close-tray></div>
+        <div class="tray-modal glass-t1">
+            <div class="tray-header">
+                <div class="tray-brand">
+                    <span class="tray-badge glass-t3">VASHAYA</span>
+                    <span class="tray-subtitle">Cinematic Photography & Stills Archive</span>
+                </div>
+                <div class="tray-controls">
+                    <a href="index2.html" class="tray-external-btn glass-t3" target="_blank">Full Space ↗</a>
+                    <button class="tray-close-btn glass-t3" data-close-tray aria-label="Close Tray">✕</button>
+                </div>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="visual-tabs-bar">
+                <button class="visual-tab-btn glass-t3 active" data-category="nature">Nature</button>
+                <button class="visual-tab-btn glass-t3" data-category="night">Night</button>
+                <button class="visual-tab-btn glass-t3" data-category="landscape">Landscape</button>
+                <button class="visual-tab-btn glass-t3" data-category="eclectic">Eclectic</button>
+                <button class="visual-tab-btn glass-t3" data-category="all">All Works</button>
+            </div>
+
+            <!-- Dynamic Photo Grid -->
+            <div class="visual-grid-container" id="visual-photo-grid">
+                <!-- Dynamically injected photos with Cloudinary URLs -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- TRAY 3: CAR PRICE PREDICTOR -->
+    <div class="tray-overlay" id="tray-car" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-label="Car Price Predictor Valuation Engine">
+        <div class="tray-scrim" data-close-tray></div>
+        <div class="tray-modal glass-t1">
+            <div class="tray-header">
+                <div class="tray-brand">
+                    <span class="tray-badge glass-t3">ML ENGINE</span>
+                    <span class="tray-subtitle">Indian Used-Car Valuation Model</span>
+                </div>
+                <div class="tray-controls">
+                    <a href="https://car-price-predictor-3lyf.onrender.com" target="_blank" rel="noopener noreferrer"
+                        class="tray-external-btn glass-t3">Launch on Render ↗</a>
+                    <button class="tray-close-btn glass-t3" data-close-tray aria-label="Close Tray">✕</button>
+                </div>
+            </div>
+
+            <div class="tray-content car-tray-layout">
+                <!-- Simulation Controls Panel -->
+                <div class="car-controls-panel glass-t2">
+                    <h3 class="panel-title">Model Feature Inputs</h3>
+                    <p class="panel-sub">Simulate resale value based on trained gradient boosting decision trees.</p>
+
+                    <!-- Feature 1: Brand Selection -->
+                    <div class="feature-group">
+                        <label class="feature-label">Brand / Manufacturer</label>
+                        <div class="brand-pills" id="car-brand-pills">
+                            <button class="choice-pill glass-t3 active" data-brand="maruti" data-mult="1.0">Maruti Suzuki</button>
+                            <button class="choice-pill glass-t3" data-brand="hyundai" data-mult="1.15">Hyundai</button>
+                            <button class="choice-pill glass-t3" data-brand="honda" data-mult="1.3">Honda</button>
+                            <button class="choice-pill glass-t3" data-brand="toyota" data-mult="1.45">Toyota</button>
+                            <button class="choice-pill glass-t3" data-brand="bmw" data-mult="3.2">BMW</button>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2: Year Slider -->
+                    <div class="feature-group">
+                        <div class="feature-header-row">
+                            <label class="feature-label">Registration Year</label>
+                            <span class="feature-val" id="val-year-display">2021</span>
+                        </div>
+                        <input type="range" class="glass-slider" id="slider-year" min="2010" max="2025" value="2021" />
+                    </div>
+
+                    <!-- Feature 3: Kilometers Driven Slider -->
+                    <div class="feature-group">
+                        <div class="feature-header-row">
+                            <label class="feature-label">Kilometers Driven</label>
+                            <span class="feature-val" id="val-km-display">42,000 km</span>
+                        </div>
+                        <input type="range" class="glass-slider" id="slider-km" min="5000" max="180000" step="5000"
+                            value="42000" />
+                    </div>
+
+                    <!-- Feature 4: Fuel Type -->
+                    <div class="feature-group">
+                        <label class="feature-label">Fuel Architecture</label>
+                        <div class="fuel-pills" id="car-fuel-pills">
+                            <button class="choice-pill glass-t3 active" data-fuel="petrol" data-mult="1.0">Petrol</button>
+                            <button class="choice-pill glass-t3" data-fuel="diesel" data-mult="1.18">Diesel</button>
+                            <button class="choice-pill glass-t3" data-fuel="cng" data-mult="0.88">CNG</button>
+                            <button class="choice-pill glass-t3" data-fuel="ev" data-mult="1.35">Electric</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Output Panel -->
+                <div class="car-output-panel glass-t2">
+                    <span class="output-eyebrow glass-t3">Realtime Model Inference</span>
+                    <div class="price-display-box">
+                        <span class="price-currency">₹</span>
+                        <span class="price-number" id="car-estimated-price">6,85,000</span>
+                    </div>
+                    <span class="price-caption">Predicted Indian Resale Value (±4.2% GBDT margin)</span>
+
+                    <div class="model-meta-list">
+                        <div class="meta-row">
+                            <span>Catalog Baseline</span>
+                            <strong>345 Models Mapped</strong>
+                        </div>
+                        <div class="meta-row">
+                            <span>Algorithm</span>
+                            <strong>Gradient Boosting Regressor</strong>
+                        </div>
+                        <div class="meta-row">
+                            <span>Depreciation Curve</span>
+                            <strong>Empirical Exponential Decay</strong>
+                        </div>
+                        <div class="meta-row">
+                            <span>Backend Live Host</span>
+                            <strong>Render / Flask API</strong>
+                        </div>
+                    </div>
+
+                    <a href="https://car-price-predictor-3lyf.onrender.com" target="_blank" rel="noopener noreferrer"
+                        class="launch-render-btn glass-t2">
+                        <span>Launch Full Web Application on Render</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- TRAY 4: THEME & GLASS INSPECTOR -->
+    <div class="tray-overlay" id="tray-theme" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-label="Portfolio OS Theme Inspector">
+        <div class="tray-scrim" data-close-tray></div>
+        <div class="tray-modal glass-t1 theme-inspector-modal">
+            <div class="tray-header">
+                <div class="tray-brand">
+                    <span class="tray-badge glass-t3">SYSTEM INSPECTOR</span>
+                    <span class="tray-subtitle">Live Physical Glass & Fluid Parameters</span>
+                </div>
+                <div class="tray-controls">
+                    <button class="tray-close-btn glass-t3" data-close-tray aria-label="Close Inspector">✕</button>
+                </div>
+            </div>
+
+            <div class="theme-controls-grid">
+                <!-- Control 1: Blur Radius -->
+                <div class="theme-control-card glass-t2">
+                    <div class="control-header">
+                        <label>Glass Blur Radius</label>
+                        <span class="control-val" id="val-blur">40px</span>
+                    </div>
+                    <input type="range" class="glass-slider" id="theme-slider-blur" min="0" max="80" value="40" />
+                    <p class="control-hint">Controls CSS backdrop-filter blur across Tier 1 & 2 acrylic surfaces.</p>
+                </div>
+
+                <!-- Control 2: Glass Saturation -->
+                <div class="theme-control-card glass-t2">
+                    <div class="control-header">
+                        <label>Color Saturation</label>
+                        <span class="control-val" id="val-sat">220%</span>
+                    </div>
+                    <input type="range" class="glass-slider" id="theme-slider-sat" min="100" max="350" value="220" />
+                    <p class="control-hint">Multiplies background chromatic vibrancy through translucent glass.</p>
+                </div>
+
+                <!-- Control 3: Fluid Flow Speed -->
+                <div class="theme-control-card glass-t2">
+                    <div class="control-header">
+                        <label>Fluid Ink Velocity</label>
+                        <span class="control-val" id="val-speed">1.0x</span>
+                    </div>
+                    <input type="range" class="glass-slider" id="theme-slider-speed" min="2" max="30" value="10" />
+                    <p class="control-hint">Adjusts particle and ink velocity vectors in the background canvas.</p>
+                </div>
+
+                <!-- Control 4: Prismatic Violet Glow -->
+                <div class="theme-control-card glass-t2">
+                    <div class="control-header">
+                        <label>Prismatic Violet Intensity</label>
+                        <span class="control-val" id="val-glow">60%</span>
+                    </div>
+                    <input type="range" class="glass-slider" id="theme-slider-glow" min="0" max="100" value="60" />
+                    <p class="control-hint">Modulates ambient specular refraction around card edges.</p>
+                </div>
+            </div>
+
+            <div class="theme-actions">
+                <button class="reset-theme-btn glass-t3" id="reset-theme-btn">Reset Factory Glass Parameters</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================
+         LAYER 8: LIGHTBOX (FOR VASHAYA PHOTOS)
+         ============================================ -->
+    <div class="lightbox-overlay" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-label="Image Lightbox">
+        <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+        <div class="lightbox-container glass-t1">
+            <button class="lightbox-close glass-t3" id="lightbox-close" aria-label="Close Lightbox">✕</button>
+            <button class="lightbox-nav-btn prev-btn glass-t3" id="lightbox-prev" aria-label="Previous Image">←</button>
+            <div class="lightbox-img-wrap">
+                <img src="" alt="" class="lightbox-img" id="lightbox-img" />
+            </div>
+            <button class="lightbox-nav-btn next-btn glass-t3" id="lightbox-next" aria-label="Next Image">→</button>
+            <div class="lightbox-caption glass-t3" id="lightbox-caption">Nature · Earth Study</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================
+         LAYER 9: GLASS TOAST NOTIFICATION
+         ============================================ -->
+    <div class="glass-toast glass-t3" id="toast" role="status" aria-live="polite">
+        <span class="toast-icon">✓</span>
+        <span class="toast-text" id="toast-text">Copied to clipboard</span>
+    </div>
+
+
+    <!-- ============================================
+         SCRIPTS: GSAP 3.12.2 CDN + PORTFOLIO.JS
+         ============================================ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="js/portfolio.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js"></script>
+    <script src="portfolio.js"></script>
 
 </body>
 
