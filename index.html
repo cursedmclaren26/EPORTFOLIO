@@ -222,7 +222,10 @@
                         <span class="project-year">2024–2026 · Visual Archive</span>
                         <h3>Visual Space</h3>
                         <p>Curated fine-art photography portfolio under VASHAYA with dynamic category filtering and cinematic lightbox experience.</p>
-                        <span class="project-badge badge-coral">Explore Gallery ↗</span>
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <span class="project-badge badge-coral">Explore Gallery In-Window ↗</span>
+                            <a href="index2.html" target="_blank" class="project-badge" onclick="event.stopPropagation();" style="background: rgba(225, 29, 72, 0.2); border: 1px solid #E11D48; color: #ffffff; text-decoration: none; font-weight: 700;">Full Gallery Interface ↗</a>
+                        </div>
                     </div>
 
                     <div class="project-card" data-open-tray="tray-car" role="button" tabindex="0">
@@ -433,11 +436,11 @@
         <div class="tray-modal" role="dialog" aria-modal="true">
             <div class="tray-header">
                 <div class="tray-brand">
-                    <span class="tray-badge">VASHAYA GALLERY</span>
+                    <span class="tray-badge" style="background: #E11D48; color: #ffffff; border-color: rgba(255,255,255,0.3);">VASHAYA GALLERY</span>
                     <span class="tray-subtitle">Curated Photographic Studies · India Archive</span>
                 </div>
                 <div class="tray-controls">
-                    <a href="https://instagram.com/vashaya" target="_blank" rel="noopener noreferrer" class="tray-ext-btn">@vashaya on IG ↗</a>
+                    <a href="index2.html" target="_blank" rel="noopener noreferrer" class="tray-ext-btn" style="background: rgba(225, 29, 72, 0.2); border-color: #E11D48; color: #ffffff; font-weight: 700;">Open Full Gallery Interface ↗</a>
                     <button class="tray-close-btn" data-close-tray aria-label="Close dialog">✕</button>
                 </div>
             </div>
@@ -448,6 +451,9 @@
                 <button class="gallery-tab" data-category="landscape">Landscapes</button>
                 <button class="gallery-tab" data-category="eclectic">Eclectic Studies</button>
                 <button class="gallery-tab" data-category="all">Complete Archive</button>
+                <a href="index2.html" target="_blank" class="gallery-tab" style="margin-left: auto; background: #E11D48; color: #ffffff; border-color: rgba(255,255,255,0.3); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    <span>Full Gallery Interface ↗</span>
+                </a>
             </div>
 
             <div class="gallery-masonry" id="visual-photo-grid">
