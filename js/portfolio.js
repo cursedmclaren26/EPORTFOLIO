@@ -108,58 +108,7 @@ function skipIntro() {
 }
 
 function runIntro() {
-    DOM.intro.addEventListener('click', skipIntro);
-    DOM.intro.addEventListener('touchstart', skipIntro, { passive: true });
-
-    const isMobile = isTouchDevice();
-    const durationMultiplier = isMobile ? 0.5 : 0.7;
-
-    introTl = gsap.timeline({
-        onComplete: () => {
-            if (!introDone) {
-                showApp();
-            }
-        }
-    });
-
-    // Progress bar
-    introTl.to('.intro-progress-bar', {
-        width: '100%',
-        duration: 1.2 * durationMultiplier,
-        ease: 'power2.inOut'
-    });
-
-    // Brand reveal
-    introTl.to('.intro-brand span', {
-        y: 0,
-        duration: 0.7 * durationMultiplier,
-        ease: EASE.out
-    }, 0.2 * durationMultiplier);
-
-    // Subtitle
-    introTl.to('.intro-sub span', {
-        y: 0,
-        duration: 0.5 * durationMultiplier,
-        ease: EASE.out
-    }, 0.4 * durationMultiplier);
-
-    // Hold
-    introTl.to({}, { duration: 0.2 * durationMultiplier });
-
-    // Exit
-    introTl.to('.intro-brand span, .intro-sub span', {
-        y: -100,
-        opacity: 0,
-        duration: 0.3 * durationMultiplier,
-        stagger: 0.03,
-        ease: 'power3.in'
-    });
-
-    introTl.to(DOM.intro, {
-        clipPath: 'inset(0 0 100% 0)',
-        duration: 0.4 * durationMultiplier,
-        ease: EASE.inOut
-    }, '-=0.15');
+    skipIntro();
 }
 
 function showApp() {
@@ -421,55 +370,34 @@ function updateDockActive() {
 }
 
 // ============================================
-// HARDWARE-ACCELERATED CURSOR (60–120 FPS LOCKED)
+// HARDWARE-ACCELERATED CURSOR (PERFECT SUB-PIXEL CENTERING)
 // ============================================
 function initCursor() {
     if (isTouchDevice()) return;
 
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
-    let curX = targetX;
-    let curY = targetY;
-    let rafActive = false;
 
-    // Initial center positioning
-    if (DOM.cursor) {
-        DOM.cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
-    }
-    if (DOM.cursorLabel) {
-        DOM.cursorLabel.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, 30px)`;
-    }
+    const setCursor = (x, y) => {
+        if (DOM.cursor) {
+            DOM.cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        }
+        if (DOM.cursorLabel) {
+            DOM.cursorLabel.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, 30px)`;
+        }
+    };
+
+    setCursor(targetX, targetY);
 
     window.addEventListener('mousemove', e => {
         targetX = e.clientX;
         targetY = e.clientY;
-        if (!rafActive) {
-            rafActive = true;
-            requestAnimationFrame(renderCursor);
-        }
+        setCursor(targetX, targetY);
     }, { passive: true });
-
-    function renderCursor() {
-        curX += (targetX - curX) * 0.35;
-        curY += (targetY - curY) * 0.35;
-
-        if (DOM.cursor) {
-            DOM.cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
-        }
-        if (DOM.cursorLabel) {
-            DOM.cursorLabel.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, 30px)`;
-        }
-
-        if (Math.abs(targetX - curX) > 0.1 || Math.abs(targetY - curY) > 0.1) {
-            requestAnimationFrame(renderCursor);
-        } else {
-            rafActive = false;
-        }
-    }
 
     // High-performance event delegation for hover states
     document.addEventListener('mouseover', e => {
-        const link = e.target.closest('a, button, .project-card, .contact-card, .dock-item, .island-arrow, .island-trigger, .island-item, .skill-list li, [data-open-tray]');
+        const link = e.target.closest('a, button, .project-card, .contact-card, .dock-item, .hero-cta-btn, .hero-scroll-cue, .stat-pill, .skill-list li, [data-open-tray], [data-nav-target]');
         if (link && DOM.cursor) {
             DOM.cursor.classList.add('link');
         } else if (DOM.cursor) {
