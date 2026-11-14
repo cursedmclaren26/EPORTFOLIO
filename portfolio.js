@@ -469,6 +469,14 @@ function initCursor() {
     let curY = targetY;
     let rafActive = false;
 
+    // Initial center positioning
+    if (DOM.cursor) {
+        DOM.cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
+    }
+    if (DOM.cursorLabel) {
+        DOM.cursorLabel.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, 30px)`;
+    }
+
     window.addEventListener('mousemove', e => {
         targetX = e.clientX;
         targetY = e.clientY;
@@ -483,10 +491,10 @@ function initCursor() {
         curY += (targetY - curY) * 0.35;
 
         if (DOM.cursor) {
-            DOM.cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+            DOM.cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
         }
         if (DOM.cursorLabel) {
-            DOM.cursorLabel.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+            DOM.cursorLabel.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, 30px)`;
         }
 
         if (Math.abs(targetX - curX) > 0.1 || Math.abs(targetY - curY) > 0.1) {
