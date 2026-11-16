@@ -16,7 +16,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="portfolio.css?v=20261114_bold_colors_v21" />
+    <link rel="stylesheet" href="portfolio.css?v=20261116_perf_gallery_v22" />
+
+    <style>
+        /* Immediate override to guarantee gallery un-stacking even if browser caches CSS */
+        .gallery-masonry {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+            grid-auto-rows: max-content !important;
+            gap: 16px !important;
+            padding: 24px 26px !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            height: auto !important;
+            max-height: none !important;
+            align-content: start !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            contain: paint !important;
+        }
+        .gallery-item {
+            aspect-ratio: 4/3 !important;
+            border-radius: 16px !important;
+            overflow: hidden !important;
+            position: relative !important;
+            height: auto !important;
+            will-change: transform !important;
+        }
+        .gallery-img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+        @media (max-width: 768px) {
+            .gallery-masonry {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
+                padding: 16px !important;
+            }
+        }
+        @media (max-width: 480px) {
+            .gallery-masonry {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -451,9 +496,6 @@
                 <button class="gallery-tab" data-category="landscape">Landscapes</button>
                 <button class="gallery-tab" data-category="eclectic">Eclectic Studies</button>
                 <button class="gallery-tab" data-category="all">Complete Archive</button>
-                <a href="index2.html" target="_blank" class="gallery-tab" style="margin-left: auto; background: #E11D48; color: #ffffff; border-color: rgba(255,255,255,0.3); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                    <span>Full Gallery Interface ↗</span>
-                </a>
             </div>
 
             <div class="gallery-masonry" id="visual-photo-grid">
@@ -637,7 +679,25 @@
          SCRIPTS
          ======================================== -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="portfolio.js?v=20261114_bold_colors_v21"></script>
+    <script src="portfolio.js?v=20261116_perf_gallery_v22"></script>
+    <script>
+        // Automatic runtime optimizer: Guarantees optimized thumbnails even if browser caches old JS
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('visual-photo-grid');
+            if (grid) {
+                const optimize = () => {
+                    grid.querySelectorAll('img.gallery-img').forEach(img => {
+                        if (img.src && img.src.includes('cloudinary.com') && !img.src.includes('w_500')) {
+                            img.src = img.src.replace('/upload/', '/upload/f_auto,q_auto,w_500,c_scale/');
+                            img.decoding = 'async';
+                        }
+                    });
+                };
+                optimize();
+                new MutationObserver(optimize).observe(grid, { childList: true, subtree: true });
+            }
+        });
+    </script>
 
 </body>
 

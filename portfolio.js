@@ -805,6 +805,14 @@ function initMusicOS() {
 // ============================================
 // VISUAL SPACE & LIGHTBOX
 // ============================================
+function getOptimizedImageUrl(url, width = 500) {
+    if (!url || typeof url !== 'string') return url;
+    if (url.includes('cloudinary.com') && url.includes('/upload/')) {
+        return url.replace('/upload/', `/upload/f_auto,q_auto,w_${width},c_scale/`);
+    }
+    return url;
+}
+
 function initVisualGallery() {
     const grid = document.getElementById('visual-photo-grid');
     const tabs = document.querySelectorAll('#gallery-category-tabs .gallery-tab');
@@ -830,7 +838,7 @@ function initVisualGallery() {
         if (grid) {
             grid.innerHTML = photos.map((p, i) => `
                 <div class="gallery-item" data-idx="${i}">
-                    <img src="${p.url}" alt="${p.title}" class="gallery-img" loading="lazy" />
+                    <img src="${getOptimizedImageUrl(p.url, 500)}" alt="${p.title}" class="gallery-img" loading="lazy" decoding="async" />
                     <div class="gallery-caption">${p.title} · ${p.tag}</div>
                 </div>
             `).join('');
@@ -873,7 +881,7 @@ function updateLightboxView() {
     const cap = document.getElementById('lightbox-caption');
     const item = subAppState.activeImagesList[subAppState.lightboxIndex];
     if (item && img) {
-        img.src = item.url;
+        img.src = getOptimizedImageUrl(item.url, 1600);
         img.alt = item.title;
         if (cap) cap.textContent = `${item.title} — ${item.tag}`;
     }
