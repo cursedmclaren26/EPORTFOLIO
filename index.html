@@ -273,7 +273,7 @@
                     <div class="project-card" data-open-tray="tray-car" role="button" tabindex="0">
                         <span class="project-year">2026 · Machine Learning</span>
                         <h3>Car Price Predictor</h3>
-                        <p>Used-car valuation engine for the Indian market. Predicts resale prices using gradient boosting with interactive sliders and live cloud API.</p>
+                        <p>Used-car valuation engine for the Indian market. Tuned SVR (RBF) over 9 reduced features blended with calibrated depreciation and live cloud API.</p>
                         <span class="project-badge badge-amber">Launch Simulator ↗</span>
                     </div>
 
@@ -510,7 +510,7 @@
             <div class="tray-header">
                 <div class="tray-brand">
                     <span class="tray-badge">MACHINE LEARNING</span>
-                    <span class="tray-subtitle">Car Resale Valuation Engine · GBDT Regressor</span>
+                    <span class="tray-subtitle">Car Resale Valuation Engine · Tuned SVR (RBF) + 9-Feature Hybrid</span>
                 </div>
                 <div class="tray-controls">
                     <a href="https://car-price-predictor-3lyf.onrender.com" target="_blank" rel="noopener noreferrer" class="tray-ext-btn">Live Cloud App ↗</a>
@@ -573,17 +573,17 @@
                                 <span class="price-currency">₹</span>
                                 <span class="price-num" id="car-estimated-price">14.85</span>
                                 <span style="font-size: 1.2rem; font-weight: 800; color: rgba(255,255,255,0.7);">Lakh</span>
-                                <p class="price-caption">Calculated via Gradient Boosting Decision Tree Regressor</p>
+                                <p class="price-caption">Calculated via Tuned SVR (RBF, 9 Reduced Features) + Depreciation Curve</p>
                             </div>
 
                             <div class="telemetry-list">
                                 <div class="telemetry-row">
                                     <span>Model Framework:</span>
-                                    <strong>GBDT / Scikit-Learn</strong>
+                                    <strong>SVR (RBF) + Pipeline</strong>
                                 </div>
                                 <div class="telemetry-row">
-                                    <span>Cross-Val Accuracy:</span>
-                                    <strong>91.4% R² Score</strong>
+                                    <span>5-Fold CV / Test R²:</span>
+                                    <strong>84.5% CV · 91.1% Test</strong>
                                 </div>
                                 <div class="telemetry-row">
                                     <span>Host Environment:</span>
